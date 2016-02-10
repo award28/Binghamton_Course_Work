@@ -11,5 +11,3 @@ lab1.o: lab1.cpp
 
 clean:
 	rm -f *.o lab1 Hello
-
-
