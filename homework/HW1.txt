@@ -1,0 +1,87 @@
+CS220 Homework 1 Due Feb. 05, 2016
+
+1. Given the following code, and assuming short ints are 16 bits wide, and ints are 32 bits wide:
+ 
+ 	short int x=-5;
+ 	int y;
+ 	y=x;
+ 	
+    a. What is the value of y in decimal?
+        The value of y is -5.
+    b. What are the values of x and y in hexadecimal?
+        In hex, the value of x is 0xfffb and y is 0xfffffffb.
+    c. Does padding on the left with the sign bit to increase precision change the value of a negative number?
+    	If so, why?  If not, why not?
+            No, it doesnt change the value. This is because the compiler knows the value is signed, thus it keeps it signed.
+
+2. Given the following code:
+
+	unsigned char m_and = x & mask;	
+	unsigned char m_or = x | mask;
+	unsigned char m_land = x && mask;
+	unsigned char m_lor = x || mask;
+	
+   Complete the following table, representing each value in hexadecimal:
+   (the first row has been completed for you)
+   
+         x  | mask |m_and | m_or |m_land|m_lor
+       -----+------|------+------+------+------
+   	a. 0x01 | 0xff | 0x01 | 0xff | 0x01 | 0x01
+   	b. 0x08 | 0xf0 | 0x00 | 0xf8 | 0x01 | 0x01
+   	c. 0xc7 | 0x00 | 0x00 | 0xc7 | 0x00 | 0x01   	
+    d. 0x0e | 0x01 | 0x00 | 0x0f | 0x01 | 0x01  
+   	e. 0x00 | 0x0f | 0x00 | 0x0f | 0x00 | 0x01
+   	
+    	
+3. Given the following code, and assuming ints are 32 bits wide:
+	int x=0x00000011;
+	int y=0xFFFFFFFC;
+	
+	a. What is the hexadecimal value of x+y?
+        0xd.
+
+	b. What is the decimal value of x, and y?
+        x is 17 and y is -4. 
+
+	c. What is the decimal value of (x+y)?
+        13.
+
+	d. Do you get the same answer for (x+y) using either hexadecimal arithmetic, or decimal?    	
+    	Yes, thanks to 2's Compliment.
+
+  4. Put an X next to each of the following valid reason to use commmand line development instead of an
+     integrated development environment (IDE):
+     
+     	___ The command line strategy is easier to learn than an IDE.
+     	_X_ Command line tools are available in many different environments.
+     	_X_ The command line tools are open source and free.
+     	___ IDE's are old fashioned... modern developers always use a command line strategy.
+     	_X_ I will learn more about the underlying concepts if I use a command line strategy,
+     	    an IDE may make it easier, but often hides the underlying concepts.
+   (I wish) If I use command line development, I will get a free ice-cream cone.
+     	_X_ Even though it may be harder, and require more knowledge, everything that can be
+     	    done with an IDE can also be done using command line development.
+    	
+  5. Given the following code:
+  
+  	int x; int y; int s_sum;
+  	unsigned int v; unsigned int w; unsigned int u_sum;
+  	
+  	x=atoi(argv[2]);
+  	y=atoi(argv[3]);
+  	v=x;
+  	w=y;
+  	s_sum=x+y;
+  	u_sum=v+w;
+  	if (s_sum==u_sum) printf("Unsigned and signed are the same\n");
+  	else printf("Unsigned and signed are different\n");
+  	
+     a. What do you expect to see printed for most values of argv[2] and argv[3]?
+        "Unsigned and signed are the same".
+
+     b. Are there any values of argv[2] and argv[3] which will result in "Unsigned and signed are different"?
+        No, since there are unsigned bits the entire program is unsigned.
+
+     c. If you changed "s_sum=x*y;" and "u_sum=v*w;" will you get the same results?
+        Yes.
+     
