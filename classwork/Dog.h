@@ -2,11 +2,16 @@
 #define DOG_H
 #include <string>
 
-Class Dog {
-    private:
-        std::String name;
-        std::String breed;
-    public:
-        Dog(String name){this->name = name; breed = "Greyhound";}
+class Dog {
+        private:
+            static int id;
+            int unique_id;
+            String breed;
+        public:
+            String name;
+            Dog(String name);
+            void setBreed(String newBreed);
+            String getBreed(void);
+            void adopted(void);
 };
 #endif
