@@ -4,6 +4,6 @@
 using namespace std;
 
 int main() {
-    Dog greyhound = new Dog("Rick");
-    Dog labrador = new Dog("Morty");
+    Dog *greyhound = new Dog("Rick");
+    Dog *labrador = new Dog("Morty");
 }
