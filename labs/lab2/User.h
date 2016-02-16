@@ -9,7 +9,6 @@ class User {
         int age;
         std::string *favoriteMovie;
         User(void){ favoriteMovie = new std::string[5]; }
-	void test();
 	void create(User &user);
 	void update(User &user);
 	void view(User &user);

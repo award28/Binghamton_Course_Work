@@ -2,54 +2,69 @@
 #include <iostream>
 using namespace std;
 
-void User::test() {
-	cout << "test" << endl;
-}
-
+//Creates a name and age for the user
 void User::create(User &user) {
 	cout << "Please enter first name: ";
 	cin >> user.firstName;
+	cout << endl;
 	cout << "Please enter last name: ";
 	cin >> user.lastName;
+	cout << endl;
 	cout << "Please enter age: ";
 	cin >> user.age;
+	cout << endl << endl;
+
 }
+
+//Updates specified attribute first, last or age 
 void User::update(User &user) {
 	string choice;
 	
 	cout << "Enter which attribute to update (First, Last, Age): ";
 	cin >> choice;
-	
+	cout << endl;	
 	if(choice == "First") {
 		cout << "Please enter the new value: ";
 		cin >> user.firstName;
+		cout << endl;	
 	}
 	else if(choice == "Last") {
 		cout << "Please enter the new value: ";
 		cin >> user.lastName;
+		cout << endl;	
 	}
 	else if(choice == "Age") {
 		cout << "Please enter the new value: ";
 		cin >> user.age;
+		cout << endl;	
 	}
 	else {
 		cout << "INVALID COMMAND" << endl;
-	}		
+		cout << endl;	
+	}	
+	cout << endl;	
 }
+
+//View the current information the user has entered
 void User::view(User &user) {
-	cout << "First name: " << user.firstName << endl;
-	cout << "Last name: " << user.lastName << endl;
-	cout << "Age: " << user.age << endl;
-	cout << "Favorite movies:" << endl;
+	cout << "First name:" << user.firstName << endl;
+	cout << "Last name:" << user.lastName << endl;
+	cout << "Age:" << user.age << endl;
+	cout << "Favorite Movies" << endl << endl;;
 
 	for(int i = 0; i <= sizeof(user.favoriteMovie[0])/sizeof(user.favoriteMovie); i++) {
 		cout << user.favoriteMovie[i] << endl;
 	}	
+	cout << endl;	
 }
+
+//Input user's top 5 favorite movies
 void User::favorites(User &user) {
 	cout << "Please input your new 5 Favorite Movies" << endl;
+	cin.ignore(256, '\n');
+
 	for(int i = 0; i <= sizeof(user.favoriteMovie[0])/sizeof(user.favoriteMovie); i++) {
-		cout << "Enter #" << i+1 << " here: ";
-		cin >> user.favoriteMovie[i];
+		getline(cin, user.favoriteMovie[i]);
 	}	
+	cout << endl;	
 }

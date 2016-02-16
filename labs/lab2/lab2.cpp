@@ -10,7 +10,8 @@ int main() {
 	while(!quit) {
 		cout << "Please enter a command (Create, Update, View, Favorites, or Quit): ";
 		cin >> choice;
-		
+		cout << endl;
+	
 		if(choice == "Create") {
 			u1->create(*u1);
 		}
@@ -22,12 +23,13 @@ int main() {
 		}
 		else if(choice == "Favorites") {
 			u1->favorites(*u1);
+			u1->view(*u1);
 		}
 		else if(choice == "Quit") {
 			quit = true;
 		}
 		else {
-			cout << "INVALID COMMAND" << endl;
+			cout << "INVALID COMMAND" << endl << endl;
 		}
 	}	
 }
