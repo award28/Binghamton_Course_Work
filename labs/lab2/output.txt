@@ -1,7 +1,7 @@
 Please enter a command (Create, Update, View, Favorites, or Quit): 
-Please enter first name: 
-Please enter last name: 
-Please enter age: 
+Please enter first name:
+Please enter last name:
+Please enter age:
 
 Please enter a command (Create, Update, View, Favorites, or Quit): 
 First name:frodo
@@ -16,16 +16,16 @@ Favorite Movies
 
 
 Please enter a command (Create, Update, View, Favorites, or Quit): 
-Please Enter which attribute to update (First, Last, Age): 
-Please enter the new value: 
+Please Enter which attribute to update (First, Last, Age):
+Please enter the new value:
 
 Please enter a command (Create, Update, View, Favorites, or Quit): 
-Please Enter which attribute to update (First, Last, Age): 
-Please enter the new value: 
+Please Enter which attribute to update (First, Last, Age):
+Please enter the new value:
 
 Please enter a command (Create, Update, View, Favorites, or Quit): 
-Please Enter which attribute to update (First, Last, Age): 
-Please enter the new value: 
+Please Enter which attribute to update (First, Last, Age):
+Please enter the new value:
 
 Please enter a command (Create, Update, View, Favorites, or Quit): 
 First name:samwise

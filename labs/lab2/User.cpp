@@ -4,13 +4,13 @@ using namespace std;
 
 //Creates a name and age for the user
 void create(User &user) {
-	cout << "Please enter first name: ";
+	cout << "Please enter first name:";
 	cin >> user.firstName;
 	cout << endl;
-	cout << "Please enter last name: ";
+	cout << "Please enter last name:";
 	cin >> user.lastName;
 	cout << endl;
-	cout << "Please enter age: ";
+	cout << "Please enter age:";
 	cin >> user.age;
 	cout << endl << endl;
 
@@ -20,21 +20,21 @@ void create(User &user) {
 void update(User &user) {
 	string choice;
 	
-	cout << "Please Enter which attribute to update (First, Last, Age): ";
+	cout << "Please Enter which attribute to update (First, Last, Age):";
 	cin >> choice;
 	cout << endl;	
 	if(choice == "First") {
-		cout << "Please enter the new value: ";
+		cout << "Please enter the new value:";
 		cin >> user.firstName;
 		cout << endl;	
 	}
 	else if(choice == "Last") {
-		cout << "Please enter the new value: ";
+		cout << "Please enter the new value:";
 		cin >> user.lastName;
 		cout << endl;	
 	}
 	else if(choice == "Age") {
-		cout << "Please enter the new value: ";
+		cout << "Please enter the new value:";
 		cin >> user.age;
 		cout << endl;	
 	}
