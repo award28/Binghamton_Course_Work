@@ -3,7 +3,7 @@
 using namespace std;
 
 //Creates a name and age for the user
-void User::create(User &user) {
+void create(User &user) {
 	cout << "Please enter first name: ";
 	cin >> user.firstName;
 	cout << endl;
@@ -17,10 +17,10 @@ void User::create(User &user) {
 }
 
 //Updates specified attribute first, last or age 
-void User::update(User &user) {
+void update(User &user) {
 	string choice;
 	
-	cout << "Enter which attribute to update (First, Last, Age): ";
+	cout << "Please Enter which attribute to update (First, Last, Age): ";
 	cin >> choice;
 	cout << endl;	
 	if(choice == "First") {
@@ -46,7 +46,7 @@ void User::update(User &user) {
 }
 
 //View the current information the user has entered
-void User::view(User &user) {
+void view(User &user) {
 	cout << "First name:" << user.firstName << endl;
 	cout << "Last name:" << user.lastName << endl;
 	cout << "Age:" << user.age << endl;
@@ -59,7 +59,7 @@ void User::view(User &user) {
 }
 
 //Input user's top 5 favorite movies
-void User::favorites(User &user) {
+void favorites(User &user) {
 	cout << "Please input your new 5 Favorite Movies" << endl;
 	cin.ignore(256, '\n');
 

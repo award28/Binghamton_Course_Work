@@ -9,9 +9,9 @@ class User {
         int age;
         std::string *favoriteMovie;
         User(void){ favoriteMovie = new std::string[5]; }
-	void create(User &user);
-	void update(User &user);
-	void view(User &user);
-	void favorites(User &user);
 };
+void create(User &user);
+void update(User &user);
+void view(User &user);
+void favorites(User &user);
 #endif

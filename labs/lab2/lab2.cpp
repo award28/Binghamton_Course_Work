@@ -13,17 +13,17 @@ int main() {
 		cout << endl;
 	
 		if(choice == "Create") {
-			u1->create(*u1);
+			create(*u1);
 		}
 		else if(choice == "Update") {
-			u1->update(*u1);
+			update(*u1);
 		}
 		else if(choice == "View") {
-			u1->view(*u1);
+			view(*u1);
 		}
 		else if(choice == "Favorites") {
-			u1->favorites(*u1);
-			u1->view(*u1);
+			favorites(*u1);
+			view(*u1);
 		}
 		else if(choice == "Quit") {
 			quit = true;
