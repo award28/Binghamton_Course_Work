@@ -1,0 +1,55 @@
+CS220 Homework 2 Due Feb. 12, 2016
+
+Name: Austin Ward
+
+1. Given the following code:
+	int x = -5;
+	int y = x/2;
+	int z = x>>1;
+	
+   a. Will "y" and "z" have the same value?  If so, why? If not, why not?
+	No they won't have the same value, because z is bit shifting the values of x. If they were to have the same values, it'd be by coincidence. 
+   
+   b. Is the statement "shifting to the right is the same as dividing by two" correct?
+	No, shifting to the right is not correct, especially as the numbers get larger. A shifting of bits can have a much larger effect on large scale numbers.
+
+2. Is there anything wrong with the following code?  If so, what is the problem?
+
+	int main(int argc,char **argv) {
+		int x;
+		x=getFirst(23);
+		if (x==12) return 1;
+		return 0;
+	}
+	int getFirst(int st) {
+		return (st*124639 % 332167);
+	}
+	
+	The code above doesn't contain a prototype for the funtion 'getFirst,' therefore it won't compile.	
+3. Given the following Code:
+
+	int x; 
+	x=14;
+	x=x++;
+	
+   What will the value of "x" be after the code is executed?  Why?
+	x will be equal to 15 after this code has been executed. The '++' operation is an indication to add 1 to the digit.
+	
+4. Given the following invocation of a command generated from C code:
+
+	./mycmd this is a test
+	
+   What will be the values of:
+   
+   a. argc	5
+   b. argv[1]	"This"
+   	
+5. Given the following C code:
+
+	int x=atoi(argv[1]);
+	int y=(x | (-1-x));
+	if (y==-1) printf("Does OR act the same as ADD?\n");
+	
+   Is there any value of x for which you will NOT print "Does OR act the same as ADD?"?
+   If so, what is that value?
+	The value 0 is the only value the following code will not print the statement for.
