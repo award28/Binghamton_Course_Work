@@ -6,12 +6,13 @@ int main() {
 	User *u1 = new User();
 	bool quit = false;
 	string choice = "";
-
-	while(!quit) {
-		cout << "Please enter a command (Create, Update, View, Favorites, or Quit): ";
-		cin >> choice;
-		cout << endl;
+    cout << endl; 
 	
+    while(!quit) {
+		cout << "Please enter a command (Create, Update, View, Favorites, or Quit):";
+		cin >> choice;
+	    cout << endl;
+
 		if(choice == "Create") {
 			create(*u1);
 		}
