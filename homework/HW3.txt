@@ -1,0 +1,40 @@
+CS220 Spring 2016 Homework 3 Due Feb. 19, 2016
+
+Name: Austin Ward
+
+1. Give your answers in both abstract decimal and concrete hexadecimal format.
+	a. What is the largest number less than infinity that can be represented in a 32 bit IEEE floating point number?  
+ 			
+   
+	b. What is the smallest positive number greater than +0 that can be represented in a 32 bit IEEE floating point number? 
+   
+   
+2. Given the following code:
+
+	constant float onethird=1.0/3.0;
+	float sum=0.0;
+	int i=0;
+	for(i=0; i<3000; i++) sum=sum+onethird;
+	if (sum == 1000.0) printf (“Just as I expected, 3000 * 1/3 is 1000\n”);
+	else printf(“That did not work!\n”);
+	
+   What will get printed?  Why? 
+	
+3. Given the following code:
+
+	constant float x=1e20;
+	constant float pi=3.14;
+	float y = (x + (-x))+pi;
+	float z = x + ((-x) + pi);
+	if (y==z) printf("This is an example of the associative property.\n");
+	else printf("This is a counter-example.. the associative property does not hold!\n");
+	
+   Which message will get printed?  Why?
+   
+4. If you are on a little-endian machine that uses 32 bit integers, the professor defines a "palindromic" number as a number
+   for which x==htonl(x), and the professor argues that 16,843,009 is a "palindromic" number.  Is he correct?  Why?
+   
+5. The standard library function "float powf(float a,float b)" returns the value of "a" to the power of "b".  
+   For instance, powf(2.0,3.0) return 2.0 x 2.0 x 2.0 = 8.0.  Find an integer value for "exp" for which the 
+   FRAC bits of the expression "powf(2.0,exp)" is non-zero. (Warning: the representation of INFINITY in floating
+   point has zero FRAC bits.)
