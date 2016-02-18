@@ -1,0 +1,28 @@
+Name: 
+
+CS-220 Spring 2016 Lab 03 Report
+
+1. Cut and paste your final "root" function here...
+	root = (root + (n/root))/2;
+
+2. After you added the check to make sure root is not the same as prev_root, you still see messages that
+   print out "error=0.000000", and the program executes another iteration.  How can this be true?
+ 	The error for the current calculation has an error of 0.000000. Once this is taken into account, the program exits the loop.
+
+3. By providing tolerance as an argument to your root function, you allow the user to provide a larger
+   or smaller tolerance.  Under what conditions might this feature be important to a user of your root function?
+	If you are providing a square root function for many users and don't have a large amount of room for overhead, cutting down the tolerance would be beneficial. 
+   
+4. Some students have suggested that the tolerance should be specified as a fraction of the original number
+   instead of as an absolute value.  For instance, if the tolerance were 0.001, then the root program would
+   iterate as long as error > 0.001 * n.  Which do you like better... tolerance as an absolute value, or
+   tolerance as a fraction of the original number?  Why?
+	Tolerance as an absolute value seems like the clear choice, as it will get the user closer to an approximation than by the fraction method. 
+   
+5. The distance from New York City to Albany, NY is about 150 miles, and the route is approximately North/South.
+   The distance from Albany, NY to Syracuse NY is about 140 miles, and the route is approximately East/West.
+   Using your square root program, what is the approximate distance from New York City to Syracuse, assuming
+   there is a road that follows the hypotenuse of the triangle.  (Google Maps says that if you follow the roads,
+   this will be 247 miles, but that's because the roads aren't straight lines.)  How many iterations did you
+   need to acheive this result?
+	The approximate distance from New York City to Syracuse is 205.183 miles, assuming it's a straight line. It took my program 10 iterations to come to this approximation. 
