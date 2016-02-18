@@ -5,26 +5,26 @@ CS-220 Spring 2016 Lab 03 Report
 1. Cut and paste your final "root" function here...
 	double root(double n,double tol) {
 
-        tolint iter=0;
-        iterdouble root=n/2;
-        rootdouble error=howClose(n,root);
-        rootdouble prev_root = root;
-        rootwhile(error > tol) {
+        int iter=0;
+        double root=n/2;
+        double error=howClose(n,root);
+        double prev_root = root;
+        while(error > tol) {
             error
-            toliter++;
+            iter++;
             error/* Calculate a new value for root here */
-            rootroot = (root + (n/root))/2;for
+            root = (root + (n/root))/2;for
 
-            rooterror=howClose(n,root);
-            howCloseprintf("  After %d iterations, root=%g error=%g\n",iter,root,error);
-            error
-            rootif(root == prev_root) {
-                rootifprintf("The new root %g is the same as the old root, %g.\n", root, prev_root);
-                oldreturn prev_root;
-                oldreturn}
-                prev_rootprev_root = root;
-                root}
-                rootreturn root;root
+            error=howClose(n,root);
+            printf("  After %d iterations, root=%g error=%g\n",iter,root,error);
+            
+            if(root == prev_root) {
+                printf("The new root %g is the same as the old root, %g.\n", root, prev_root);
+                return prev_root;
+            }
+                prev_root = root;
+    	}
+                return root;
     }
 
 2. After you added the check to make sure root is not the same as prev_root, you still see messages that
