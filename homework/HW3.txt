@@ -7,7 +7,7 @@ Name: Austin Ward
  	    2^127 is the largest possible floating point number, or 1.7014118e+38.
    
 	b. What is the smallest positive number greater than +0 that can be represented in a 32 bit IEEE floating point number? 
-        The smallest possible floating point number greater than 0 is either 0.000001 or 1.4013e-45.
+        The smallest possible floating point number greater than 0 is either 2^-149.
    
 2. Given the following code:
 
