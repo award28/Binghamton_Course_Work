@@ -4,10 +4,10 @@ Name: Austin Ward
 
 1. Give your answers in both abstract decimal and concrete hexadecimal format.
 	a. What is the largest number less than infinity that can be represented in a 32 bit IEEE floating point number?  
- 			
+ 	    2^127 is the largest possible floating point number, or 1.7014118e+38.
    
 	b. What is the smallest positive number greater than +0 that can be represented in a 32 bit IEEE floating point number? 
-   
+        The smallest possible floating point number greater than 0 is either 0.000001 or 1.4013e-45.
    
 2. Given the following code:
 
@@ -19,7 +19,8 @@ Name: Austin Ward
 	else printf(“That did not work!\n”);
 	
    What will get printed?  Why? 
-	
+        "That did not work!" --- This will get printed because computers can't understand recurring numbers in a decimal and eventually gets cutoff, so we're left with a number like 999.976440.
+
 3. Given the following code:
 
 	constant float x=1e20;
@@ -30,11 +31,14 @@ Name: Austin Ward
 	else printf("This is a counter-example.. the associative property does not hold!\n");
 	
    Which message will get printed?  Why?
-   
+        "This is a counter-example.. the associative property does not hold!" --- This will get printed because the negative x isn't affected by such a small number like pi, and thus the x's cancel out in the z AFTER the pi is added. This will cause y to be 3.14 and z to be 0.
+
 4. If you are on a little-endian machine that uses 32 bit integers, the professor defines a "palindromic" number as a number
    for which x==htonl(x), and the professor argues that 16,843,009 is a "palindromic" number.  Is he correct?  Why?
-   
+       Yes the professor is correct because because in both cases the value is represented as 0x01010101. Following the host to network long standard of htonl() this will represent the hex value in the same way. 
+
 5. The standard library function "float powf(float a,float b)" returns the value of "a" to the power of "b".  
    For instance, powf(2.0,3.0) return 2.0 x 2.0 x 2.0 = 8.0.  Find an integer value for "exp" for which the 
    FRAC bits of the expression "powf(2.0,exp)" is non-zero. (Warning: the representation of INFINITY in floating
    point has zero FRAC bits.)
+        An integer value for exp that makes a non-zero FRAC is any negative integer.

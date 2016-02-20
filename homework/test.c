@@ -1,12 +1,12 @@
 #include <stdio.h>
+#include <math.h>
 
-int getFirst(int);
 int main(int argc, char **argv) {
-	int x;
-	x=getFirst(23);
-	if (x==12) return 1;
-	return 0;
-}
-int getFirst(int st) {
-	return (st*124639 % 33167);
+   float exp = -1.0;
+   float current = powf(2.0, exp);
+   for(int i = 0; i < 20; i++) { 
+       current = powf(2.0, exp);
+       printf("%f\n",current);
+        exp -= 1.0;
+   }
 }
