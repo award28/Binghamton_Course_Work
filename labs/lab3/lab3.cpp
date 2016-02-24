@@ -1,33 +1,31 @@
 #include <iostream>
-#include "User.h"
+#include "MovieChart.h"
 using namespace std;
 
 int main() {
-	User *u1 = new User();
+	MovieChart* movieChart = new MovieChart();
 	bool quit = false;
 	string choice = "";
     cout << endl; 
 	
     while(!quit) {
-		cout << "Please enter a command (Create, Update, View, Favorites, or Quit):";
+		cout << "Please enter a command (Create, Update, View, Login, Logout, or Quit):";
 		cin >> choice;
 	    cout << endl;
 
 		if(choice == "Create") {
-			create(*u1);
-		}
+		    movieChart->create();
+        }
 		else if(choice == "Update") {
-			update(*u1);
-		}
+		    movieChart->update();
+        }
 		else if(choice == "View") {
-			view(*u1);
-		}
-		else if(choice == "Favorites") {
-			favorites(*u1);
-			view(*u1);
-		}
-		else if(choice == "MovieList") {
-            cout << u1->movieList() << endl;
+		    movieChart->view();
+        }
+		else if(choice == "Login") {
+		    movieChart->login();
+        }
+		else if(choice == "Logout") {
         }
         else if(choice == "Quit") {
 			quit = true;

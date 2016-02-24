@@ -13,27 +13,21 @@ class User {
             this->age = age;
             this->username = username;
             this->password = password;
+            favoriteMovie = new std::string[5]; 
         }
-        bool authenticate(std::string password) {
-            bool loggedIn = false;
-
-            if(password == this->password) loggedIn = true;
-
-            return loggedIn;
-        }
+        bool authenticate(std::string password) { return (password == this->password); }
         std::string getUsername() { return this->username; }
         void setPassword(std::string new_password) { this->password = new_password; }
-        std::string *movieList() { ;
+        std::string *movieList() { 
+            //std::cin.ignore(256, '\n');
+            //for(int i = 0; i < 5; i++) std::getline(std::cin, this->favoriteMovie[i]);
+            
+            return this->favoriteMovie;
+        }
+        User(void);
+    private:
         std::string *favoriteMovie;
-        User(void) { favoriteMovie = new std::string[5]; }
-private:
         std::string username;
-        std::string password;
-
-        
+        std::string password;       
 };
-void create(User &user);
-void update(User &user);
-void view(User &user);
-void favorites(User &user);
 #endif

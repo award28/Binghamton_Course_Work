@@ -2,12 +2,6 @@
 #include <iostream>
 using namespace std;
 
-MovieChart::MovieChart() {
-     users = new User::users[255];
-     num_users = 0;
-     current_user = NULL;
-}
-
 bool MovieChart::login() {
     string username, password;
     bool loggedIn = false;
@@ -18,14 +12,15 @@ bool MovieChart::login() {
     cin >> password;
 
     for(int i = 0; i < 255 && !loggedIn; i++) {
-        if(username == users[i]->username) {
-            if(users[i]->authenticate(password)) {
-                current_user = users[i];
-                loggedIn = true;
-            }
-        }
+        cout << users[i] << " ";;
+        //if(username == users[i]->getUsername()) {
+          //  if(users[i]->authenticate(password)) {
+            //    current_user = users[i];
+              //  loggedIn = true;
+           // }
+       // }
     }
-
+    cout << "Getting here" << endl;
     if(!loggedIn) cout << "Invalid username/password combination" << endl;
 
     return loggedIn;
@@ -53,10 +48,9 @@ void MovieChart::create() {
     num_users++;
 }
 
-void update() {
+void MovieChart::update() {
     string choice;
     string password;
-    string movies[5];
 
     cout << "Please enter which attribute to update (Password, Favorites): ";
     cin >> choice;
@@ -69,22 +63,25 @@ void update() {
     }
     else if(choice == "Favorites") {
         cout << "Please input your new 5 Favorite Movies"  << endl;
-        movies = current_user->*movieList();
         cout << endl;
 
-        for(int i = 0; i < 5; i++) cout << 
+        for(int i = 0; i < 5; i++){ cout << endl;
+        }
     }
     else cout << "INVALID COMMAND" << endl;
 }
 
-void view() {
-    cout << "First name:" << current_user->firstName << endl;
-    cout << "Last name:" << current_user->lastName << endl;
-    cout << "Age:" << current_user->age << endl;
-    cout << "Username:" << current_user->username  << endl;
-    cout << "Favorite Movies" << endl;
+void MovieChart::view() {
+    if(current_user == NULL) cout << "Please login before continuing." << endl;
+    else {
+        cout << "First name:" << current_user->firstName << endl;
+        cout << "Last name:" << current_user->lastName << endl;
+        cout << "Age:" << current_user->age << endl;
+        cout << "Username:" << current_user->getUsername()  << endl;
+        cout << "Favorite Movies" << endl;
 
-    for(int i = 0; i < 5; i++) {
-           cout << current_user->*favoriteMovie[i] << endl; 
+        for(int i = 0; i < 5; i++) {
+               cout << current_user->movieList() << endl; 
+        }
     }
 }
