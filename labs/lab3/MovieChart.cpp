@@ -8,11 +8,11 @@ bool MovieChart::login() {
 
     cout << "Please enter your username: ";
     cin >> username;
+    cout << username << endl;
     cout << "Please enter your password: ";
     cin >> password;
-
+    cout << password << endl;
     for(int i = 0; i < num_users && !loggedIn; i++) {
-        cout << users[i] << " ";
         if(username == users[i]->getUsername()) {
             if(users[i]->authenticate(password)) {
                 current_user = users[i];
@@ -34,14 +34,19 @@ void MovieChart::create() {
 
     cout << "Please enter first name: ";
     cin >> fname;
+    cout << fname << endl;
     cout << "Please enter last name: ";
     cin >> lname;
+    cout << lname << endl;
     cout << "Please enter age: ";
     cin >> age;
+    cout << age << endl;
     cout << "Please enter username: ";
     cin >> username;
+    cout << age << endl;
     cout << "Please enter password ";
     cin >> password;
+    cout << password << endl;
 
     users[num_users] = new User(fname, lname, age, username, password);
     num_users++;
@@ -53,11 +58,12 @@ void MovieChart::update() {
 
     cout << "Please enter which attribute to update (Password, Favorites): ";
     cin >> choice;
-
+    cout << choice << endl;
     if(current_user == NULL) cout << "Please login before continuing" << endl;
     else if(choice == "Password") {
         cout << "Please input your new password" << endl;
         cin >> password;
+        cout << password << endl;
         current_user->setPassword(password);
     }
     else if(choice == "Favorites") {
@@ -65,8 +71,12 @@ void MovieChart::update() {
         string* list = current_user->movieList();
         cin.ignore(256, '\n');
         for(int i = 0; i < 5; i++) {
-               getline(cin, list[i]);
+            getline(cin, list[i]);
         }
+        for(int i = 0; i < 5; i++) {
+            cout << list[i] << endl;
+        }
+       
         cout << endl;
     }
     else cout << "INVALID COMMAND" << endl;
@@ -85,5 +95,6 @@ void MovieChart::view() {
         for(int i = 0; i < 5; i++) {
                cout << list[i] << endl; 
         }
+        cout << endl;
     }
 }

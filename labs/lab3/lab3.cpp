@@ -12,6 +12,7 @@ int main() {
 		cout << "Please enter a command (Create, Update, View, Login, Logout, or Quit):";
 		cin >> choice;
 	    cout << endl;
+        cout << choice << endl;
 
 		if(choice == "Create") {
 		    movieChart->create();
@@ -32,7 +33,8 @@ int main() {
 			quit = true;
 		}
 		else {
-			cout << "INVALID COMMAND" << endl << endl;
+			cout << "INVALID COMMAND" << endl;
 		}
+        cout << endl;
 	}	
 }
