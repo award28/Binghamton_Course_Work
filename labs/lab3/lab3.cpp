@@ -26,6 +26,7 @@ int main() {
 		    movieChart->login();
         }
 		else if(choice == "Logout") {
+            movieChart->logout();
         }
         else if(choice == "Quit") {
 			quit = true;

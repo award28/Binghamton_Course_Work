@@ -13,7 +13,8 @@ class User {
             this->age = age;
             this->username = username;
             this->password = password;
-            favoriteMovie = new std::string[5]; 
+            this->favoriteMovie = new std::string[5]; 
+
         }
         bool authenticate(std::string password) { return (password == this->password); }
         std::string getUsername() { return this->username; }

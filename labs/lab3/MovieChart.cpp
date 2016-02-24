@@ -11,16 +11,15 @@ bool MovieChart::login() {
     cout << "Please enter your password: ";
     cin >> password;
 
-    for(int i = 0; i < 255 && !loggedIn; i++) {
-        cout << users[i] << " ";;
-        //if(username == users[i]->getUsername()) {
-          //  if(users[i]->authenticate(password)) {
-            //    current_user = users[i];
-              //  loggedIn = true;
-           // }
-       // }
+    for(int i = 0; i < num_users && !loggedIn; i++) {
+        cout << users[i] << " ";
+        if(username == users[i]->getUsername()) {
+            if(users[i]->authenticate(password)) {
+                current_user = users[i];
+                loggedIn = true;
+            }
+        }
     }
-    cout << "Getting here" << endl;
     if(!loggedIn) cout << "Invalid username/password combination" << endl;
 
     return loggedIn;
@@ -63,10 +62,12 @@ void MovieChart::update() {
     }
     else if(choice == "Favorites") {
         cout << "Please input your new 5 Favorite Movies"  << endl;
-        cout << endl;
-
-        for(int i = 0; i < 5; i++){ cout << endl;
+        string* list = current_user->movieList();
+        cin.ignore(256, '\n');
+        for(int i = 0; i < 5; i++) {
+               getline(cin, list[i]);
         }
+        cout << endl;
     }
     else cout << "INVALID COMMAND" << endl;
 }
@@ -80,8 +81,9 @@ void MovieChart::view() {
         cout << "Username:" << current_user->getUsername()  << endl;
         cout << "Favorite Movies" << endl;
 
+        string* list = current_user->movieList();
         for(int i = 0; i < 5; i++) {
-               cout << current_user->movieList() << endl; 
+               cout << list[i] << endl; 
         }
     }
 }
