@@ -7,13 +7,25 @@ class User {
         std::string lastName;
         std::string firstName;
         int age;
-        User(std::string fname, std::string lname, int age, std::string username, std::string password);
-        bool authenticate(std::string password);
-        std::string getUsername();
-        void setPassword(std::string new_password);
-        std::string *movieList();
+        User(std::string fname, std::string lname, int age, std::string username, std::string password) {
+            this->firstName = fname;
+            this->lastName = lname;
+            this->age = age;
+            this->username = username;
+            this->password = password;
+        }
+        bool authenticate(std::string password) {
+            bool loggedIn = false;
+
+            if(password == this->password) loggedIn = true;
+
+            return loggedIn;
+        }
+        std::string getUsername() { return this->username; }
+        void setPassword(std::string new_password) { this->password = new_password; }
+        std::string *movieList() { ;
         std::string *favoriteMovie;
-        User(void){ favoriteMovie = new std::string[5]; }
+        User(void) { favoriteMovie = new std::string[5]; }
 private:
         std::string username;
         std::string password;
