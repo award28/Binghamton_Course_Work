@@ -19,12 +19,7 @@ class User {
         bool authenticate(std::string password) { return (password == this->password); }
         std::string getUsername() { return this->username; }
         void setPassword(std::string new_password) { this->password = new_password; }
-        std::string *movieList() { 
-            //std::cin.ignore(256, '\n');
-            //for(int i = 0; i < 5; i++) std::getline(std::cin, this->favoriteMovie[i]);
-            
-            return this->favoriteMovie;
-        }
+        std::string *movieList() { return this->favoriteMovie; }
         User(void);
     private:
         std::string *favoriteMovie;
