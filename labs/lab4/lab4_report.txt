@@ -1,13 +1,27 @@
-Name: 
+Name: Austin Ward
 
 CS-220 Spring 2016 Lab 04 Report Due Feb 26, 2016
 
 1. What is the first bug you found, and how did you fix it?
+    I put 'gcc -g -Wall -o calc calc.c' in the Makefile 
+    and it showed me a warning on line 425. I changed 
+    "((*tokenPtr)=NULL)" to "((*tokenPtr) == NULL)".
 
 2. What is the second bug you found, and how did you fix it?
+    The second bug was on line 515, cval being inside the program 
+    when it's a command line tool. I removed the line 
+    "cval=evalTree(cond, debug);".
 
 3. What is the third bug you found, and how did you fix it?
+    I found the third bug at line 537. Instead of using the divisor the 
+    program had module in it, so I changed "return left%right" to 
+    "return left/right".
 
 4. what is the fourth bug you found, and how did you fix it?
+    The next one was at 610. "strcat(newPrefix, '.R');" has single quotes
+    around a string, so I changed them to double quotes: 
+    "strcat(newPrefix, ".R");"
+
 
 5. What is the value of the first factorial number greater than 1000?
+    5040(7!)

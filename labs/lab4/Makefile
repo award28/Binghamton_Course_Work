@@ -1,7 +1,7 @@
 all: calc
 
 calc: calc.c  
-	gcc -g -o calc calc.c 
+	gcc -g -Wall -o calc calc.c 
 	
 	
 test: calc
