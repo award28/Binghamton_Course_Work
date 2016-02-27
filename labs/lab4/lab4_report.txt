@@ -1,0 +1,13 @@
+Name: 
+
+CS-220 Spring 2016 Lab 04 Report Due Feb 26, 2016
+
+1. What is the first bug you found, and how did you fix it?
+
+2. What is the second bug you found, and how did you fix it?
+
+3. What is the third bug you found, and how did you fix it?
+
+4. what is the fourth bug you found, and how did you fix it?
+
+5. What is the value of the first factorial number greater than 1000?

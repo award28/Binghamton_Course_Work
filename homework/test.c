@@ -2,11 +2,15 @@
 #include <math.h>
 
 int main(int argc, char **argv) {
-   float exp = 140.0;
-   float current = powf(2.0, exp);
-   for(int i = 0; i < 20; i++) { 
-       current = powf(2.0, exp);
-       printf("%g -- %f\n",current,exp);
-        exp -= 1.0;
-   }
+	int matrix[2][3];
+	int *mptr = &matrix[0][0];
+	int row; int col;
+	for(row=0; row<2; row++) {
+		for(col=0; col<3; col++) {
+			matrix[row][col] = (row*10) + col;
+			printf("%d\n", matrix[row][col]);
+		}
+	}
+
+	printf("The fifth element of matrix is %d\n",*(mptr+5));
 }
