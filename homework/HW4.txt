@@ -30,7 +30,7 @@ Name: Austin Ward
  	
  	a) _T_ If the only command I type in a gdb session is "run", then my program will run to completion.
  		
- 	b) _F_ In gdb, if I type "n", and hit enter twice, I will execute exactly two C statements
+ 	b) _T_ In gdb, if I type "n", and hit enter twice, I will execute exactly two C statements
  	
  	c) _F_ In gdb, if I type "b 21 if (i>20)", then gdb will stop the next time I execute line 21
  	
