@@ -54,7 +54,7 @@ char getState(short int state, char pos);
 void fprintState(short int state);
 char p2c(short int state,char pos);
 short int addTestState(short int state, char pos, char xo);
-int getBestMove(short int state, char player, char me, char them);
+int getBestMove(short int state, char player, char me, char them, int * score);
 
 int main(int argc,char **argv) {
 
@@ -119,7 +119,9 @@ short int myTurn(short int state, char me) {
     if(me == 1) them = 2;
     else them = 1;
 
-    bestMove = getBestMove(state, me, me, them);
+    int score = -10;
+
+    bestMove = getBestMove(state, me, me, them, &score);
     state = addState(state, bestMove, me);
     
     return state; // Return an updated state
@@ -189,7 +191,6 @@ short int checkWin(short int state) {
 }
 
 short int addState(short int state, char pos, char xo) {
-    printf("%d\n",pos);
     assert(0==getState(state,pos));
 	return state + pow(3,pos)*xo;
 }
@@ -220,30 +221,34 @@ short int addTestState(short int state, char pos, char xo) {
     return state + pow(3,pos)*xo;
 }
 
-int getBestMove(short int state, char player, char me, char them) {
-
+int getBestMove(short int state, char player, char me, char them, int * score) {
     //Check for end of game
-    if (checkWin(state) == 19683) {
-        return 0;
+    if (checkWin(state) == STATE_TIE) {
+        *score = 0;
+        return -1;
     } else if (checkWin(state) == STATE_TIE + them) {
-        return -10;
+       *score = -10;
+        return  -1;
     } else if (checkWin(state) == STATE_TIE + me) {
-        return 10;
+        *score = 10;
+        return -1;
     }
-
+    int scorePass;
     int moves[9];
     int moveScores[9];
-
     //Recursively call the next moves
     for (int i = 0; i < 9; i++) {
         if (getState(state, i) == 0) {
-            int move; 
-            state = addTestState(state, i, player);
+           state = addTestState(state, i, player);
             if (player == me) {
-                moveScores[i] = getBestMove(state, them, me, them);
+                scorePass = -10;
+                moves[i] = getBestMove(state, them, me, them, &scorePass);
+                moveScores[i] = scorePass;
             } 
             else {
-                moveScores[i] = getBestMove(state, me, me, them);
+                scorePass = 10;
+                moves[i] = getBestMove(state, me, me, them, &scorePass);
+                moveScores[i] = scorePass;
             }
             moves[i] = i;
             state = addTestState(state, i, 0);
@@ -254,23 +259,26 @@ int getBestMove(short int state, char player, char me, char them) {
     // Pick the best move for the current player
     int bestMove = 0;
     if (player == me) {
-        int bestScore = -10;
+        int bestScore = -100;
         for (int i = 0; i < 9; i++) {
             if (moveScores[i] > bestScore && moves[i] != -1738) {
                 bestMove = i;
                 bestScore = moveScores[i];
+                *score = bestScore;
             }
         }
     } 
     else {
-        int bestScore = 10;
+        int bestScore = 100;
         for (int i = 0; i < 9; i++) {
             if (moveScores[i] < bestScore && moves[i] != -1738) {
                 bestMove = i;
                 bestScore = moveScores[i];
+                *score = bestScore;
             }
         }
     }
+     
     // Return the best move
     return bestMove;
 }
