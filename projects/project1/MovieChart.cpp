@@ -163,7 +163,7 @@ void MovieChart::view() {
         while(tempMovies->next()) cout << *tempMovies->get() << endl;
     }
 }
-}
+
 void MovieChart::close() {
     if(current_user == NULL) cout << "Please login before continuing." << endl;
     else {

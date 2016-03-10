@@ -1,4 +1,4 @@
-CC=g++-5
+CC=g++
 CFLAGS=-c -Wall -g -std=c++11
 LDFLAGS=
 SOURCES=MovieChart.cpp program1.cpp
