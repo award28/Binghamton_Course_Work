@@ -1,7 +1,7 @@
 CC=g++-5
-CFLAGS=-c -Wall -g
+CFLAGS=-c -Wall -g -std=c++11
 LDFLAGS=
-SOURCES=
+SOURCES=MovieChart.cpp program1.cpp
 OBJECTS=$(SOURCES:.cpp=.o)
 EXECUTABLE=program1
 

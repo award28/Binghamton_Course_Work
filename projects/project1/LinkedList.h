@@ -1,23 +1,24 @@
 #ifndef LINKEDLIST_H
 #define LINKEDLIST_H
 #include <iostream>
+
 template <class T>
 class Node {
     public:
         T data;
-        Node<T> *next;
+        Node<T> *next = NULL;
 };
+
 template <class T>
 class LinkedList {
     private:
-        Node<T>* head;
-        Node<T>* current;
+        Node<T>* head = NULL;
+        Node<T>* current = NULL;
     public:
         LinkedList() {
             head = NULL;
         }
-        LinkedList(const LinkedList &L) {
-            head = NULL;
+        LinkedList(const LinkedList<T> &L) {
             Node<T> *temp = L.head;
             while(temp != NULL) {
                 insert(temp->data);
@@ -81,6 +82,12 @@ class LinkedList {
             }
             return true;
 
+        }
+        void operator++() {
+            if(current->next != NULL) next();
+        }
+        void operator<<(T data) {
+            insert(data);
         }
 };
 #endif
