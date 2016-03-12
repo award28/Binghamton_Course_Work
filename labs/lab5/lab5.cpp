@@ -17,5 +17,8 @@ int main() {
         Card card = deck2->draw();
         cout << card.getSuit() << " " << card.getValue() << endl;
     }
+
+    delete deck1;
+    delete deck2;
 }
 
