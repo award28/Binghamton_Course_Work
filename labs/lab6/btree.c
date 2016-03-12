@@ -31,7 +31,6 @@ int main(int argc, char **argv) {
       int val=atoi(argv[i]);
       insertVal(root,val);
    }
-   printf("\n");
    printf("In LNR order: ");
    prLNR(root);
    printf("\nIn RNL order: ");
@@ -60,10 +59,10 @@ void freeTree(tree t) {
 void insertVal(tree t, int value) {
 	assert(t);
 
-	if (t->value > value && t->left != NULL) insertVal(t->left, value);
-    else if(t->value >= value && t->left == NULL) {t->left = makeNode(value); printf("L%d ", value); return;}
+	if (t->value >= value && t->left != NULL) insertVal(t->left, value);
+    else if(t->value >= value && t->left == NULL) t->left = makeNode(value);
     else if (t->value < value && t->right != NULL) insertVal(t->right, value);
-    else if(t->value < value && t->right == NULL) {t->right = makeNode(value); printf("R%d ", value); return;}
+    else if(t->value < value && t->right == NULL) t->right = makeNode(value);
 }
 
 void prLNR(tree t) {
@@ -76,6 +75,7 @@ void prLNR(tree t) {
     if(t->left) prLNR(t->left);
     printf("%d ", t->value);
     if(t->right) prRNL(t->right);
+    return;
 }
 
 
@@ -86,9 +86,9 @@ void prRNL(tree t) {
    	- print the value of the node,
    	- prRNL the left sub-tree
    */
-    prLNR(t->right);
+    if(t->right) prLNR(t->right);
     printf("%d ", t->value);
-    prRNL(t->left);
+    if(t->left) prRNL(t->left);
 }
 
 void printTree(tree t, char * prefix) {
