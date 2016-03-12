@@ -1,0 +1,17 @@
+CS-220 Spring 2016 Lab 06 report		Due: Mar 11, 2016
+
+Name: Austin Ward
+
+1. Cut and paste your code for the insertVal function:
+
+2. What order did the values get printed when you invoked prLNR? What about prRNL?
+
+3. The "depth" of a binary tree is the largest number of nodes between the root of the tree
+   and any leaf of the tree.  If you insert "n" values into a binary tree, what is the largest 
+   depth you could have? What must be true about the order of the input values to acheive this depth?
+   
+4. If "n" values are inserted in the tree, what is the smallest possible value for the depth 
+   of the tree?   
+   
+5. If a binary tree has "n" values and a depth of "d", then what is the maximum number of comparisons 
+   required to insert the "n+1"th number into the tree?

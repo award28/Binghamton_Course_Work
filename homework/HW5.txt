@@ -1,0 +1,81 @@
+CS220  Homework 5 Due March 11, 2016
+
+Name:
+
+1. Consider the following C code...
+
+	char * myfn(char * in) {
+		char out[80];
+		int i;
+		for(i=0; in[i]!=0 && i < 80; i++ ) {
+			out[i]=in[i] | 0x20;
+		}
+		return out;
+	}
+	
+    Will this code work without error?  If not, what is the problem?
+     
+2. Assuming full data alignment is enforced, how many bytes are required for the following
+   C structure?
+   
+   struct {
+   	int width;
+   	int height;
+   	int depth;
+   	short shapeID;
+   } shapeA;
+   
+3. Suppose you have a binary tree made up of nodes as follows...
+
+	struct tnode {
+		int value;
+		struct tnode * left;
+		struct tnode * right;
+	}
+	
+    And a program has created a tree in which every left node has a value less than its parent value, and 
+    every right node has a value greater than its parent value.
+    
+    Consider the following code:
+    
+    void prPost(struct tnode *root) {
+    	if (root->right) prPost(root->right);
+    	printf("Value: %d\n",root->value;
+    	if (root->left) prPost(root->left);
+    }
+    
+    What would be true about the order of the values printed by this program?
+    
+4. Are the following statements about Instruction Set Architectures True or False:
+
+	a. ____ Machines that support an ISA provide a hardware interface that implements that ISA
+	
+	b. ____ Any machine that supports x86-32 also supports x86-16.	
+	
+	c. ____ A machine can only support a single family of ISA's, where x and y are in the same family
+		if x is downward compatible with y.
+
+	d. ____ Many different machines support the x86-32 ISA.
+
+	e. ____ An operating system which runs on the x86-32 ISA cannot run on a machine that
+	        does not support the x86-32 ISA
+	        
+5. 	Given the following register and memory values...
+
+		Reg	| Value			Address		| Value
+		--------+-----------	        ----------------+------------
+		eax	| x0000 0003		xCA00 01D4	| xFFFF FFFF
+		ebx	| x0000 004A		xCA00 01D0	| x0000 0000
+		...	| ...			xCA00 01CC	| x0000 0064
+		ebp	| xCA00 01C0		xCA00 01C8	| x0000 00C8
+		esp	| xCA00 01BC		xCA00 01C4	| xB32C 302A
+						xCA00 01C0	| xCA00 0208
+						xCA00 01BC	| x0300 0000
+						
+	What will be in the eax register after the execution of each instruction below...
+	
+	a. 	movl  8(%ebp),%eax
+	
+	b. 	addl  12(%ebp),%eax
+	
+	c. 	shrl  $2,eax	        

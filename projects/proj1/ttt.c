@@ -236,9 +236,8 @@ int getBestMove(short int state, char player, char me, char them, int * score) {
     int scorePass;
     int moves[9];
     int moveScores[9];
-    int i;
     //Recursively call the next moves
-    for (i = 0; i < 9; i++) {
+    for (int i = 0; i < 9; i++) {
         if (getState(state, i) == 0) {
            state = addTestState(state, i, player);
             if (player == me) {
@@ -261,7 +260,7 @@ int getBestMove(short int state, char player, char me, char them, int * score) {
     int bestMove = 0;
     if (player == me) {
         int bestScore = -100;
-        for (i = 0; i < 9; i++) {
+        for (int i = 0; i < 9; i++) {
             if (moveScores[i] > bestScore && moves[i] != -1738) {
                 bestMove = i;
                 bestScore = moveScores[i];
@@ -271,7 +270,7 @@ int getBestMove(short int state, char player, char me, char them, int * score) {
     } 
     else {
         int bestScore = 100;
-        for (i = 0; i < 9; i++) {
+        for (int i = 0; i < 9; i++) {
             if (moveScores[i] < bestScore && moves[i] != -1738) {
                 bestMove = i;
                 bestScore = moveScores[i];
