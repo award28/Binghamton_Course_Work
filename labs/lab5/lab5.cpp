@@ -11,6 +11,7 @@ int main() {
         cout << card.getSuit() << " " << card.getValue() << endl;
     }
 
+    cout << endl;
     deck2->shuffle();
 
     for(int i = 0; i < 52; i++) {
