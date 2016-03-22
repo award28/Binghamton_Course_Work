@@ -1,21 +1,53 @@
 #include <iostream>
+#include <string>
+#include <cassert>
+#include <cstdlib>
 #include "BSTree.hpp"
+using namespace std;
 
-using std::cout;
-using std::cin;
-using std::endl;
+int main(){
 
-int main() {
-    BSTree *tree1 = new BSTree();
-    cout << "Tree is empty: " << tree1->empty() << endl;
-    cout << "Inserting 5: " << tree1->insert(5) << endl;
-    cout << "Inserting 10: " << tree1->insert(10) << endl;
-    cout << "Inserting 8: " << tree1->insert(8) << endl;
-    cout << "Inserting 7: " << tree1->insert(7) << endl;
-    cout << "Inserting 9: " << tree1->insert(9) << endl;
-    cout << "Inserting 11: " << tree1->insert(11) << endl;
-    cout << "Find 5: " << tree1->find(5) << endl;
-    cout << "Find 1: " << tree1->find(12) << endl;
-    cout << "Find 12: " << tree1->find(12) << endl;
+  cout << "Test #1: Create an empty tree" << endl;
+	BSTree tree;
+	assert(tree.empty());
+	cout << "\tPASS" << endl;
 
+  cout << "Test #2: Insert values into the Tree" << endl;
+	int array[] = {5,3,8,2,1,7,9,6};
+	for(int i = 0; i < 8; i++){
+		tree.insert(array[i]);
+    assert(!tree.empty());
+	}
+	cout << "\tPASS" << endl;
+
+  cout << "Test #3: Cannot insert duplicate values into the Tree" << endl;
+	for(int i = 0; i < 8; i++){
+		assert(!tree.insert(array[i]));
+	}
+	cout << "\tPASS" << endl;
+
+
+  cout << "Test #4: Insert 1000 Values into the Tree" << endl;
+	BSTree tree2;
+	for(int i = 0; i < 1000; i++){
+		int value = rand() % 10000; 
+		tree2.insert(value);
+	}
+  cout << "\tPASS" << endl;
+
+  cout << "Test #5: Find values in the tree" << endl;
+	for(int i = 1; i <= 9; i++){
+		if(i != 4)
+			assert(tree.find(i));
+		else
+			assert(!tree.find(i));
+	}
+	cout << "\tPASS" << endl;
+
+  cout << "Test #6: Find doesn't segfault on empty tree" << endl;
+	BSTree tree3;
+	assert(!tree3.find(1));
+	cout << "\tPASS" << endl;
+
+	return 0;
 }
