@@ -15,11 +15,13 @@ bool BSTree::insert(int val, BSTree::Node *current) {
 
     if(val > current->data && current->right == NULL) {
         current->right = new BSTree::Node::Node(val);
+        current->right->parent = current;
         retVal = true;
     }
     else if(val > current->data) retVal = insert(val, current->right);
     else if(val < current->data && current->left == NULL) {
         current->left = new BSTree::Node::Node(val);
+        current->left->parent = current;
         retVal = true;
     }
     else if(val < current->data) retVal = insert(val, current->left);

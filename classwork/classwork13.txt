@@ -1,0 +1,31 @@
+CW13 Part2:
+
+       9      
+    8
+       6   
+           7 
+5
+       4
+    3
+       2
+           1
+
+
+find( Node[7], 7)
+find( Node[6], 7)
+find( Node[8], 7)
+find( Node[5], 7)
+
+CW13 Part3:
+
+Node *findMax(Node *n->left) {
+	if(n->right == NULL) return n;
+else return findMax(n->right);
+}	
+
+Node *findMin(Node *n) {
+	while(n->left != NULL) n = n->left;
+	return n;
+}
+
+Recursive is the better solutiion, as it's a more elegant design and easier to understand.
