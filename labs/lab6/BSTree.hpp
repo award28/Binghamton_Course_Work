@@ -16,7 +16,7 @@ class BSTree {
     public:
         BSTree(){ this->root = NULL; }
         bool empty(){ bool retVal; (this->root) ? retVal = false: retVal = true; return retVal; }
-        bool insert(int va);
+        bool insert(int val);
         bool insert(int val, Node *current);
         bool find(int val);
         bool find(int val, Node *current); 
