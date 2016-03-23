@@ -9,11 +9,12 @@ int findLowest(int one, int two, int three, int four);
 
 int main(int argc, char ** argv) {
 
-	int bin;
+    int bin;
     int bins[100] = { 0 };
     int curBins[4] = { -1, -1, -1, -1 };
     int slotToInsert = 0;
     int lowestNum = 0;
+    int i;
     bool inserted;
     bool replaced;
 
@@ -27,7 +28,7 @@ int main(int argc, char ** argv) {
         if (-1==findSlot(bin)) {
             
             //Check if there's an open slot
-            for(int i = 0; i < 4 && !inserted; i++ ) {
+            for(i = 0; i < 4 && !inserted; i++ ) {
                 if(curBins[i] == -1) { 
                     curBins[i] = bin;
                     slotToInsert = i;
@@ -37,7 +38,7 @@ int main(int argc, char ** argv) {
             //If not, check which bin's been used the least
             if(!inserted) {
                 lowestNum = findLowest(bins[curBins[0]], bins[curBins[1]], bins[curBins[2]], bins[curBins[3]]);
-                for(int i = 0; i < 4 && !replaced; i++) {
+                for(i = 0; i < 4 && !replaced; i++) {
                     if(lowestNum == bins[curBins[i]]) {
                         slotToInsert = i;
                         replaced = true;
@@ -54,9 +55,10 @@ int main(int argc, char ** argv) {
 }
 
 int findLowest(int one, int two, int three, int four) {
+   int i;
    int smallest = one;
    int choices[4] = { one, two, three, four };
-   for(int i = 0; i < 4; i++) if(smallest > choices[i]) smallest = choices[i];
+   for(i = 0; i < 4; i++) if(smallest > choices[i]) smallest = choices[i];
    return smallest;
 }
 
