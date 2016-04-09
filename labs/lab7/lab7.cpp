@@ -13,41 +13,17 @@ int main(){
 	cout << "\tPASS" << endl;
 
   cout << "Test #2: Insert values into the Tree" << endl;
-	int array[] = {5,3,8,2,1,7,9,6};
-	for(int i = 0; i < 8; i++){
+	int array[] = {500, 300, 700, 200, 400, 600, 800, 550, 650, 900, 530, 580, 670, 560, 595, 590, 585, 593};
+	for(int i = 0; i < 19; i++){
 		tree.insert(array[i]);
     assert(!tree.empty());
 	}
 	cout << "\tPASS" << endl;
 
-  cout << "Test #3: Cannot insert duplicate values into the Tree" << endl;
-	for(int i = 0; i < 8; i++){
-		assert(!tree.insert(array[i]));
-	}
-	cout << "\tPASS" << endl;
-
-
-  cout << "Test #4: Insert 1000 Values into the Tree" << endl;
-	BSTree tree2;
-	for(int i = 0; i < 1000; i++){
-		int value = rand() % 10000; 
-		tree2.insert(value);
-	}
-  cout << "\tPASS" << endl;
-
-  cout << "Test #5: Find values in the tree" << endl;
-	for(int i = 1; i <= 9; i++){
-		if(i != 4)
-			assert(tree.find(i));
-		else
-			assert(!tree.find(i));
-	}
-	cout << "\tPASS" << endl;
-
-  cout << "Test #6: Find doesn't segfault on empty tree" << endl;
-	BSTree tree3;
-	assert(!tree3.find(1));
-	cout << "\tPASS" << endl;
-
+    cout << "Test #3: Delete a node" << endl;
+    cout << "Delete 600: " << tree.remove(600) << endl;
+    cout << "Find 600: " << tree.find(600) << endl;
+    cout << "Find 593: " << tree.find(593) << endl;
+    cout << "\tPASS" << endl;
 	return 0;
 }

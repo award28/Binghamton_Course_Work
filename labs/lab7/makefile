@@ -3,7 +3,7 @@ CFLAGS=-c -Wall -g -std=c++11
 LDFLAGS=
 SOURCES=BSTree.cpp lab7.cpp
 OBJECTS=$(SOURCES:.cpp=.o)
-EXECUTABLE=lab6
+EXECUTABLE=lab7
 
 all: $(SOURCES) $(EXECUTABLE)
 
