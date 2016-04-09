@@ -25,5 +25,12 @@ int main(){
     cout << "Find 600: " << tree.find(600) << endl;
     cout << "Find 593: " << tree.find(593) << endl;
     cout << "\tPASS" << endl;
-	return 0;
+	
+    cout << "Test #4: making a list inOrder" << endl;
+    std::vector<int> list;
+    tree.sortedArray(list);
+    for (auto i = list.begin(); i != list.end(); i++)
+        cout << *i << ' ';
+    cout << endl << "\tPASS" << endl;
+    return 0;
 }

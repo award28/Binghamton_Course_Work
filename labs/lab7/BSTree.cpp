@@ -49,7 +49,6 @@ bool BSTree::find(int val, BSTree::Node *current) {
     bool retVal = false;
 
     if(current == NULL) return false; 
-    std::cout << current->data << " " << std::endl;
     if(val > current->data) retVal = find(val, current->right);
     else if(val < current->data) retVal = find(val, current->left);
     else if(val == current->data) retVal = true;
@@ -57,7 +56,7 @@ bool BSTree::find(int val, BSTree::Node *current) {
 }
 
 void BSTree::sortedArray(vector<int> &list) {
-
+    inOrder(this->root, list);
 }
 
 bool BSTree::remove(int num) {
@@ -90,4 +89,12 @@ void BSTree::shortCircuit(BSTree::Node *temp) {
 }
 void BSTree::removeLeaf(BSTree::Node *temp) {
 	temp = NULL;
+}
+
+void BSTree::inOrder(BSTree::Node *n, vector<int> &list) {
+    if(n != NULL) {
+        inOrder(n->left, list);
+        list.push_back(n->data);
+        inOrder(n->right, list);
+    }
 }

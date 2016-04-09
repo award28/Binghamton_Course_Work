@@ -29,5 +29,6 @@ class BSTree {
         void promotion(Node *n);
         void shortCircuit(Node *temp);
         void removeLeaf(Node *temp);
+        void inOrder(Node *n, std::vector<int> &list);
 };
 #endif
