@@ -30,5 +30,7 @@ class BSTree {
         void shortCircuit(Node *temp);
         void removeLeaf(Node *temp);
         void inOrder(Node *n, std::vector<int> &list);
+        void postOrder(Node *n);
+        void preOrder(Node *newT, Node *oldT);
 };
 #endif
