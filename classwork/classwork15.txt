@@ -1,0 +1,41 @@
+Part 1:
+          10
+   9
+          8
+7
+       4
+   3
+       2
+
+7 | 3 | 4 | 2 | 9 | 8 | 10
+
+         10
+    4
+          8
+7
+        9
+    3
+        2
+___________________
+         4
+    8
+         7
+10
+        3
+    9
+       2
+
+10 | 9 | 8 | 2 | 3 | 7 | 4
+
+Part 2: 
+
+Remove Root
+Draw a balanced BST with four levels and exactly 10 nodes, each of which contains a different multiple of 10 less than or equal to 100.
+Perform the max-heapify algorithm on your tree (convert your tree to a heap). Is your tree complete? If not, make it a complete tree first, then heapify.
+Show the heap (tree) you will have after removing the root element of the tree.
+
+                5
+         3              7
+     2       4       6      9
+  1                     8       10
+
