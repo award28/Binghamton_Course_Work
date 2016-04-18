@@ -166,7 +166,3 @@ int main(){
 	
 	return 0;
 }
-program2.cpp
-Open with
-Austin Ward 
-(ward.austin28@gmail.com)Displaying program2.cpp.

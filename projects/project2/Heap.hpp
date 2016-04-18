@@ -2,7 +2,7 @@
 #define HEAP_HPP
 class Heap {
     public:
-        Heap(string fileName);
+        Heap(std::string fileName);
         Heap(const Heap& copy);
         void addPlayer(Player newPlayer);
         Player getPlayer();

@@ -1,9 +1,9 @@
 CC=g++
 CFLAGS=-c -Wall -g -std=c++11
 LDFLAGS=
-SOURCES=BSTree.cpp lab7.cpp
+SOURCES= Deck.cpp Heap.cpp Player.cpp Table.cpp program2.cpp
 OBJECTS=$(SOURCES:.cpp=.o)
-EXECUTABLE=lab7
+EXECUTABLE=program2
 
 all: $(SOURCES) $(EXECUTABLE)
 
