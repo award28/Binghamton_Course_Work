@@ -1,7 +1,11 @@
 #ifndef PLAYER_HPP
 #define PLAYER_HPP
+#include "Card.hpp"
 
 class Player {
+    private:
+        std::string name;
+        int budget;
     public:
         Card hand;
         Player(std::string name, int budget);

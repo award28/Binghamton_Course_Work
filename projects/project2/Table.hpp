@@ -1,5 +1,8 @@
 #ifndef TABLE_HPP
 #define TABLE_HPP
+#include "Player.hpp"
+#include <vector>
+
 class Table {
     public:
         Table(int num_seats, int ante);
