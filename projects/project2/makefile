@@ -1,7 +1,7 @@
 CC=g++
 CFLAGS=-c -Wall -g -std=c++11
 LDFLAGS=
-SOURCES= Deck.cpp Heap.cpp Player.cpp Table.cpp program2.cpp
+SOURCES= Heap.cpp Player.cpp program2.cpp
 OBJECTS=$(SOURCES:.cpp=.o)
 EXECUTABLE=program2
 

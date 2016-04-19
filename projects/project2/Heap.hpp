@@ -4,6 +4,8 @@
 #include <vector>
 
 class Heap {
+    private:
+        std::vector<Player> players;
     public:
         Heap(std::string fileName);
         Heap(const Heap& copy);

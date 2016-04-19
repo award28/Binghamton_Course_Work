@@ -22,5 +22,5 @@ bool Player::bet(int amount) {
 }
 
 void Player::collectWinnings(int amount) {
-    this->budget+= amount;
+    this->budget += amount;
 }

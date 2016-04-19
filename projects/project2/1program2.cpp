@@ -49,8 +49,7 @@ int main(){
 	Heap tourney("players.txt");
 	assert(isHeap(tourney.getArray(), 0));
 	assert(tourney.size() == 17);
-    
-    cerr << "\n\t========================PASS========================\n" << endl;
+	cerr << "\n\t========================PASS========================\n" << endl;
 
 	cerr << "\n\tTEST #2: Players stored in correct order when removed from the heap" << endl;
 
@@ -94,6 +93,8 @@ int main(){
 	cerr << "\n\tTEST #3: Heap is empty" << endl;
 	assert(tourney.empty());
 	cerr << "\n\t========================PASS========================\n" << endl;
+
+/*
 	cerr << "\n\tTEST #4: Can add individual players to the heap" << endl;
 	Heap heap_test("players.txt");
 	while(!heap_test.empty()){
@@ -102,7 +103,6 @@ int main(){
 	assert(verifyHeap(tourney));
 	assert(isHeap(tourney.getArray(), 0));
 	cerr << "\n\t========================PASS========================\n" << endl;
-/*
 
 	cerr << "\n\tTEST #5: Play 1 round of highcard" << endl;
 	int ante = 5;

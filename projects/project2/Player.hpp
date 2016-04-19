@@ -1,13 +1,12 @@
 #ifndef PLAYER_HPP
 #define PLAYER_HPP
-#include "Card.hpp"
 
 class Player {
     private:
         std::string name;
         int budget;
     public:
-        Card hand;
+//        Card hand;
         Player(std::string name, int budget);
         std::string getName();
         int getBudget();
