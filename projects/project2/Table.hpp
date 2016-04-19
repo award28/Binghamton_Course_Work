@@ -1,9 +1,18 @@
 #ifndef TABLE_HPP
 #define TABLE_HPP
 #include "Player.hpp"
+#include "Deck.hpp"
 #include <vector>
 
 class Table {
+    private:
+        int numSeats;
+        int numEmptySeats;
+        int ante;
+        Player *winner;
+        Deck *deck;
+        std::vector<Player> curPlayers;
+        std::vector<Player> losers;
     public:
         Table(int num_seats, int ante);
         bool emptySeat();

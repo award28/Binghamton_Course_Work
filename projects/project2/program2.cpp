@@ -6,11 +6,11 @@
 #include <ctime>
 #include <cstdlib>
 #include <climits> 
-//#include "Deck.hpp"
-//#include "Card.hpp"
+#include "Deck.hpp"
+#include "Card.hpp"
 #include "Player.hpp"
 #include "Heap.hpp"
-//#include "Table.hpp"
+#include "Table.hpp"
 using namespace std;
 
 bool verifyHeap(Heap heap){
@@ -102,18 +102,17 @@ int main(){
 	assert(verifyHeap(tourney));
 	assert(isHeap(tourney.getArray(), 0));
 	cerr << "\n\t========================PASS========================\n" << endl;
-/*
 
 	cerr << "\n\tTEST #5: Play 1 round of highcard" << endl;
 	int ante = 5;
 	Table highcardTable(5, ante);
 	while(highcardTable.emptySeat()){
 		highcardTable.addPlayer(tourney.getPlayer());
-	}
+    }
 	assert(verifyHeap(tourney));
 	assert(isHeap(tourney.getArray(), 0));
-	vector<Player> losers = highcardTable.playRound();
-	for(auto p: losers)
+    vector<Player> losers = highcardTable.playRound();
+    for(auto p: losers)
 		tourney.addPlayer(p);
 	assert(verifyHeap(tourney));
 	assert(isHeap(tourney.getArray(), 0));
@@ -140,6 +139,7 @@ int main(){
 
 	cerr << "\n\t========================PASS========================\n" << endl;
 
+    /*
 	Heap tourney2("players2.txt");
 	Table highcardTable2(5, ante);
 	cerr << "\n\tTEST #7: Play highcard tournament with equal starting budgets" << endl;
