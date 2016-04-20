@@ -28,7 +28,13 @@ vector<Player> Table::playRound() {
     
     best = winner.hand;
     for(auto it = this->curPlayers.begin(); it != this->curPlayers.end(); ++it) {
-        if(best.worth < it->hand.worth) {
+        if(best.getValue() == it->hand.getValue()) {
+            if(best.worth < it->hand.worth) {
+                winner = *it;
+                best = it->hand;
+            }
+        }
+        else if(best.getValue() < it->hand.getValue()) {
             winner = *it;
             best = it->hand;
         }
@@ -53,8 +59,8 @@ void Table::addPlayer(Player p) {
 
 void Table::printWinner() {
     if(this->winner != NULL) {
-        std::cout << "The winner is " << this->winner->getName() << " with a budget of " 
-            << this->winner->getBudget() << "." << std::endl;
+        std::cerr << "\n\tWinner: " << this->winner->getName() << std::endl;
+        std::cerr << "\tWinnings: " << this->winner->getBudget() << std::endl;
     }
-   else std::cout << "You haven't started" << std::endl;
+   else std::cerr << "You haven't started" << std::endl;
 }

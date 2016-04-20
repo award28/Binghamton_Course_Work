@@ -11,6 +11,11 @@
 #include "Player.hpp"
 #include "Heap.hpp"
 #include "Table.hpp"
+#include "Deck.hpp"
+#include "Card.hpp"
+#include "Player.hpp"
+#include "Heap.hpp"
+#include "Table.hpp"
 using namespace std;
 
 bool verifyHeap(Heap heap){
@@ -49,8 +54,7 @@ int main(){
 	Heap tourney("players.txt");
 	assert(isHeap(tourney.getArray(), 0));
 	assert(tourney.size() == 17);
-    
-    cerr << "\n\t========================PASS========================\n" << endl;
+	cerr << "\n\t========================PASS========================\n" << endl;
 
 	cerr << "\n\tTEST #2: Players stored in correct order when removed from the heap" << endl;
 
@@ -94,6 +98,8 @@ int main(){
 	cerr << "\n\tTEST #3: Heap is empty" << endl;
 	assert(tourney.empty());
 	cerr << "\n\t========================PASS========================\n" << endl;
+
+
 	cerr << "\n\tTEST #4: Can add individual players to the heap" << endl;
 	Heap heap_test("players.txt");
 	while(!heap_test.empty()){
@@ -108,11 +114,11 @@ int main(){
 	Table highcardTable(5, ante);
 	while(highcardTable.emptySeat()){
 		highcardTable.addPlayer(tourney.getPlayer());
-    }
+	}
 	assert(verifyHeap(tourney));
 	assert(isHeap(tourney.getArray(), 0));
-    vector<Player> losers = highcardTable.playRound();
-    for(auto p: losers)
+	vector<Player> losers = highcardTable.playRound();
+	for(auto p: losers)
 		tourney.addPlayer(p);
 	assert(verifyHeap(tourney));
 	assert(isHeap(tourney.getArray(), 0));
@@ -146,21 +152,82 @@ int main(){
 		while(!tourney2.empty() && highcardTable2.emptySeat()){
 			highcardTable2.addPlayer(tourney2.getPlayer());
 		}
-		assert(verifyHeap(tourney));
-		assert(isHeap(tourney.getArray(), 0));
+		assert(verifyHeap(tourney2));
+		assert(isHeap(tourney2.getArray(), 0));
 		vector<Player> loser = highcardTable2.playRound();
 		for(auto p: loser){
 			if(p.getBudget() > ante){
 				tourney2.addPlayer(p);
 			}
 		}
-		assert(verifyHeap(tourney));
-		assert(isHeap(tourney.getArray(), 0));
+		assert(verifyHeap(tourney2));
+		assert(isHeap(tourney2.getArray(), 0));
 	}
 	highcardTable2.printWinner();
 	cerr << "\n\t========================PASS========================\n" << endl;
 
-	//####################Your Tests#####################//
-	//cerr << "\n\tTEST #8: Two tests of your own" << endl;
+	cerr << "\n\tTEST #8: Check heap copy constructor" << endl;
+	Heap test8("players.txt");
+    Heap test8copy(test8);
+    p = test8.getPlayer();
+    Player cp = test8copy.getPlayer();
+	assert(p.getBudget()==cp.getBudget());
+    p = test8.getPlayer();
+    cp = test8copy.getPlayer();
+	assert(p.getBudget()==cp.getBudget());
+    p = test8.getPlayer();
+    cp = test8copy.getPlayer();
+	assert(p.getBudget()==cp.getBudget());
+    p = test8.getPlayer();
+    cp = test8copy.getPlayer();
+	assert(p.getBudget()==cp.getBudget());
+    p = test8.getPlayer();
+    cp = test8copy.getPlayer();
+	assert(p.getBudget()==cp.getBudget());
+    p = test8.getPlayer();
+    cp = test8copy.getPlayer();
+	assert(p.getBudget()==cp.getBudget());
+    p = test8.getPlayer();
+    cp = test8copy.getPlayer();
+	assert(p.getBudget()==cp.getBudget());
+    p = test8.getPlayer();
+    cp = test8copy.getPlayer();
+	assert(p.getBudget()==cp.getBudget());
+    p = test8.getPlayer();
+    cp = test8copy.getPlayer();
+	assert(p.getBudget()==cp.getBudget());
+    p = test8.getPlayer();
+    cp = test8copy.getPlayer();
+	assert(p.getBudget()==cp.getBudget());
+    p = test8.getPlayer();
+    cp = test8copy.getPlayer();
+	assert(p.getBudget()==cp.getBudget());
+    p = test8.getPlayer();
+    cp = test8copy.getPlayer();
+	assert(p.getBudget()==cp.getBudget());
+    p = test8.getPlayer();
+    cp = test8copy.getPlayer();
+	assert(p.getBudget()==cp.getBudget());
+    p = test8.getPlayer();
+    cp = test8copy.getPlayer();
+	assert(p.getBudget()==cp.getBudget());
+    p = test8.getPlayer();
+    cp = test8copy.getPlayer();
+	assert(p.getBudget()==cp.getBudget());
+    p = test8.getPlayer();
+    cp = test8copy.getPlayer();
+	assert(p.getBudget()==cp.getBudget());
+    p = test8.getPlayer();
+    cp = test8copy.getPlayer();
+	assert(p.getBudget()==cp.getBudget());
+
+	cerr << "\n\t========================PASS========================\n" << endl;
+
+	cerr << "\n\tTEST #9: Call getPlayer when non exist" << endl;
+	assert(test8.empty());
+	test8.getPlayer();
+    assert(test8.empty());
+	cerr << "\n\t========================PASS========================\n" << endl;
+
 	return 0;
 }

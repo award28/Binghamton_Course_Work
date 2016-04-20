@@ -57,9 +57,15 @@ bool inserted = false;
 }
 
 Player Heap::getPlayer() {
-    Player retVal = this->players.front();
-    this->players.erase(this->players.begin());
-    return retVal;
+    if(!empty()) {
+        Player retVal = this->players.front();
+        this->players.erase(this->players.begin());
+        return retVal;
+    }
+    else { 
+        Player retVal("", 0);
+        return retVal;
+    }
 }
 
 vector<Player> Heap::getArray() {
