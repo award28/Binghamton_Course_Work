@@ -3,7 +3,6 @@
 #include <algorithm>
 #include <cstdlib>
 #include "Deck.hpp"
-using namespace std::chrono;
 
 int myrandom (int i) { return std::rand()%i;}
 
