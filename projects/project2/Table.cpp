@@ -12,31 +12,38 @@ Table::Table(int numSeats, int ante) {
 }
 
 bool Table::emptySeat() {
-    if(!this->numEmptySeats) return false;
+    if(this->numEmptySeats <= 0) return false;
     return true;
 }
 
 vector<Player> Table::playRound() {
     Card best;
-    this->winner = &this->curPlayers.front();
-    
+    Player winner = this->curPlayers.front();
+    int numOfPlayers = this->numSeats - this->numEmptySeats;
+    this->deck = new Deck();
+    std::vector<Player> losers;
     this->deck->shuffle();
     for(auto it = this->curPlayers.begin(); it != this->curPlayers.end(); ++it) it->bet(this->ante);
-    for(auto it = this->curPlayers.begin(); it != this->curPlayers.end(); ++it) {
-       it->hand = this->deck->draw();
-    }
-    best = this->winner->hand;
+    for(auto it = this->curPlayers.begin(); it != this->curPlayers.end(); ++it) it->hand = this->deck->draw();
+    
+    best = winner.hand;
     for(auto it = this->curPlayers.begin(); it != this->curPlayers.end(); ++it) {
         if(best.worth < it->hand.worth) {
-            this->winner = &*it;
+            winner = *it;
             best = it->hand;
         }
     }
-    for(auto it = this->curPlayers.begin(); it != this->curPlayers.end(); ++it) {
-        if(&*it != this->winner) this->losers.push_back(*it); 
+    for(auto it = this->curPlayers.begin(); it != this->curPlayers.end();) {
+        if(it->getName() != winner.getName()) {
+            losers.push_back(*it);
+            this->curPlayers.erase(it);
+            this->numEmptySeats++;
+        }    
+        else ++it;
     }
-    
-    return this->losers;
+    this->curPlayers.front().collectWinnings(this->ante*numOfPlayers);
+    this->winner = &this->curPlayers.front();
+    return losers;
 }
 
 void Table::addPlayer(Player p) {

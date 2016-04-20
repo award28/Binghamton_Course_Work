@@ -1,8 +1,11 @@
 #include <iostream>
 #include <deque>
 #include <algorithm>
+#include <cstdlib>
 #include "Deck.hpp"
-using namespace std;
+using namespace std::chrono;
+
+int myrandom (int i) { return std::rand()%i;}
 
 Deck::Deck() {
     for(int i = 1; i < 14; i++) {
@@ -13,7 +16,8 @@ Deck::Deck() {
 }
 
 void Deck::shuffle() {
-    std::random_shuffle(this->deck.begin(), this->deck.end());
+    
+    std::random_shuffle(this->deck.begin(), this->deck.end(), myrandom);
 }
 
 Card Deck::draw() {

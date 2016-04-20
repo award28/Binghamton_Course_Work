@@ -139,7 +139,6 @@ int main(){
 
 	cerr << "\n\t========================PASS========================\n" << endl;
 
-    /*
 	Heap tourney2("players2.txt");
 	Table highcardTable2(5, ante);
 	cerr << "\n\tTEST #7: Play highcard tournament with equal starting budgets" << endl;
@@ -163,6 +162,5 @@ int main(){
 
 	//####################Your Tests#####################//
 	//cerr << "\n\tTEST #8: Two tests of your own" << endl;
-*/	
 	return 0;
 }

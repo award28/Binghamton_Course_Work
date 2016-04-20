@@ -12,7 +12,6 @@ class Table {
         Player *winner;
         Deck *deck;
         std::vector<Player> curPlayers;
-        std::vector<Player> losers;
     public:
         Table(int num_seats, int ante);
         bool emptySeat();
