@@ -1,0 +1,211 @@
+CS220 Homework 8 Due Apr 18, 2016
+
+Name: Austin Ward
+
+For this weeks homework, you have been given C code for three functions from project 2, 
+as well as the X86 code created by the C compiler for these functions, as follows:
+
+C code for the "main" function...
+
+	int main(int argc, char ** argv) {
+		int bin;
+		initSlots();
+		while(1==scanf("%d",&bin)) {
+			if (-1==findSlot(bin)) {
+				getBin(bin,0);
+			}
+			getWidget(bin);
+		}
+		printEarnings();
+		return 0;
+	}
+	
+X86 code for the "main" function...	
+
+	080484dc <main>:
+	 80484dc:	55                   	push   %ebp
+	 80484dd:	89 e5                	mov    %esp,%ebp
+	 80484df:	83 e4 f0             	and    $0xfffffff0,%esp
+	 80484e2:	83 ec 20             	sub    $0x20,%esp
+	 80484e5:	e8 5a 00 00 00       	call   8048544 <initSlots>
+	 80484ea:	eb 31                	jmp    804851d <main+0x41>
+	 80484ec:	8b 44 24 1c          	mov    0x1c(%esp),%eax
+	 80484f0:	89 04 24             	mov    %eax,(%esp)
+	 80484f3:	e8 30 01 00 00       	call   8048628 <findSlot>
+	 80484f8:	83 f8 ff             	cmp    $0xffffffff,%eax
+	 80484fb:	75 14                	jne    8048511 <main+0x35>
+	 80484fd:	8b 44 24 1c          	mov    0x1c(%esp),%eax
+	 8048501:	c7 44 24 04 00 00 00 	movl   $0x0,0x4(%esp)
+	 8048508:	00 
+	 8048509:	89 04 24             	mov    %eax,(%esp)
+	 804850c:	e8 5c 00 00 00       	call   804856d <getBin>
+	 8048511:	8b 44 24 1c          	mov    0x1c(%esp),%eax
+	 8048515:	89 04 24             	mov    %eax,(%esp)
+	 8048518:	e8 3f 01 00 00       	call   804865c <getWidget>
+	 804851d:	8d 44 24 1c          	lea    0x1c(%esp),%eax
+	 8048521:	89 44 24 04          	mov    %eax,0x4(%esp)
+	 8048525:	c7 04 24 b0 87 04 08 	movl   $0x80487b0,(%esp)
+	 804852c:	e8 9f fe ff ff       	call   80483d0 <__isoc99_scanf@plt>
+	 8048531:	83 f8 01             	cmp    $0x1,%eax
+	 8048534:	74 b6                	je     80484ec <main+0x10>
+	 8048536:	e8 98 01 00 00       	call   80486d3 <printEarnings>
+	 804853b:	b8 00 00 00 00       	mov    $0x0,%eax
+	 8048540:	c9                   	leave  
+	 8048541:	c3                   	ret 
+	 
+C code for the getWidget function	 
+ 
+	 void getWidget(int bin) {
+		int slot=findSlot(bin);
+		assert(slot>=0);
+		assert(slot<NUMSLOTS);
+		packed++;
+	}
+	
+X86 code for the getWidget function	
+
+	 0804865c <getWidget>:
+	  804865c:	55                   	push   %ebp
+	  804865d:	89 e5                	mov    %esp,%ebp
+	  804865f:	83 ec 28             	sub    $0x28,%esp
+	  8048662:	8b 45 08             	mov    0x8(%ebp),%eax
+	  8048665:	89 04 24             	mov    %eax,(%esp)
+	  8048668:	e8 bb ff ff ff       	call   8048628 <findSlot>
+	  804866d:	89 45 f4             	mov    %eax,-0xc(%ebp)
+	  8048670:	83 7d f4 00          	cmpl   $0x0,-0xc(%ebp)
+	  8048674:	79 24                	jns    804869a <getWidget+0x3e>
+	  8048676:	c7 44 24 0c 1e 88 04 	movl   $0x804881e,0xc(%esp)
+	  804867d:	08 
+	  804867e:	c7 44 24 08 23 00 00 	movl   $0x23,0x8(%esp)
+	  8048685:	00 
+	  8048686:	c7 44 24 04 b8 87 04 	movl   $0x80487b8,0x4(%esp)
+	  804868d:	08 
+	  804868e:	c7 04 24 d4 87 04 08 	movl   $0x80487d4,(%esp)
+	  8048695:	e8 46 fd ff ff       	call   80483e0 <__assert_fail@plt>
+	  804869a:	83 7d f4 03          	cmpl   $0x3,-0xc(%ebp)
+	  804869e:	7e 24                	jle    80486c4 <getWidget+0x68>
+	  80486a0:	c7 44 24 0c 1e 88 04 	movl   $0x804881e,0xc(%esp)
+	  80486a7:	08 
+	  80486a8:	c7 44 24 08 24 00 00 	movl   $0x24,0x8(%esp)
+	  80486af:	00 
+	  80486b0:	c7 44 24 04 b8 87 04 	movl   $0x80487b8,0x4(%esp)
+	  80486b7:	08 
+	  80486b8:	c7 04 24 c0 87 04 08 	movl   $0x80487c0,(%esp)
+	  80486bf:	e8 1c fd ff ff       	call   80483e0 <__assert_fail@plt>
+	  80486c4:	a1 b8 9a 04 08       	mov    0x8049ab8,%eax
+	  80486c9:	83 c0 01             	add    $0x1,%eax
+	  80486cc:	a3 b8 9a 04 08       	mov    %eax,0x8049ab8
+	  80486d1:	c9                   	leave  
+	 80486d2:	c3                   	ret
+	 
+C code for the findSlot function	 
+
+	 int findSlot(int bin) {
+		int i;
+		for(i=0;i<NUMSLOTS; i++)  if (slots[i]==bin) return i;
+		return -1;
+	}
+	
+X86 code for the findSlot function	
+
+	 08048628 <findSlot>:
+	  8048628:	55                   	push   %ebp
+	  8048629:	89 e5                	mov    %esp,%ebp
+	  804862b:	83 ec 10             	sub    $0x10,%esp
+	  804862e:	c7 45 fc 00 00 00 00 	movl   $0x0,-0x4(%ebp)
+	  8048635:	eb 18                	jmp    804864f <findSlot+0x27>
+	  8048637:	8b 45 fc             	mov    -0x4(%ebp),%eax
+	  804863a:	8b 04 85 bc 9a 04 08 	mov    0x8049abc(,%eax,4),%eax
+	  8048641:	3b 45 08             	cmp    0x8(%ebp),%eax
+	  8048644:	75 05                	jne    804864b <findSlot+0x23>
+	  8048646:	8b 45 fc             	mov    -0x4(%ebp),%eax
+	  8048649:	eb 0f                	jmp    804865a <findSlot+0x32>
+	  804864b:	83 45 fc 01          	addl   $0x1,-0x4(%ebp)
+	  804864f:	83 7d fc 03          	cmpl   $0x3,-0x4(%ebp)
+	  8048653:	7e e2                	jle    8048637 <findSlot+0xf>
+	  8048655:	b8 ff ff ff ff       	mov    $0xffffffff,%eax
+	  804865a:	c9                   	leave  
+	 804865b:	c3                   	ret
+	 
+You have also been provided with a partial dump of memory captured during the
+execution of the code above, as follows:
+
+	Address		Value
+	-----------	----------
+	...
+	0xffffdb00: 	0x00000001      
+	0xffffdafc: 	0x080482b5      
+	0xffffdaf8:     0xf7ffcff4      
+	0xffffdaf4:	0xffffffff
+	0xffffdaf0: 	0xf7ff47f1      
+	0xffffdaec: 	0xf7fdc860      
+	0xffffdae8:     0xffffdb8c      
+	0xffffdae4:	0xffffdb84
+	0xffffdae0: 	0x00000001      
+	0xffffdadc:	0xf7e5ae46      
+	0xffffdad8:     0xffffdb58    
+	0xffffdad4:	0x00000000
+	0xffffdad0:	0x08048730      
+	0xffffdacc:	0x0000000a      
+	0xffffdac8:     0x0804873b      
+	0xffffdac4:	0xf7fee560
+	0xffffdac0:	0xf7e73575      
+	0xffffdabc:	0xffffdad8      
+	0xffffdab8:     0xffffdb8c      
+	0xffffdab4:	0x00000000
+	0xffffdab0:	0x0000000a    
+	0xffffdaac:	0x0804851d    
+	0xffffdaa8:     0xffffdad8   
+	0xffffdaa4:	0x00000004
+	0xffffdaa0:	0x00000000      
+	0xffffda9c:	0x00000004      
+	0xffffda98:     0xf7e438d0      
+	0xffffda94:	0x00000000
+	0xffffda90:	0xffffdab4      
+	0xffffda8c:	0x080487b0      
+	0xffffda88:     0xf7fa8440      
+	0xffffda84:	0xffffffff
+	0xffffda80:	0x0000000a     
+	0xffffda7c:	0x0804866d     
+	0xffffda78:     0xffffdaa8   // ebp
+	0xffffda74:	0x00000000
+	0xffffda70:	0x00000000      
+	0xffffda6c:	0xf7fa7ff4      
+	0xffffda68:     0xf7e438d0    // esp
+	...
+
+Finally, here are the values of three important registers...
+
+ebp = 0xffffda78
+esp = 0xffffda68
+eip = 0x0804862e   // next instruction address 
+
+Answer the following questions using the data from above...
+
+1. What function is currently executing?  How can you tell what function is executing?
+    Based on the eip, esp, and ebp values, there are x10 open space.
+    In the findslot function, subl esp -x10 is the same. This means the findSlot function is currently executing. 
+
+2. What are the addresses of the top of the current stack frame, and the bottom of the current stack frame?
+   How did you know these values?
+        Current top stack is 0xffffda68, while the bottom stack is 0xffffda78. 
+        This is the current stack frame.
+   
+4. What parameter was passed in to the currently executing function?  At what address is the value of
+   this parameter in memory?
+	"int bin" is passed inside the function, located in 0xffffda80. 
+    The parameter is in address 0x0000000a.
+   
+3. What are the addresses of the caller of the current function's stack frame top and bottom?
+   How did you know these values?
+        The caller function is getwidget(). It's the current function, with its esp being 0xffffda78 and it's ebp 0xffffdaa0.
+        You need to sub x28.
+   
+4. What are the addresses of the caller of the caller of the current function's stack frame 
+   top and bottom?  How did you know these values?
+        You add the sub value before, which is in main and its ebp and esp.
+        The caller of the caller function is the main function, with 0xffffdac0 being ebp and 0xffffdaa0 being esp.  
+         
+5. What is the current value and address of the local variable "slot" in the getWidget function?
+   How did you know where this value would reside?
+        The current value and address of slot in the getWidget function is 0 and 0xffffda94, respectively.
