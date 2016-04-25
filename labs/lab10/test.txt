@@ -2,3 +2,5 @@ C This is a test... can I call target?
 D 0x11111111
 D 0x22222222
 D 0x789abdef
+D 0x22222222
+D 0x8048518
