@@ -1,0 +1,201 @@
+Before recursion
+  Frame @ ebp=ffba8af8 ->  esp=ffba8ad0
+  Frame size: 10 words = 40 bytes
+  Previous frame @ ffba8b18 -> ffba8b00
+  Return address = 08048508
+  Parameters:
+   Parm   1   = 00000006
+  Stack Frame Contents:
+    0x28(esp) = -0x00(ebp) -> ffba8b18 =     -4551912
+    0x24(esp) = -0x04(ebp) -> ffba8bc4 =     -4551740
+    0x20(esp) = -0x08(ebp) -> 00000001 =            1
+    0x1c(esp) = -0x0c(ebp) -> 0804890b =    134514955
+    0x18(esp) = -0x10(ebp) -> ffba8b18 =     -4551912
+    0x14(esp) = -0x14(ebp) -> 08049cf4 =    134520052
+    0x10(esp) = -0x18(ebp) -> 55563560 =   1431713120
+    0x0c(esp) = -0x1c(ebp) -> 08048358 =    134513496
+    0x08(esp) = -0x20(ebp) -> 00000001 =            1
+    0x04(esp) = -0x24(ebp) -> ffba8af8 =     -4551944
+    0x00(esp) = -0x28(ebp) -> ffba8ad0 =     -4551984
+
+Before recursion
+  Frame @ ebp=ffba8ac8 ->  esp=ffba8aa0
+  Frame size: 10 words = 40 bytes
+  Previous frame @ ffba8af8 -> ffba8ad0
+  Return address = 08048571
+  Parameters:
+   Parm   1   = 00000005
+  Stack Frame Contents:
+    0x28(esp) = -0x00(ebp) -> ffba8af8 =     -4551944
+    0x24(esp) = -0x04(ebp) -> 00000000 =            0
+    0x20(esp) = -0x08(ebp) -> 5570aff4 =   1433448436
+    0x1c(esp) = -0x0c(ebp) -> ffffffff =           -1
+    0x18(esp) = -0x10(ebp) -> 0000000a =           10
+    0x14(esp) = -0x14(ebp) -> 5570f8d0 =   1433467088
+    0x10(esp) = -0x18(ebp) -> 00000010 =           16
+    0x0c(esp) = -0x1c(ebp) -> 08048950 =    134515024
+    0x08(esp) = -0x20(ebp) -> 00000001 =            1
+    0x04(esp) = -0x24(ebp) -> ffba8ac8 =     -4551992
+    0x00(esp) = -0x28(ebp) -> ffba8aa0 =     -4552032
+
+Before recursion
+  Frame @ ebp=ffba8a98 ->  esp=ffba8a70
+  Frame size: 10 words = 40 bytes
+  Previous frame @ ffba8ac8 -> ffba8aa0
+  Return address = 08048571
+  Parameters:
+   Parm   1   = 00000004
+  Stack Frame Contents:
+    0x28(esp) = -0x00(ebp) -> ffba8ac8 =     -4551992
+    0x24(esp) = -0x04(ebp) -> 00000000 =            0
+    0x20(esp) = -0x08(ebp) -> 5570aff4 =   1433448436
+    0x1c(esp) = -0x0c(ebp) -> ffffffff =           -1
+    0x18(esp) = -0x10(ebp) -> 0000000a =           10
+    0x14(esp) = -0x14(ebp) -> 5570f8d0 =   1433467088
+    0x10(esp) = -0x18(ebp) -> 00000010 =           16
+    0x0c(esp) = -0x1c(ebp) -> 08048950 =    134515024
+    0x08(esp) = -0x20(ebp) -> 00000001 =            1
+    0x04(esp) = -0x24(ebp) -> ffba8a98 =     -4552040
+    0x00(esp) = -0x28(ebp) -> ffba8a70 =     -4552080
+
+Before recursion
+  Frame @ ebp=ffba8a68 ->  esp=ffba8a40
+  Frame size: 10 words = 40 bytes
+  Previous frame @ ffba8a98 -> ffba8a70
+  Return address = 08048571
+  Parameters:
+   Parm   1   = 00000003
+  Stack Frame Contents:
+    0x28(esp) = -0x00(ebp) -> ffba8a98 =     -4552040
+    0x24(esp) = -0x04(ebp) -> 00000000 =            0
+    0x20(esp) = -0x08(ebp) -> 5570aff4 =   1433448436
+    0x1c(esp) = -0x0c(ebp) -> ffffffff =           -1
+    0x18(esp) = -0x10(ebp) -> 0000000a =           10
+    0x14(esp) = -0x14(ebp) -> 5570f8d0 =   1433467088
+    0x10(esp) = -0x18(ebp) -> 00000010 =           16
+    0x0c(esp) = -0x1c(ebp) -> 08048950 =    134515024
+    0x08(esp) = -0x20(ebp) -> 00000001 =            1
+    0x04(esp) = -0x24(ebp) -> ffba8a68 =     -4552088
+    0x00(esp) = -0x28(ebp) -> ffba8a40 =     -4552128
+
+Before recursion
+  Frame @ ebp=ffba8a38 ->  esp=ffba8a10
+  Frame size: 10 words = 40 bytes
+  Previous frame @ ffba8a68 -> ffba8a40
+  Return address = 08048571
+  Parameters:
+   Parm   1   = 00000002
+  Stack Frame Contents:
+    0x28(esp) = -0x00(ebp) -> ffba8a68 =     -4552088
+    0x24(esp) = -0x04(ebp) -> 00000000 =            0
+    0x20(esp) = -0x08(ebp) -> 5570aff4 =   1433448436
+    0x1c(esp) = -0x0c(ebp) -> ffffffff =           -1
+    0x18(esp) = -0x10(ebp) -> 0000000a =           10
+    0x14(esp) = -0x14(ebp) -> 5570f8d0 =   1433467088
+    0x10(esp) = -0x18(ebp) -> 00000010 =           16
+    0x0c(esp) = -0x1c(ebp) -> 08048950 =    134515024
+    0x08(esp) = -0x20(ebp) -> 00000001 =            1
+    0x04(esp) = -0x24(ebp) -> ffba8a38 =     -4552136
+    0x00(esp) = -0x28(ebp) -> ffba8a10 =     -4552176
+
+After recursion
+  Frame @ ebp=ffba8a38 ->  esp=ffba8a10
+  Frame size: 10 words = 40 bytes
+  Previous frame @ ffba8a68 -> ffba8a40
+  Return address = 08048571
+  Parameters:
+   Parm   1   = 00000002
+  Stack Frame Contents:
+    0x28(esp) = -0x00(ebp) -> ffba8a68 =     -4552088
+    0x24(esp) = -0x04(ebp) -> 00000000 =            0
+    0x20(esp) = -0x08(ebp) -> 5570aff4 =   1433448436
+    0x1c(esp) = -0x0c(ebp) -> 00000002 =            2
+    0x18(esp) = -0x10(ebp) -> 0000000a =           10
+    0x14(esp) = -0x14(ebp) -> 5570f8d0 =   1433467088
+    0x10(esp) = -0x18(ebp) -> 00000010 =           16
+    0x0c(esp) = -0x1c(ebp) -> 08048950 =    134515024
+    0x08(esp) = -0x20(ebp) -> 00000001 =            1
+    0x04(esp) = -0x24(ebp) -> ffba8a38 =     -4552136
+    0x00(esp) = -0x28(ebp) -> ffba8a10 =     -4552176
+
+After recursion
+  Frame @ ebp=ffba8a68 ->  esp=ffba8a40
+  Frame size: 10 words = 40 bytes
+  Previous frame @ ffba8a98 -> ffba8a70
+  Return address = 08048571
+  Parameters:
+   Parm   1   = 00000003
+  Stack Frame Contents:
+    0x28(esp) = -0x00(ebp) -> ffba8a98 =     -4552040
+    0x24(esp) = -0x04(ebp) -> 00000000 =            0
+    0x20(esp) = -0x08(ebp) -> 5570aff4 =   1433448436
+    0x1c(esp) = -0x0c(ebp) -> 00000006 =            6
+    0x18(esp) = -0x10(ebp) -> 0000000a =           10
+    0x14(esp) = -0x14(ebp) -> 5570f8d0 =   1433467088
+    0x10(esp) = -0x18(ebp) -> 00000010 =           16
+    0x0c(esp) = -0x1c(ebp) -> 08048950 =    134515024
+    0x08(esp) = -0x20(ebp) -> 00000001 =            1
+    0x04(esp) = -0x24(ebp) -> ffba8a68 =     -4552088
+    0x00(esp) = -0x28(ebp) -> ffba8a40 =     -4552128
+
+After recursion
+  Frame @ ebp=ffba8a98 ->  esp=ffba8a70
+  Frame size: 10 words = 40 bytes
+  Previous frame @ ffba8ac8 -> ffba8aa0
+  Return address = 08048571
+  Parameters:
+   Parm   1   = 00000004
+  Stack Frame Contents:
+    0x28(esp) = -0x00(ebp) -> ffba8ac8 =     -4551992
+    0x24(esp) = -0x04(ebp) -> 00000000 =            0
+    0x20(esp) = -0x08(ebp) -> 5570aff4 =   1433448436
+    0x1c(esp) = -0x0c(ebp) -> 00000018 =           24
+    0x18(esp) = -0x10(ebp) -> 0000000a =           10
+    0x14(esp) = -0x14(ebp) -> 5570f8d0 =   1433467088
+    0x10(esp) = -0x18(ebp) -> 00000010 =           16
+    0x0c(esp) = -0x1c(ebp) -> 08048950 =    134515024
+    0x08(esp) = -0x20(ebp) -> 00000001 =            1
+    0x04(esp) = -0x24(ebp) -> ffba8a98 =     -4552040
+    0x00(esp) = -0x28(ebp) -> ffba8a70 =     -4552080
+
+After recursion
+  Frame @ ebp=ffba8ac8 ->  esp=ffba8aa0
+  Frame size: 10 words = 40 bytes
+  Previous frame @ ffba8af8 -> ffba8ad0
+  Return address = 08048571
+  Parameters:
+   Parm   1   = 00000005
+  Stack Frame Contents:
+    0x28(esp) = -0x00(ebp) -> ffba8af8 =     -4551944
+    0x24(esp) = -0x04(ebp) -> 00000000 =            0
+    0x20(esp) = -0x08(ebp) -> 5570aff4 =   1433448436
+    0x1c(esp) = -0x0c(ebp) -> 00000078 =          120
+    0x18(esp) = -0x10(ebp) -> 0000000a =           10
+    0x14(esp) = -0x14(ebp) -> 5570f8d0 =   1433467088
+    0x10(esp) = -0x18(ebp) -> 00000010 =           16
+    0x0c(esp) = -0x1c(ebp) -> 08048950 =    134515024
+    0x08(esp) = -0x20(ebp) -> 00000001 =            1
+    0x04(esp) = -0x24(ebp) -> ffba8ac8 =     -4551992
+    0x00(esp) = -0x28(ebp) -> ffba8aa0 =     -4552032
+
+After recursion
+  Frame @ ebp=ffba8af8 ->  esp=ffba8ad0
+  Frame size: 10 words = 40 bytes
+  Previous frame @ ffba8b18 -> ffba8b00
+  Return address = 08048508
+  Parameters:
+   Parm   1   = 00000006
+  Stack Frame Contents:
+    0x28(esp) = -0x00(ebp) -> ffba8b18 =     -4551912
+    0x24(esp) = -0x04(ebp) -> ffba8bc4 =     -4551740
+    0x20(esp) = -0x08(ebp) -> 00000001 =            1
+    0x1c(esp) = -0x0c(ebp) -> 000002d0 =          720
+    0x18(esp) = -0x10(ebp) -> ffba8b18 =     -4551912
+    0x14(esp) = -0x14(ebp) -> 08049cf4 =    134520052
+    0x10(esp) = -0x18(ebp) -> 55563560 =   1431713120
+    0x0c(esp) = -0x1c(ebp) -> 08048358 =    134513496
+    0x08(esp) = -0x20(ebp) -> 00000001 =            1
+    0x04(esp) = -0x24(ebp) -> ffba8af8 =     -4551944
+    0x00(esp) = -0x28(ebp) -> ffba8ad0 =     -4551984
+
+Factorial 6=720
