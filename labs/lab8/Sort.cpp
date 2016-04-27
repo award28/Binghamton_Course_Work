@@ -12,8 +12,9 @@ int *Sort::sortB(int *b, int size) {
     return mergesort(b, 0, size -1, size);
 }
 
-int *Sort::sortOptimized(int *o, int size) {
-    return quicksort(o, o[0], o[size - 1]);
+int *Sort::sortOptimized(int *a, int size) {
+    quicksort(a, 0, size - 1);
+    return a;
 }
 
 int *Sort::heapsort(int *a, int size) {
@@ -95,5 +96,47 @@ void Sort::merge(int *a, int low, int mid, int high, int size) {
     }
 }
 
-int *Sort::quicksort(int *array, int high, int low) {
+void Sort::quicksort(int *a, int left, int right) {
+    int temp;
+    int i = left;
+    int j = right;
+    int pivot = a[median(a, left, right)];
+
+    while(i <= j) {
+        while(a[i] < pivot) i++;
+        while(a[j] > pivot) j--;
+        if(i <= j) {
+            temp = a[i];
+            a[i] = a[j];
+            a[j] = temp;
+            i++;
+            j--;
+        }
+    }
+
+    if(left < j) quicksort(a, left, j);
+    if(i < right) quicksort(a, i, right);
+}
+
+int Sort::median(int *a, int left, int right) {
+    int temp;
+    int mid = (left + right)/2;
+    
+    if(a[right] < a[left]) {
+        temp = a[left];
+        a[left] = a[right];
+        a[right] = temp;
+    }
+    if(a[mid] < a[left]) {
+        temp = a[mid];
+        a[mid] = a[left];
+        a[left] = temp;
+    }
+    if(a[right] < a[mid]) {
+        temp = a[right];
+        a[right] = a[mid];
+        a[mid] = temp;
+    }
+
+    return mid;
 }

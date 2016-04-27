@@ -1,10 +1,9 @@
-
 CS240 Data Structures and Algorithms
 Spring 2016
-lab6 README FILE
+lab8 README FILE
 
-Due Date: 4/06/16
-Submission Date: 4/10/16
+Due Date: 4/27/16
+Submission Date: 4/27/16
 Author(s): Austin Ward
 e-mail(s): award9@binghamton.edu
 
@@ -14,69 +13,90 @@ Describe the purpose of the software as described by the software requirements i
 
 PERCENT COMPLETE:
 How much of the project you believe you have completed
-    75% of the project.
+    100% of the project.
 
 PARTS THAT ARE NOT COMPLETE:
 What parts of the project you were not able to complete
-    I couldn't get test 7,8 and 10 to fully work.
 BUGS:
 Known bugs
 
 FILES:
 A list of files included in the jar archive, including this README
-     BSTree.hpp, BSTree.cpp, lab7.cpp, makefile, README.md
+     Sort.hpp/cpp, lab8.cpp, makefile, README.md
 
 SAMPLE OUTPUT:
 A sample of the output from your program copy and pasted from the terminal
-	TEST #0: Passes all tests from Lab 6
+    	TEST #1: Array of 1 handled
 
 	========================PASS========================
 
 
-	TEST #1: Cannot remove node that is not in the tree
- [1]  [2]  [3]  [4]  [5]  [6]  [7]  [8]  [9]  [10]  [11]  [12]  [13]
+	TEST #2: SortA - Sorting an array of 20 elements
+SortA completed sorting an unsorted array of 20 elements in 3 nanoseconds
+
 
 	========================PASS========================
 
 
-	TEST #2: Remove a leaf node
- [2]  [3]  [4]  [5]  [6]  [7]  [8]  [9]  [10]  [11]  [12]  [13]
+	TEST #3: SortA - Sorting an array of 1000 sorted elements
+SortA completed sorting an array of 1000 sorted elements in 171 nanoseconds
+
 
 	========================PASS========================
 
 
-	TEST #3: Remove single branch using the Short Circuit algorithm
- [2]  [3]  [4]  [5]  [6]  [8]  [9]  [10]  [11]  [12]  [13]
+	TEST #4: SortA - Sorting an array of 1000 random elements
+SortA completed sorting an unsorted array of 1000 random elements in 175 nanoseconds
 
-	========================PASS========================
-
-Test #4: Remove two branch node promoting a leaf node
- [2]  [3]  [4]  [5]  [6]  [8]  [9]  [11]  [12]  [13]
 
 	========================PASS========================
 
 
-	TEST #5: Remove two branch node promoting a 1 branch node using Short Circuit
- [2]  [3]  [4]  [5]  [6]  [8]  [9]  [12]  [13]
+	TEST #5: SortA - Sorting an array of 100 identical elements
+SortA completed sorting an array of 100 identical elements in 10 nanoseconds
+
 
 	========================PASS========================
 
 
-	TEST #6: Remove root with two branches
- [2]  [3]  [4]  [6]  [8]  [9]  [12]  [13]
+	TEST #6: SortB - Sorting an array of 20 elements
+SortB completed sorting an unsorted array of 20 elements in 3 nanoseconds
+
 
 	========================PASS========================
 
 
-	TEST #7: Remove root with one branch
-lab7(37545,0x7fff7325b000) malloc: ** error for object 0x7fb0fac031f0: pointer being freed was not allocated
+	TEST #7: SortB - Sorting an array of 1000 sorted elements
+SortB completed sorting an array of 1000 sorted elements in 91 nanoseconds
+
+
+	========================PASS========================
+
+
+	TEST #8: SortB - Sorting an array of 1000 random elements
+SortB completed sorting an unsorted array of 1000 random elements in 159 nanoseconds
+
+
+	========================PASS========================
+
+
+	TEST #9: SortB - Sorting an array of 100 identical elements
+SortB completed sorting an array of 100 identical elements in 7 nanoseconds
+
+
+	========================PASS========================
+
+
+	TEST #10: PART B - Run several tests on various data sets.
+	 ====THESE ARE NOT THE FINAL DATA SETS====
+Average of SortOptimized tests is 3 nanoseconds
 
 TO RUN:
 Instructions for extracting your archive and running your code
     Unzip the archive, then enter the following commands:
     ''''''''''
         make
-        ./lab7
+        ./lab8
     ''''''''''
 
 EXTRA CREDIT:
