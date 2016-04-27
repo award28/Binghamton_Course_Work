@@ -2,9 +2,11 @@
 #define SORT_HPP
 #include <iostream>
 
-class sort {
+class Sort {
     private:
         int *heapsort(int *a, int size);
+        void siftdown(int *a, int pos, int size);
+        bool isLeaf(int pos, int size);
         int *mergesort(int *a, int size);
         int *quicksort(int *array, int high, int low);
     public:
