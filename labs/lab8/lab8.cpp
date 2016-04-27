@@ -20,7 +20,7 @@ int main() {
     }
     
     cout << "\nSorting this array using heapsort:" << endl;
-    sorted = sorts.sortA(a, size);
+    sorted = sorts.sortB(a, size);
     
     for(int i = 0; i < size; i++) cout << sorted[i] << " ";
     cout << endl;

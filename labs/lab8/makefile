@@ -1,7 +1,7 @@
 CC=g++
 CFLAGS=-c -Wall -g -std=c++11
 LDFLAGS=
-SOURCES=Sort.cpp lab8.cpp
+SOURCES=Sort.cpp 1lab8.cpp
 OBJECTS=$(SOURCES:.cpp=.o)
 EXECUTABLE=lab8
 

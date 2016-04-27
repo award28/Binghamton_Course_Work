@@ -9,7 +9,7 @@ int *Sort::sortA(int *a, int size) {
 }
 
 int *Sort::sortB(int *b, int size) {
-    return mergesort(b, size);
+    return mergesort(b, 0, size -1, size);
 }
 
 int *Sort::sortOptimized(int *o, int size) {
@@ -49,7 +49,50 @@ bool Sort::isLeaf(int pos, int size) {
     return false;
 }
 
-int *Sort::mergesort(int *a, int size) {
+int *Sort::mergesort(int *a, int low, int high, int size) {
+    int mid;
+    
+    if (low < high) {
+        mid = (low + high)/2;
+        mergesort(a, low, mid, size);
+        mergesort(a, mid+1, high, size);
+        merge(a, low, mid, high, size);
+    }
+
+    return a;
+}
+
+void Sort::merge(int *a, int low, int mid, int high, int size) {
+    int i, j, k;
+    int newA[size];
+    i = low;
+    k = low;
+    j = mid + 1;
+    while (i <= mid && j <= high) {
+        if (a[i] < a[j]) {
+            newA[k] = a[i];
+            k++;
+            i++;
+        }
+        else {
+            newA[k] = a[j];
+            k++;
+            j++;
+        }
+    }
+    while (i <= mid) {
+        newA[k] = a[i];
+        k++;
+        i++;
+    }
+    while (j <= high) {
+        newA[k] = a[j];
+        k++;
+        j++;
+    }
+    for (i = low; i < k; i++) {
+        a[i] = newA[i];
+    }
 }
 
 int *Sort::quicksort(int *array, int high, int low) {
