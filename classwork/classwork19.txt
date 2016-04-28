@@ -1,0 +1,10 @@
+CW 19: Implementing Graphs
+
+Draw a representation of the memory matrix and the linked list for the following graph
+Assume that
+    a vertex index requires two bytes
+    a pointer requires four bytes
+    an edge weight requires two bytes
+What's the memory cost of each implementation
+    When would you prefer one over the other?
+
