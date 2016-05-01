@@ -8,3 +8,18 @@ Assume that
 What's the memory cost of each implementation
     When would you prefer one over the other?
 
+-----------
+  A|B|C|D|E|
+-----------|
+A|0|3|4|2|7|
+-|-|-|-|-|-|
+B|3|0| | | |
+-|-|-|-|-|-|
+C|4| |0| | |
+-|-|-|-|-|-|
+D|2| | |0| |
+-|-|-|-|-|-|
+E|7| | | |0|
+-----------
+
+Undirected, sparse graph
