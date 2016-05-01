@@ -50,7 +50,6 @@ int main(int argc, char *argv[]){
 
 	cerr << "\n\t========================PASS========================\n" << endl;
 
-/*
 	cerr << "\n\tTEST #2: Test Adjacencies" << endl;	
 
 	list<City*> adj, test;
@@ -115,7 +114,7 @@ int main(int argc, char *argv[]){
 	assert(adj != test);
 	cerr << "\n\t========================PASS========================\n" << endl;
 
-
+/*
 	cerr << "\n\tTEST #3: Simple Shortest Path" << endl;
 
 	City * start = map.findByName("bend");
