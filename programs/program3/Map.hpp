@@ -10,5 +10,7 @@ class Map {
     public:
         Map(std::string filename);
         City* findByName(std::string cityName);
+        std::vector<City *> shortestPath(City * start, City * dest);
+        unsigned int pathDistance(City * start, City * dest);
 };
 #endif

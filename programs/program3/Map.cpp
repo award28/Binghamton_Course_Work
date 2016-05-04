@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <cmath>
+#include <list>
 #include "Map.hpp"
 using std::string;
 using std::cout;
@@ -55,4 +56,26 @@ Map::Map(string filename) {
 City* Map::findByName(string cityName) {
     for(auto it:cities) if(cityName == it->getName()) return it;
     return NULL;
+}
+
+std::vector<City *> Map::shortestPath(City * start, City * dest){
+    std::vector<unsigned int> minDistance(cities.size(), INT_MAX);
+    minDistance[find(cities.begin(), cities.end(), start) - cities.begin()] = 0;
+    
+    std::vector<City*> visit = cities;
+    std::list<City*> adj;
+
+    while(!cities.empty()) {
+        visiting = visit.front();
+        visit.erase(visit.begin());
+
+        for(auto it:
+    }
+     
+}
+
+unsigned int Map::pathDistance(City * start, City * dest){
+    if(start->getXCoor() == dest->getXCoor()) return abs(start->getYCoor() - dest->getYCoor());
+    if(start->getYCoor() == dest->getYCoor()) return abs(start->getXCoor() - dest->getXCoor());
+    return -1;
 }

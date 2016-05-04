@@ -2,18 +2,22 @@
 #include <iostream>
 #include <cassert>
 #include <list>
-#include <vector>
-#include "Map.hpp"
-#include "City.hpp"
+#include "Map.h"
+#include "Map.h"
+#include "City.h"
+#include "City.h"
 using namespace std;
 
-void printAdj(list<City *> adjacency){
-	for(auto it:adjacency) 
-		cerr << it->getName() << " --- [x]: " << it->getXCoor() << " [y]: " << it->getYCoor() << endl;
+//*************Utility functions for debugging***************//
+
+void printAdj(string city, list<City *> adjacency){
+	cerr << "Adjacencies for:\t" << city << endl;
+	for(auto ptr:adjacency) 
+		cerr << ptr->getName() << " --- [x]: " << ptr->getXCoor() << " [y]: " << ptr->getYCoor() << endl;
 }
 
 void printPath(vector<City *> path){
-	//print list
+	cerr << "Your path size is : " << path.size() << endl;
 	if (!path.empty()) {
 		auto it = path.begin();
 		cout << "Your Starting City is:\t" << (*it)->getName() << endl;
@@ -31,11 +35,42 @@ void printPath(vector<City *> path){
 		}
 	}	
 }
+//********************************************************************//
+
+void checkAdjacencies(Map &map, string city, vector<string> &adjacents){
+	list<City*> adj, test;
+	test = map.findByName(city)->getAdjacent();
+	assert(test.size() == adjacents.size());
+	test.sort();
+	for(auto a: adjacents){
+		adj.push_back(map.findByName(a));
+	}
+	adj.sort();
+	auto a = adj.begin();
+	auto t = test.begin();
+	for(; a != adj.end() && t != test.end(); a++, t++){
+		assert((*a)->getName() == (*t)->getName());
+	}
+}
+
+void checkPath(Map &map, vector<string> &cities, string start, string dest){
+	City * startc = map.findByName(start);
+	City * destc = map.findByName(dest);
+
+	vector<City *> route = map.shortestPath(startc, destc);
+	assert(route.size() == cities.size());
+	int i = 0;
+	for(auto r: route){
+		assert(r->getName() == cities.at(i));
+		i++;
+	}
+}
 
 int main(int argc, char *argv[]){
 
 	cerr << "\n\tTEST #1: Read file a list of Cities and their locations" << endl;	
 	Map map("townlist.txt");
+	
 	assert(map.findByName("binghamton") != NULL);
 	assert(map.findByName("fairbanks") != NULL);
 	assert(map.findByName("cypress") != NULL);
@@ -50,100 +85,97 @@ int main(int argc, char *argv[]){
 
 	cerr << "\n\t========================PASS========================\n" << endl;
 
+
 	cerr << "\n\tTEST #2: Test Adjacencies" << endl;	
 
-	list<City*> adj, test;
-	test = map.findByName("bend")->getAdjacent();
-	test.sort();
-	adj.push_back(map.findByName("rialto"));
-	adj.push_back(map.findByName("victorville"));
-	adj.sort();
-	assert(adj == test);
+	string city = "bend";
+	vector<string> adjacents = {"victorville", "rialto"};
+	checkAdjacencies(map, city, adjacents);
 
-	test = map.findByName("rialto")->getAdjacent();
-	test.sort();
-	adj.clear();
-	adj.push_back(map.findByName("bend"));
-	adj.push_back(map.findByName("anaheim"));
-	adj.sort();
-	assert(adj == test);
+	city = "rialto";
+	adjacents = {"bend", "anaheim"};
+	checkAdjacencies(map, city, adjacents);
 
-	test = map.findByName("fairbanks")->getAdjacent();
-	test.sort();
-	adj.clear();
-	adj.push_back(map.findByName("binghamton"));
-	adj.push_back(map.findByName("anaheim"));
-	adj.sort();
-	assert(adj == test);
+	city = "fairbanks";
+	adjacents = {"binghamton", "anaheim"};
+	checkAdjacencies(map, city, adjacents);
 
-	test = map.findByName("cypress")->getAdjacent();
-	test.sort();
-	adj.clear();
-	adj.push_back(map.findByName("binghamton"));
-	adj.push_back(map.findByName("anaheim"));
-	adj.push_back(map.findByName("victorville"));
-	adj.sort();
-	assert(adj == test);
+	city = "cypress";
+	adjacents = {"binghamton", "anaheim", "victorville"};
+	checkAdjacencies(map, city, adjacents);
 
-	test = map.findByName("anaheim")->getAdjacent();
-	test.sort();
-	adj.clear();
-	adj.push_back(map.findByName("rialto"));
-	adj.push_back(map.findByName("fairbanks"));
-	adj.push_back(map.findByName("cypress"));
-	adj.sort();
-	assert(adj == test);
+	city = "anaheim";
+	adjacents = {"rialto", "cypress", "fairbanks"};
+	checkAdjacencies(map, city, adjacents);
 
-	test = map.findByName("victorville")->getAdjacent();
-	test.sort();
-	adj.clear();
-	adj.push_back(map.findByName("bend"));
-	adj.push_back(map.findByName("laguna"));
-	adj.push_back(map.findByName("cypress"));
-	adj.sort();
-	assert(adj == test);
+	city = "victorville";
+	adjacents = {"bend", "laguna", "cypress"};
+	checkAdjacencies(map, city, adjacents);
 
-	test = map.findByName("laguna")->getAdjacent();
-	test.sort();
-	adj.clear();
-	adj.push_back(map.findByName("victorville"));
-	adj.sort();
-	assert(adj == test);
+	city = "laguna";
+	adjacents = {"victorville"};
+	checkAdjacencies(map, city, adjacents);
 
-	adj.clear();
-	assert(adj != test);
 	cerr << "\n\t========================PASS========================\n" << endl;
 
-/*
 	cerr << "\n\tTEST #3: Simple Shortest Path" << endl;
+	vector<string> path = {"bend","rialto"};
+	checkPath(map, path, "bend", "rialto");
 
-	City * start = map.findByName("bend");
-	City * dest = map.findByName("rialto");
-
-	vector<City *> route = map.shortestPath(start, dest);
-	assert(route.front()->getName() == "bend");
-	assert(route.back()->getName() == "rialto");
-	assert(route.size() == 2);
 	cerr << "\n\t========================PASS========================\n" << endl;
 
 	cerr << "\n\tTEST #4: Less Simple Shortest Path" << endl;
 
-	start = map.findByName("rialto");
-	dest = map.findByName("fairbanks");
-
-	route = map.shortestPath(start, dest);
-	assert(route.size() == 3);
-	assert(route.back()->getName() == "fairbanks");
-	route.pop_back();
-	assert(route.back()->getName() == "anaheim");
-	route.pop_back();
-	assert(route.back()->getName() == "rialto");
-	route.pop_back();
-	assert(route.empty());
+	path = {"rialto","anaheim", "fairbanks"};
+	checkPath(map, path, "rialto", "fairbanks");
 
 	cerr << "\n\t========================PASS========================\n" << endl;
-*/	
-	/********more tests TBD***********/
+	
+	cerr << "\n\tTEST #5: Shortest Path between a single point" << endl;
+	path = {"fairbanks"};
+	checkPath(map, path, "fairbanks", "fairbanks");
+
+	cerr << "\n\t========================PASS========================\n" << endl;
+
+
+	cerr << "\n\tTEST #6: Shortest Path on Map 2" << endl;
+	Map map2("townlist2.txt");
+	path = {"doomstadt", "attilan", "smallville", "gotham"};
+	checkPath(map2, path, "doomstadt", "gotham");
+
+	cerr << "\n\t========================PASS========================\n" << endl;
+
+	cerr << "\n\tTEST #7: Shortest Path on Map 2" << endl;
+	path = {"gotham", "smallville", "metropolis", "kun-lun", "genosha", "asgard", "madripoor"};
+	checkPath(map2, path, "gotham", "madripoor");
+
+	cerr << "\n\t========================PASS========================\n" << endl;
+
+	cerr << "\n\tTEST #8: Shortest Path on Map 2" << endl;
+	path.clear();
+	checkPath(map2, path, "attilan", "nyc");
+
+	cerr << "\n\t========================PASS========================\n" << endl;
+
+	cerr << "\n\tTEST #9: Distance from a single city (should be 0)" << endl;
+	City * start = map2.findByName("nyc");
+	City * stop = map2.findByName("nyc");
+	assert(map.pathDistance(start, stop) == 0);
+
+	cerr << "\n\t========================PASS========================\n" << endl;
+	cerr << "\n\tTEST #10: Distance between two cities" << endl;
+	start = map2.findByName("attilan");
+	stop = map2.findByName("madripoor");
+	assert(map2.pathDistance(start, stop) == 8);
+	
+	cerr << "\n\t========================PASS========================\n" << endl;
+
+	cerr << "\n\tTEST #11: Distance with two equal paths" << endl;
+	start = map2.findByName("metropolis");
+	stop = map2.findByName("doomstadt");
+	assert(map2.pathDistance(start, stop) == 8);
+	cerr << "\n\t========================PASS========================\n" << endl;
+
 	return 0;
 	
 }
