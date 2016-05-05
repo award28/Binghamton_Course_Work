@@ -103,7 +103,6 @@ std::vector<City *> Map::shortestPath(City * start, City * dest){
             }
         }
     }
-    for(auto it:cities) cout << it->getName() << " distance: " << it->dist << endl;
     visiting = dest;
     
     if(dest->dist != INT_MAX) {
@@ -121,5 +120,7 @@ std::vector<City *> Map::shortestPath(City * start, City * dest){
 unsigned int Map::pathDistance(City * start, City * dest){
     if(start->getXCoor() == dest->getXCoor()) return abs(start->getYCoor() - dest->getYCoor());
     if(start->getYCoor() == dest->getYCoor()) return abs(start->getXCoor() - dest->getXCoor());
-    return -1;
+    shortestPath(start, dest);
+    if(dest->dist == INT_MAX) return -1;
+    return dest->dist;
 }
