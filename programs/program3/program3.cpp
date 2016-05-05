@@ -138,7 +138,7 @@ int main(int argc, char *argv[]){
 
 	cerr << "\n\tTEST #6: Shortest Path on Map 2" << endl;
 	Map map2("townlist2.txt");
-	path = {"doomstadt", "attilan", "smallville", "gotham"};
+    path = {"doomstadt", "attilan", "smallville", "gotham"};
 	checkPath(map2, path, "doomstadt", "gotham");
 
 	cerr << "\n\t========================PASS========================\n" << endl;

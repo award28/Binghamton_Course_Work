@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <cmath>
+#include <algorithm>
 #include <list>
 #include "Map.hpp"
 using std::string;
@@ -64,23 +65,29 @@ std::vector<City *> Map::shortestPath(City * start, City * dest){
     std::list<City *> adj;
     cities.erase(find(cities.begin(), cities.end(), start));
     unsigned int alt;
-
+    
     visit[0] = start;
-    for(int i = 1; i < visit.size(); i++) {
-        visit[i] = cities[i];
-        visit[i]->dist = INT_MAX;
+    int j;
+    for(int i = 0; i < visit.size(); i++) {
+        adj = visit[i]->getAdjacent();
+        j = i;
+        for(auto it:adj) {
+            if(find(visit.begin(), visit.end(), it) == visit.end()) {
+                j++;
+                visit[j] = it;
+                visit[j]->dist = INT_MAX;
+            }
+        }
     }
+
     visit[0]->dist = 0;
     cities.push_back(start);
 
     while(!visit.empty()) {
         visiting = visit.front();
         visit.erase(visit.begin());
-    cout << visiting->getName() << endl;
-        
         adj = visiting->getAdjacent();
         for(auto it:adj) {
-    cout << "Adjacent: " << it->getName() << endl;
             alt = visiting->dist + pathDistance(visiting, it);
             if(alt < it->dist) {
                 it->dist = alt;
@@ -89,6 +96,14 @@ std::vector<City *> Map::shortestPath(City * start, City * dest){
         }
     }
     for(auto it:cities) cout << it->getName() << " distance: " << it->dist << endl;
+    visiting = dest;
+    
+    while(visit[0] != start) {
+        visit.insert(visit.begin(), visiting);
+        visiting = visiting->prev;
+    }
+    for(auto it:visit) cout << it->getName() << endl;
+    return visit;
 }
 
 unsigned int Map::pathDistance(City * start, City * dest){
