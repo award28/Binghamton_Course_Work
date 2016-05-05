@@ -2,10 +2,8 @@
 #include <iostream>
 #include <cassert>
 #include <list>
-#include "Map.h"
-#include "Map.h"
-#include "City.h"
-#include "City.h"
+#include "Map.hpp"
+#include "City.hpp"
 using namespace std;
 
 //*************Utility functions for debugging***************//

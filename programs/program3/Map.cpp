@@ -59,19 +59,36 @@ City* Map::findByName(string cityName) {
 }
 
 std::vector<City *> Map::shortestPath(City * start, City * dest){
-    std::vector<unsigned int> minDistance(cities.size(), INT_MAX);
-    minDistance[find(cities.begin(), cities.end(), start) - cities.begin()] = 0;
-    
-    std::vector<City*> visit = cities;
-    std::list<City*> adj;
+    City* visiting;
+    std::vector<City*> visit(cities.size());
+    std::list<City *> adj;
+    cities.erase(find(cities.begin(), cities.end(), start));
+    unsigned int alt;
 
-    while(!cities.empty()) {
+    visit[0] = start;
+    for(int i = 1; i < visit.size(); i++) {
+        visit[i] = cities[i];
+        visit[i]->dist = INT_MAX;
+    }
+    visit[0]->dist = 0;
+    cities.push_back(start);
+
+    while(!visit.empty()) {
         visiting = visit.front();
         visit.erase(visit.begin());
-
-        for(auto it:
+    cout << visiting->getName() << endl;
+        
+        adj = visiting->getAdjacent();
+        for(auto it:adj) {
+    cout << "Adjacent: " << it->getName() << endl;
+            alt = visiting->dist + pathDistance(visiting, it);
+            if(alt < it->dist) {
+                it->dist = alt;
+                it->prev = visiting;
+            }
+        }
     }
-     
+    for(auto it:cities) cout << it->getName() << " distance: " << it->dist << endl;
 }
 
 unsigned int Map::pathDistance(City * start, City * dest){

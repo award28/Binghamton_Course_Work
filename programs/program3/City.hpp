@@ -10,6 +10,8 @@ class City {
         int y;
         std::list<City*> adjacent;
     public:
+        City* prev;
+        unsigned int dist;
         City(std::string cityName, int xCoor, int yCoor);
         std::string getName();
         int getXCoor();
