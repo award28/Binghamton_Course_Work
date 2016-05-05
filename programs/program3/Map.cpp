@@ -27,12 +27,12 @@ Map::Map(string filename) {
             if(it->getName() != add->getName()) {
                 if(it->getYCoor() == add->getYCoor()) {
                     if(it->getXCoor() - add->getXCoor() < 0) {
-                        if(west->getXCoor() == -1) west = add;
-                        else if(it->getXCoor() - west->getXCoor() < it->getXCoor() - add->getXCoor()) west = add;
+                        if(east->getXCoor() == -1) east = add;
+                        else if(it->getXCoor() - east->getXCoor() < it->getXCoor() - add->getXCoor()) east = add;
                     }
                     if(it->getXCoor() - add->getXCoor() > 0) {
-                        if(east->getXCoor() == -1) east = add;
-                        else if(east->getXCoor() - it->getXCoor() < add->getXCoor() - it->getXCoor()) east = add;
+                        if(west->getXCoor() == -1) west = add;
+                        else if(west->getXCoor() - it->getXCoor() < add->getXCoor() - it->getXCoor()) west = add;
                     }
                 }
                 if(it->getXCoor() == add->getXCoor()) {
@@ -65,14 +65,14 @@ std::vector<City *> Map::shortestPath(City * start, City * dest){
     std::list<City *> adj;
     cities.erase(find(cities.begin(), cities.end(), start));
     unsigned int alt;
-    
     visit[0] = start;
-    int j;
+    int j = 0;
     for(int i = 0; i < visit.size(); i++) {
+        cout << visit[i]->getName() << endl;
         adj = visit[i]->getAdjacent();
-        j = i;
         for(auto it:adj) {
             if(find(visit.begin(), visit.end(), it) == visit.end()) {
+            cout << "\t" << it->getName() << endl;
                 j++;
                 visit[j] = it;
                 visit[j]->dist = INT_MAX;
@@ -82,7 +82,6 @@ std::vector<City *> Map::shortestPath(City * start, City * dest){
 
     visit[0]->dist = 0;
     cities.push_back(start);
-
     while(!visit.empty()) {
         visiting = visit.front();
         visit.erase(visit.begin());

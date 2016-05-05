@@ -121,8 +121,8 @@ int main(int argc, char *argv[]){
 	checkPath(map, path, "bend", "rialto");
 
 	cerr << "\n\t========================PASS========================\n" << endl;
-
-	cerr << "\n\tTEST #4: Less Simple Shortest Path" << endl;
+	
+    cerr << "\n\tTEST #4: Less Simple Shortest Path" << endl;
 
 	path = {"rialto","anaheim", "fairbanks"};
 	checkPath(map, path, "rialto", "fairbanks");
@@ -134,7 +134,6 @@ int main(int argc, char *argv[]){
 	checkPath(map, path, "fairbanks", "fairbanks");
 
 	cerr << "\n\t========================PASS========================\n" << endl;
-
 
 	cerr << "\n\tTEST #6: Shortest Path on Map 2" << endl;
 	Map map2("townlist2.txt");
