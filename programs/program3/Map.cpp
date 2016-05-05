@@ -1,7 +1,6 @@
 #include <iostream>
 #include <fstream>
 #include <cmath>
-#include <algorithm>
 #include <list>
 #include "Map.hpp"
 using std::string;
