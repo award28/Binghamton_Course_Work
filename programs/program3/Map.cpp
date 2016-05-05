@@ -67,19 +67,28 @@ std::vector<City *> Map::shortestPath(City * start, City * dest){
     unsigned int alt;
     visit[0] = start;
     int j = 0;
+    
     for(int i = 0; i < visit.size(); i++) {
-        cout << visit[i]->getName() << endl;
-        adj = visit[i]->getAdjacent();
-        for(auto it:adj) {
-            if(find(visit.begin(), visit.end(), it) == visit.end()) {
-            cout << "\t" << it->getName() << endl;
-                j++;
-                visit[j] = it;
-                visit[j]->dist = INT_MAX;
+        if(visit[i] != NULL) {
+            adj = visit[i]->getAdjacent();
+            for(auto it:adj) {
+                if(find(visit.begin(), visit.end(), it) == visit.end()) {
+                    j++;
+                    visit[j] = it;
+                    visit[j]->dist = INT_MAX;
+                }
             }
         }
     }
-
+    
+    for(auto it:cities) {
+        if(find(visit.begin(), visit.end(), it) == visit.end()) {
+            j++;
+            visit[j] = it;
+            visit[j]->dist = INT_MAX;
+        }
+    }
+    
     visit[0]->dist = 0;
     cities.push_back(start);
     while(!visit.empty()) {
@@ -97,10 +106,14 @@ std::vector<City *> Map::shortestPath(City * start, City * dest){
     for(auto it:cities) cout << it->getName() << " distance: " << it->dist << endl;
     visiting = dest;
     
-    while(visit[0] != start) {
-        visit.insert(visit.begin(), visiting);
-        visiting = visiting->prev;
+    if(dest->dist != INT_MAX) {
+        while(visit[0] != start) {
+            visit.insert(visit.begin(), visiting);
+            visiting = visiting->prev;
+        }
     }
+    else visit.clear();
+
     for(auto it:visit) cout << it->getName() << endl;
     return visit;
 }

@@ -20,6 +20,4 @@ int City::getYCoor() { return this->y; }
 
 std::list<City*> City::getAdjacent() { return this->adjacent; }
 
-void City::setAdjacent(City* adj) { 
-    this->adjacent.push_back(adj);
-}
+void City::setAdjacent(City* adj) { this->adjacent.push_back(adj); }
