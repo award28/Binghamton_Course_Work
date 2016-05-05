@@ -5,8 +5,6 @@
 #include <list>
 #include "Map.hpp"
 using std::string;
-using std::cout;
-using std::endl;
 
 Map::Map(string filename) {
     std::ifstream fin;
@@ -113,7 +111,6 @@ std::vector<City *> Map::shortestPath(City * start, City * dest){
     }
     else visit.clear();
 
-    for(auto it:visit) cout << it->getName() << endl;
     return visit;
 }
 

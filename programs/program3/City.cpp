@@ -1,10 +1,7 @@
 #include <iostream>
 #include "City.hpp"
 
-using std::cout;
 using std::string;
-using std::endl;
-using std::cin;
 
 City::City(string cityName, int xCoor, int yCoor) {
     this->cityName = cityName;
