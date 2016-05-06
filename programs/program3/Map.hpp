@@ -1,7 +1,9 @@
 #ifndef MAP_HPP
 #define MAP_HPP
 #include <iostream>
+#include <algorithm>
 #include <vector>
+#include <climits>
 #include "City.hpp"
 
 class Map {

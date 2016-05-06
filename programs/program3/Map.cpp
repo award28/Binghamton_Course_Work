@@ -65,7 +65,7 @@ std::vector<City *> Map::shortestPath(City * start, City * dest){
     visit[0] = start;
     int j = 0;
     
-    for(int i = 0; i < visit.size(); i++) {
+    for(unsigned int i = 0; i < visit.size(); i++) {
         if(visit[i] != NULL) {
             adj = visit[i]->getAdjacent();
             for(auto it:adj) {

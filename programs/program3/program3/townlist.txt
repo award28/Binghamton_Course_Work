@@ -1,8 +1,0 @@
-bend 6 7
-fairbanks 3 5
-rialto 4 7
-binghamton 3 2
-cypress 4 2
-laguna 7 2
-victorville 6 2
-anaheim 4 5
