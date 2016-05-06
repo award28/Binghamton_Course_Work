@@ -173,6 +173,44 @@ int main(int argc, char *argv[]){
 	assert(map2.pathDistance(start, stop) == 8);
 	cerr << "\n\t========================PASS========================\n" << endl;
 
+	cerr << "\n\tTEST #12: Shortest Path on Map 3" << endl;
+	Map map3("townlist3.txt");
+    path = {"wakanda", "doomstadt", "madripoor", "kun-lun"};
+	checkPath(map3, path, "wakanda", "kun-lun");
+
+	cerr << "\n\t========================PASS========================\n" << endl;
+
+	cerr << "\n\tTEST #13: Shortest Path on Map 3" << endl;
+	path = {"wakanda", "doomstadt", "attilan", "metropolis", "bend", "fairbanks", "cypress", "laguna", "rialto", "victorville"};
+	checkPath(map3, path, "wakanda", "victorville");
+
+	cerr << "\n\t========================PASS========================\n" << endl;
+
+	cerr << "\n\tTEST #14: Shortest Path on Map 3" << endl;
+	path.clear();
+	checkPath(map3, path, "attilan", "nyc");
+
+	cerr << "\n\t========================PASS========================\n" << endl;
+
+	cerr << "\n\tTEST #15: Distance from a single city (should be 0)" << endl;
+	start = map3.findByName("nyc");
+	stop = map3.findByName("nyc");
+	assert(map.pathDistance(start, stop) == 0);
+
+	cerr << "\n\t========================PASS========================\n" << endl;
+	cerr << "\n\tTEST #16: Distance between two cities" << endl;
+	start = map3.findByName("attilan");
+	stop = map3.findByName("madripoor");
+	assert(map3.pathDistance(start, stop) == 20);
+	
+	cerr << "\n\t========================PASS========================\n" << endl;
+
+	cerr << "\n\tTEST #17: Distance with two equal paths" << endl;
+	start = map3.findByName("metropolis");
+	stop = map3.findByName("rialto");
+	assert(map3.pathDistance(start, stop) == 152);
+	cerr << "\n\t========================PASS========================\n" << endl;
+
 	return 0;
 	
 }

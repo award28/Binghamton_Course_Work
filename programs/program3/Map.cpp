@@ -109,7 +109,6 @@ std::vector<City *> Map::shortestPath(City * start, City * dest){
         }
     }
     else visit.clear();
-
     return visit;
 }
 
