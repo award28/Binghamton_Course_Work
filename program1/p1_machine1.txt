@@ -1,0 +1,67 @@
+state	0	start
+state	7	accept
+state	8	reject
+state	12	reject
+state	13	accept
+state	20	reject
+state	21	accept
+state	24	reject
+state	25	accept
+transition	0	#	4	#	R
+transition	0	#	3	#	R
+transition	9	#	12	#	L
+transition	14	#	15	#	L
+transition	10	#	12	#	L
+transition	18	1	19	x	L
+transition	23	#	4	#	R
+transition	0	#	1	#	R
+transition	4	0	22	x	R
+transition	16	1	17	x	R
+transition	3	#	21	#	L
+transition	18	#	20	#	L
+transition	1	#	7	#	L
+transition	9	1	10	x	R
+transition	22	#	24	#	L
+transition	5	#	8	#	L
+transition	11	#	2	#	R
+transition	10	1	11	x	L
+transition	2	#	13	#	L
+transition	0	#	2	#	R
+transition	4	#	25	#	L
+transition	3	0	16	x	R
+transition	0	0	14	0	R
+transition	17	1	18	x	R
+transition	19	#	3	#	R
+transition	17	#	20	#	L
+transition	22	1	23	x	L
+transition	11	x	11	x	L
+transition	6	#	1	#	R
+transition	19	x	19	x	L
+transition	11	0	11	0	L
+transition	23	0	23	0	L
+transition	6	1	6	1	L
+transition	11	1	11	1	L
+transition	23	x	23	x	L
+transition	15	0	15	0	L
+transition	6	x	6	x	L
+transition	19	1	19	1	L
+transition	19	0	19	0	L
+transition	6	0	6	0	L
+transition	23	1	23	1	L
+transition	1	0	5	x	R
+transition	5	0	5	0	R
+transition	5	x	5	x	R
+transition	3	x	3	x	R
+transition	22	x	22	x	R
+transition	14	0	14	0	R
+transition	1	x	1	x	R
+transition	9	0	9	0	R
+transition	9	x	9	x	R
+transition	22	0	22	0	R
+transition	4	x	4	x	R
+transition	16	x	16	x	R
+transition	16	0	16	0	R
+transition	2	x	2	x	R
+transition	5	1	6	x	L
+transition	2	0	9	x	R
+transition	16	#	20	#	L

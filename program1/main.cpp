@@ -12,17 +12,19 @@ using namespace std;
 int main(int argc, char* argv[]) {
     if(argc == 4) {
         ifstream fin;
-        std::string line;
-        std::string info;
+        string line;
+        string info;
         int id;
         int q, r;
         char a, b, x; 
-        std::vector<State> states;
-        std::vector<Transition> transitions;
-        std::vector<TransitionList> tLists;
+        vector<State> states;
+        vector<Transition> transitions;
+        vector<TransitionList> tLists;
 
-        std::string inFile = argv[1];
-        std::string input = argv[2];
+        string inFile = argv[1];
+        string input = argv[2];
+        string result = "";
+        string append = "";
         int bounds = atoi(argv[3]);
                 
         fin.open(inFile);
@@ -31,7 +33,8 @@ int main(int argc, char* argv[]) {
             while(fin.good()) {
                 fin >> line;
 
-                if(fin.eof()) break;
+                if(fin.eof()) 
+                    break;
 
                 if(line == "state") {
                    fin >> id >> info; states.push_back(State(id, info));
@@ -42,7 +45,8 @@ int main(int argc, char* argv[]) {
                 }
             }
         }
-        else std::cout << "Unable to open file" << std::endl;
+        else 
+            cout << "Unable to open file" << endl;
        
         int lastState = 0;
         for(Transition curTrans : transitions)
@@ -55,14 +59,14 @@ int main(int argc, char* argv[]) {
         next++;
 
         for(vector<State>::iterator it = states.begin(); it < states.end(); it++) {
-            for(int i = it->getId() + 1; i < next->getId(); i++) {
+            for(int i = it->getId() + 1; i < next->getId(); i++)
                 states.insert(states.begin() + i, State(i, "normal"));
-            }
             next++;
         }
        
-        for(int i = 0; i <= lastState; i++)
+        for(int i = 0; i <= lastState; i++){
            tLists.push_back(TransitionList(i));
+        }
 
         for(Transition curTrans : transitions)
             tLists[curTrans.getFrom()].addTransition(curTrans);
@@ -78,6 +82,7 @@ int main(int argc, char* argv[]) {
         
         int move = 0;
         bool breakOut = false;
+        bool rejectFound = false;
         Configuration config = Configuration(startStateId, input, move, false); 
 
         //Start simulation
@@ -85,37 +90,74 @@ int main(int argc, char* argv[]) {
             for(Transition curTrans : tLists[config.getCurrentState()].getTransitionList()){
                  
                 if (input[config.getReadIndex()] == curTrans.getRead()) {
-                    if(curTrans.getMotion() == 'L') move--;
-                    else move++;
+                    if(curTrans.getMotion() == 'L') 
+                        move--;
+                    else 
+                        move++;
                     
                     input[config.getReadIndex()] = curTrans.getWrite();
                     config = Configuration(curTrans.getTo(), input, move, false); 
                     break;
                 }
             }
+            if(!rejectFound) {
+                for(State curState : states) {
+                    if(curState.getId() == config.getCurrentState()) {
+                        if(curState.getInfo() == "reject") {
+                            append = "reject ";
+                            result.append(append);
+                            for(State rejects : states) {
+                                if(rejects.getInfo() == "reject") {
+                                    append = to_string(rejects.getId());
+                                    result.append(append);
+                                    append = " ";
+                                    result.append(append);
+                                }
+                            }
+                            append = '\n';
+                            result.append(append);
+                            rejectFound = true;
+                        }
+                    }
+                }            
+            }
             for(State curState : states) {
                 if(curState.getId() == config.getCurrentState()) {
                     if(curState.getInfo() == "accept") {
-                        std::cout << "accept ";
+                        result = "";
+                        append = "accept ";
+                        result.append(append);
                         for(State accepts : states) {
-                            if(accepts.getInfo() == "accept")
-                                std::cout << accepts.getId() << " ";
+                            if(accepts.getInfo() == "accept") {
+                                append = to_string(accepts.getId());
+                                result.append(append);
+                                append = " ";
+                                result.append(append);
+                            }
                         }
-                        std::cout << std::endl;
+                        append = '\n';
+                        result.append(append);
                         breakOut = true;
-                        break;
+                        break;     
                     }
                 }
             }
+
             if(config.getReadIndex() < 0 || config.getReadIndex() >= input.size()) {
-                std::cout << "bounds" << std::endl;
+                cout << "bounds" << endl;
+                breakOut = true;
                 break;
             }
         }
 
-        if(bounds == 0) std::cout << "quit" << std::endl;
+        if(bounds == 0 && !result.length()) 
+            cout << "quit" << endl;
+        else
+            cout << result;
         fin.close();
     }
-    else if(argc < 4) std::cout << "Too few arguments" << std::endl;
-    else std::cout << "Too many arguments" << std::endl;
+    else if(argc < 4) 
+        cout << "Too few arguments" << endl;
+    else 
+        cout << "Too many arguments" << endl;
 }
