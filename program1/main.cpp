@@ -21,11 +21,11 @@ int main(int argc, char* argv[]) {
         vector<Transition> transitions;
         vector<TransitionList> tLists;
 
+        int bounds = atoi(argv[3]);
         string inFile = argv[1];
         string input = argv[2];
         string result = "";
         string append = "";
-        int bounds = atoi(argv[3]);
                 
         fin.open(inFile);
 
@@ -149,7 +149,6 @@ int main(int argc, char* argv[]) {
                 break;
             }
         }
-
         if(bounds == 0 && !result.length()) 
             cout << "quit" << endl;
         else
