@@ -28,6 +28,8 @@ TO RUN:
 TEST:
     To test the code with the python script, you need to have python 3 installed. Then, run `python3 test.py`.
     The program will ask you for the traces directory path, and the correct output path. 
+    If there is no diff output, the run was successful. 
+
     Once this has been entered, the program will: 
         1. Run make
         2. Create the output files from the traces
@@ -35,7 +37,6 @@ TEST:
         4. Delete the created files
         5. Run make clean
 
-    If there is no diff output, the run was successful. 
 
 FOUND INTERESTING:
     Previously, I had not used bit manipulation in a programming project. Considering that was essential for this project, I studied up on bitwise operators and learned quite a few interesting techniques.
