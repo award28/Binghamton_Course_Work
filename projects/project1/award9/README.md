@@ -21,23 +21,27 @@ FILES:
 
 TO RUN:
     Unzip the archive, then enter the following commands:
-    ''''''''''
-        make
-        ./predictors <input-file> <output-file>
-    ''''''''''
+
+    ```bash
+    make
+    ./predictors <input-file> <output-file>
+    ```
 
 TEST:
     To test the code with the python script, you need to have python 3 installed.
-    '''''''''''''''''''''
+
+    ```bash
     python3 test.py
-    '''''''''''''''''''''
+    ```
+
     The program will ask you for the traces directory path, and the correct output path. 
     Once this has been entered, the program will: 
-    1. Run make
-    2. Create the output files from the traces
-    3. Compare the two files
-    4. Delete the created files
-    5. Run make clean
+
+        1. Run make
+        2. Create the output files from the traces
+        3. Compare the two files
+        4. Delete the created files
+        5. Run make clean
 
     If there is no diff output, the run was successful. 
 
