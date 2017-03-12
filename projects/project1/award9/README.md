@@ -22,17 +22,13 @@ FILES:
 TO RUN:
     Unzip the archive, then enter the following commands:
 
-    ```
-    make
-    ./predictors <input-file> <output-file>
-    ```
+    `make`
+    `./predictors <input-file> <output-file>`
 
 TEST:
     To test the code with the python script, you need to have python 3 installed.
 
-    ```
-    python3 test.py
-    ```
+    `python3 test.py`
 
     The program will ask you for the traces directory path, and the correct output path. 
     Once this has been entered, the program will: 
