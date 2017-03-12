@@ -24,6 +24,7 @@ TO RUN:
     ''''''''''
         make
         ./predictors <input-file> <output-file>
+    ''''''''''
 
 TEST:
     To test the code with the python script, you need to have python 3 installed.
@@ -39,8 +40,6 @@ TEST:
     5. Run make clean
 
     If there is no diff output, the run was successful. 
-
-    ''''''''''
 
 FOUND INTERESTING:
     Previously, I had not used bit manipulation in a programming project. Considering that was essential for this project, I studied up on bitwise operators and learned quite a few interesting techniques.
