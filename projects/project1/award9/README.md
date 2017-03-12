@@ -22,7 +22,7 @@ FILES:
 TO RUN:
     Unzip the archive, then enter the following commands:
 
-    ```bash
+    ```
     make
     ./predictors <input-file> <output-file>
     ```
@@ -30,7 +30,7 @@ TO RUN:
 TEST:
     To test the code with the python script, you need to have python 3 installed.
 
-    ```bash
+    ```
     python3 test.py
     ```
 
