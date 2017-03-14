@@ -1,0 +1,152 @@
+\documentclass{report}
+
+\usepackage{amsmath}
+
+%Recursion tree
+\usepackage{forest}
+\usepackage{tabto}
+
+%Title page
+\title{CS375 Homework 2}
+\date{02-20-2017}
+\author{Austin Ward}
+
+%Sectioning
+\renewcommand{\thesection}{Question \arabic{section}}
+\renewcommand\thesubsection{\alph{subsection}}
+
+\begin{document}
+\pagenumbering{gobble}
+\maketitle
+\newpage
+\pagenumbering{arabic}
+
+\section{}
+
+\subsection{}
+\begin{eqnarray*}
+  T(n) = 3T\left(\frac{n}{4}\right) + n,\text{ a = 3, b = 4, }f(n) = n \\
+  n^{log_ba} = n^{log_43} = O(n^{0.793}) \\
+  f(n) = \Omega(n^{log_43 + \epsilon}), when\:\epsilon \approx 0.2 \\
+  \text{Case 3 applies}\\
+  af\left(\frac{n}{b}\right) \leq f(n) \text{ for some } c < 1 \\
+  3\left(\frac{n}{4}\right) \leq \left(\frac{3}{4}\right)n \text{ which holds true for } c = 3/4 \\
+  \\
+  \text{By case 3, the solution is } T(n) = \Theta(n) \\
+\end{eqnarray*}
+
+
+\subsection{}
+\begin{eqnarray*}
+  T(n) = 2T\left(\frac{n}{4}\right) + \sqrt{n}\lg n,\text{ a = 2, b = 4, }f(n) = \sqrt{n}\lg n \\
+  n^{log_ba} = n^{log_42} = O(\sqrt{n}) \\
+  \text{Case 2 applies, thus } T(n) = \Theta(\sqrt{n}\lg^2 n) \\
+\end{eqnarray*}
+
+\subsection{}
+\begin{eqnarray*}
+  T(n) = 5T\left(\frac{n}{2}\right) + n^2,\text{ a = 5, b = 2, }f(n) = n^2 \\
+  n^{log_ba} = n^{log_25 - \epsilon} = O(n^2) \text{, when }\epsilon \approx 0.3\\
+  \text{Case 1 applies, thus } T(n) = \Theta(n^{log_25}) \\
+\end{eqnarray*}
+
+\newpage
+\section{}
+$$
+T(n) = \left\{ \begin{array}{ll}
+    \Theta(1) &\mbox{ for $n \leq 1$} \\
+    T\left(\frac{n}{4}\right) + T\left(\frac{3n}{4}\right) + n &\mbox{ otherwise}
+  \end{array} \right.
+$$
+\\[10mm]
+\begin{tabular}{l c r}
+  \begin{forest}
+  [cn
+    [$c\left(\frac{n}{4}\right)$
+      [, edge=dashed]
+      [, edge=dashed]
+    ]
+    [$c\left(\frac{3n}{4}\right)$
+      [T(1), edge=dashed]
+    ]
+  ]
+\end{forest}
+&
+\shortstack{$\rightarrow$ cn \\[7mm] $\rightarrow$ cn \\[8mm] $\rightarrow$ cn\\[1mm]}
+&
+\shortstack{0 \\[6mm] 1 \\[6mm] $log_{\frac{4}{3}}n - 1$\\[0mm]}
+\end{tabular}
+\\[3mm]
+All columns added up: $\Theta(nlg n)$
+\\[20mm]
+\section{}
+$T(n) = T(n - 1) + n \epsilon O\left(n^2\right), T(1) = 1$
+
+\begin{eqnarray*}
+  \text{We guess } T(n) &\leq& cn^2: \\
+                        &\leq& c(n-1)^2 + n \\
+                        &\leq& c(n^2 - 2n + 1) + n \\
+                        &\leq& cn^2 - 2cn + c + n \\
+                        &\leq& cn^2 \text{ for } c \geq 1 \\
+\end{eqnarray*}
+\newpage
+\section{}
+\subsection{}
+\textbf{Divide} the array into $\left(\frac{n}{3}\right)$ sizes. \\
+\textbf{Conquer} each subarray of $\left(\frac{n}{3}\right)$ sizes, comparing thrice on elements which partition the array.\\
+\textbf{Combine} the array once the element has been found. \\
+
+\subsection{}
+ternarySearch(x, A, left, right)\\
+ \tab if $right = left:$\\
+ \tab \tab return x\\
+ \tab else if $x < A[left + \left(\frac{right - left}{3}\right)]:$\\[2mm]
+ \tab \tab return ternarySearch(x, A, left, $left + \left(\frac{right - left}{3}\right)$)\\[2mm]
+ \tab else if $x < A[\left(\frac{right - left}{3}\right) + 2\left(\frac{right - left}{3}\right)]:$\\[2mm]
+ \tab\tab return ternarySearch(x, A, left, $\left(\frac{right - left}{3}\right), 2\left(\frac{right - left}{3}\right)$)\\[2mm]
+ \tab else if  $x < A[2\left(\frac{right - left}{3}\right) + 2\left(\frac{right - left}{3}\right)]:$\\[2mm]
+ \tab\tab return ternarySearch(x, A, left, $\left(\frac{right - left}{3}\right), 2\left(\frac{right - left}{3}\right)$)\\[2mm]
+
+ \subsection{}
+   $$T(n) = T(n/3) + 1$$\\
+
+ \subsection{}
+\begin{eqnarray*}
+  T(n) = T\left(\frac{n}{3}\right) + 1,\text{ a = 1, b = 3, }f(n) = 1 \\
+  n^{log_ba} = n^{log_31} &=& O(1) \\
+  \text{Case 2 applies, thus } T(n) &=& \Theta(\lg n) \\
+\end{eqnarray*}
+\newpage
+\section{}
+\subsection{}
+\textbf{Divide} the array by picking a pivot point, and pushing elements greater than or equal to the pivot to the left, and greater than to the right. \\
+\textbf{Conquer} the larger subarray, repeating the divide step.\\
+\textbf{Combine} the array once the median element has been found. \\
+
+\newpage
+\section{Bonus}
+$$
+T(n) = 2T\left(\frac{n}{2}\right) + \frac{n}{\lg n}
+$$
+\\[10mm]
+\begin{tabular}{l c r}
+  \begin{forest}
+    [$c\left(\frac{n}{\lg n}\right)$
+    [$c\left(\frac{n}{2\lg n}\right)$
+      [, edge=dashed]
+      [, edge=dashed]
+    ]
+    [$c\left(\frac{n}{2\lg n}\right)$
+      [T(1), edge=dashed]
+    ]
+  ]
+\end{forest}
+&
+\shortstack{$\rightarrow c\left(\frac{n}{\lg n}\right)$ \\[5mm] $\rightarrow c\left(\frac{n}{\lg n}\right)$  \\[4mm] $\rightarrow c\left(\frac{n}{\lg n}\right)$\\[0mm]}
+&
+\shortstack{0 \\[8mm] 1 \\[8mm] $\lg n - 1$\\[2mm]}
+\end{tabular}
+\\[3mm]
+All columns added up: $\Theta(\left(\frac{n}{\lg n}\right)(\lg n)) = \Theta(n)$
+
+\end{document}
