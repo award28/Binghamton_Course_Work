@@ -1,0 +1,29 @@
+CC=g++
+CFLAGS=-c -Wall -g -std=c++11
+LDFLAGS=
+SOURCES1= lenLCS.cpp main1.cpp
+SOURCES2= lenLCS.cpp main2.cpp
+SOURCES3= lenLCS.cpp main3.cpp
+OBJECTS1=$(SOURCES1:.cpp=.o)
+OBJECTS2=$(SOURCES2:.cpp=.o)
+OBJECTS3=$(SOURCES3:.cpp=.o)
+EXECUTABLE1=program1
+EXECUTABLE2=program2
+EXECUTABLE3=program3
+
+all: $(SOURCES1) $(EXECUTABLE1) $(SOURCES2) $(EXECUTABLE2) $(SOURCES3) $(EXECUTABLE3)
+
+$(EXECUTABLE1): $(OBJECTS1)
+	$(CC) $(LDFLAGS) $(OBJECTS1) -o $@
+
+$(EXECUTABLE2): $(OBJECTS2)
+	$(CC) $(LDFLAGS) $(OBJECTS2) -o $@
+
+$(EXECUTABLE3): $(OBJECTS3)
+	$(CC) $(LDFLAGS) $(OBJECTS3) -o $@
+
+.cpp.o:
+	$(CC) $(CFLAGS) $< -o $@
+
+clean:
+	-rm $(EXECUTABLE1) $(EXECUTABLE2) $(EXECUTABLE3) *.o
