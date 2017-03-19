@@ -24,8 +24,8 @@ int main(int argc, char *argv[]) {
     xfile.close();
     yfile.close();
 
-    LenLCS *lenLCS = new LenLCS();
-    lenLCS->execute(x.c_str(), y.c_str(), argv[3]);
+    Memoization *memo = new Memoization();
+    memo->lcs(x.c_str(), y.c_str(), argv[3]);
 
     return 0;
 }

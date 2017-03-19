@@ -54,21 +54,22 @@ void LenLCS::execute(const string &x, const string &y, const string &outfile) {
             }
             fout << endl;
         }
-    }
 
-    while(b[lenx][leny] != 'X') {
-        if(b[lenx][leny] == 'T') {
-            retval = x[lenx - 1] + retval;
-            lenx--;
-            leny--;
+        while(b[lenx][leny] != 'X') {
+            if(b[lenx][leny] == 'T') {
+                retval = x[lenx - 1] + retval;
+                lenx--;
+                leny--;
+            }
+            else if(b[lenx][leny] == '<')
+                leny--;
+            else
+                lenx--;
         }
-        else if(b[lenx][leny] == '<')
-            leny--;
-        else
-            lenx--;
-    }
-
     fout << retval << endl;;
+    }
+    else
+        fout << c[lenx][leny] << endl;
     fout << elapsed_secs << " seconds";
 
     fout.close();

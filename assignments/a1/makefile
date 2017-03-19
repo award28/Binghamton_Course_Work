@@ -2,8 +2,8 @@ CC=g++
 CFLAGS=-c -Wall -g -std=c++11
 LDFLAGS=
 SOURCES1= lenLCS.cpp main1.cpp
-SOURCES2= lenLCS.cpp main2.cpp
-SOURCES3= lenLCS.cpp main3.cpp
+SOURCES2= topDownLCS.cpp main2.cpp
+SOURCES3= memoization.cpp main3.cpp
 OBJECTS1=$(SOURCES1:.cpp=.o)
 OBJECTS2=$(SOURCES2:.cpp=.o)
 OBJECTS3=$(SOURCES3:.cpp=.o)
