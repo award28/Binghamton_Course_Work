@@ -1,7 +1,7 @@
 import os
 
-x = "filex.txt" 
-y = "filey.txt"
+x = "smallx.txt" 
+y = "smally.txt"
 out = "out.txt"
 
 os.system("make");
