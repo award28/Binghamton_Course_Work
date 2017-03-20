@@ -1,15 +1,15 @@
 import os
 
-x = input("File x?\nEnter here: ")
-y = input("File y?\nEnter here: ")
-out = input("Out file?\nEnter here: ")
+x = "filex.txt" 
+y = "filey.txt"
+out = "out.txt"
 
 os.system("make");
 
 for i in range(1, 4):
     print("Running program" + str(i) + "...")
     os.system("./program" + str(i) + " " + x + " " + y + " " + out + " && cat " + out)
-    print("program" + str(i) + " complete")
+    print("\nprogram" + str(i) + " complete")
     
 os.system("rm " + out)
 

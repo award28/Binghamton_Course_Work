@@ -23,6 +23,6 @@ class Memoization {
         Memoization() {}
         void lcs(const std::string &x, const std::string &y, const std::string &outfile);
     private:
-        int execute(const std::string &x, const std::string &y, int curX, int lenX, int curY, int lenY, int *arr);
+        int execute(const std::string &x, const std::string &y, int curX, int lenX, int curY, int lenY);
 };
 #endif
