@@ -1,5 +1,4 @@
 #include<iostream>
-#include<fstream>
 #include<string>
 
 #include "knapsack.hpp"
@@ -38,6 +37,8 @@ int main(int argc, char *argv[]) {
 
     Knapsack *ks = new Knapsack(&items, sackInfo.first, sackInfo.second);
     ks->kwf();
+    ks->execute(0, 0, 0);
+    ks->print(argv[2]);
 
     free(items);
     infile.close();
