@@ -1,50 +1,60 @@
 CS375 Design & Analysis of Algorithms
 Spring 2017
-assignment1 README FILE
+assignment2 README FILE
 
-Due Date: 3/20/17
-Submission Date: 3/20/17
+Due Date: 4/19/17
+Submission Date: 4/19/17
 Author:     Austin Ward
 BU-ID:      award9
 B-Number:   B00518794
 email:      award9@binghamton.edu
 
 DATA STRUCTURES:
-   N/A
+   Binary Tree
 
 ANALYSIS OF COMPUTATION TIME:
-    The running time of program1 is Θ(m×n) since each table entry takes Θ(1) time to compute.
+    The running time of program1 is O(2^n) since the worst case creates 2^n nodes, each of which takes Θ(1) time to compute.
 
 CLASSES USED AND INTERACTIONS:
-    LenLCS, main1.cpp creates a class object.
+    Knapsack, main.cpp creates a class object.
 
 PURPOSE OF CLASSES:
-    LenLCS, Used to evaluate LCS by the iterative bottom-up approach.
+    Knapsack, Used to evaluate Knapsack by the best first search branch and bounds approach.
     
 METHODS IN CLASSES:
-    LenLCS,     Constructor.
-    execute,    Purpose,    Runs the bottom-up lcs iterative approach and prints the required output.
-                Paramters,  x,         A string containing the file name entered as argv[1].
-                            y,         A string containing the file name entered as argv[2].
-                            output,    A string containing the file name entered as argv[3].
-                Variables,  lenx   =  int, The length of string x.
-                            leny   =  int, The length of string y.
-                            c      =  int, A two dimensional array to store matching letter number values.
-                            b      =  char, A two dimensional array to store either left, up, or up left.
-                            subseq =  string, A Longest common subsequence.
-                            fout   =  ofstream, The file to output data to.
-                            begin  =  clock_t, Used to start recording the time of the algorithm.
-                            end    =  clock_t, Used to end recording the time of the algorithm.
-                            time   =  double, Calculates time difference between begin & end.
-
+    Knapsack,   Constructor.
+    kwf,        Purpose,    Executes Knapsack with Fractions algorithm.
+                Paramters,  N/A.
+                Variables,  itemFrac    =   int, Array of profit/weight per item.
+                            temp        =   std::pair<int, int>, temporary value for switching typedef item.
+                            weight      =   int, Current weight.
+    execute,    Purpose,    Executes the best first search branch and bounds algorithm.
+                Paramters,  index,     An int of the current index.
+                            profit,    An int of the current profit.
+                            weight,    An int of the current weight.
+                Variables,  N/A
+    promising,  Purpose,    Checks if a branch is promising.
+                Paramters,  index,     An int of the current index.
+                            profit,    An int of the current profit.
+                            weight,    An int of the current weight.
+                Variables, N/A 
+    kwfAux,     Purpose,    An auxilary KFW algorithm.
+                Paramters,  index,     An int of the current index.
+                            profit,    An int of the current profit.
+                            weight,    An int of the current weight.
+                Variables,  itemFrac    =   int, Array of profit/weight per item.
+                            bound       =   int, Set to the current profit of that branch.
+    print,      Purpose,    Print the results.
+                Paramters,  outfile,     A string for the output data file. 
+                Variables,  fout    =    ofstream, Outfile to print data to.
 PERCENT COMPLETE:
-    100% of the project is complete.
+    90% of the project is complete.
 
 FILES:
-    declaration.txt lcs.hpp lenLCS.cpp main1.cpp main2.cpp main3.cpp makefile memoization.cpp readme1.md readme2.md readme3.md topDownLCS.cpp 
+    declaration.txt knapsack.cpp knapsack.hpp main.cpp makefile readme.txt 
 
 TO RUN:
     Unzip the archive, then enter the following commands:
 
     make
-    ./program1 <filex.txt> <filey.txt> <output1.txt> 
+    ./BestFirstSearch <input.txt> <output.txt> 

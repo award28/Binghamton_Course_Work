@@ -108,21 +108,3 @@ void Knapsack::print(const std::string &outfile) {
 
     fout.close();
 }
-
-/*
-void Knapsack::lcs(const std::string &x, const std::string &y, const std::string &outfile) {
-    int subseq; 
-    ofstream fout(outfile);
-
-    clock_t begin = clock();
-
-   subseq = execute(x, y, 0, x.length(), 0, y.length()); 
-
-    clock_t end = clock();
-    double time = double(end - begin) / CLOCKS_PER_SEC;
-
-    fout << subseq << endl;
-    fout << time << " seconds";
-
-}
-*/
