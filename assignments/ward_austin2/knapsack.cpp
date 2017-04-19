@@ -1,19 +1,39 @@
 #include <string> 
-#include <ctime>
 
 #include "knapsack.hpp"
 
 using namespace std;
 
-Knapsack::Knapsack(item** items, int size) {
+Knapsack::Knapsack(item** items, int size, int capacity) {
     this->visited = 0;
     this->leafVisits = 0;
     this->items = *items;
     this->size = size;
+    this->capacity = capacity;
 }
 void Knapsack::execute() {
+    int itemFrac[this->size];
+    item temp = this->items[0];
+
     for(int i = 0; i < this->size; i++) 
-        cout << this->items[i].first << "," << this->items[i].second << endl;
+        itemFrac[i] = this->items[i].second/this->items[i].first;
+
+    for (int i = 0; i < this->size; i++) {
+        for (int j = 0; j < this->size - i - 1; j++) {
+            if (itemFrac[j] > itemFrac[j + 1]) {
+                itemFrac[j] = itemFrac[j] ^ itemFrac[j + 1];
+                itemFrac[j + 1] = itemFrac[j + 1] ^ itemFrac[j];
+                itemFrac[j] = itemFrac[j] ^ itemFrac[j + 1];
+
+                temp = this->items[j];
+                this->items[j] = this->items[j + 1];
+                this->items[j + 1] = temp;
+            }
+        }
+    }
+
+    for(int i = 0; i < this->size; i++)
+        cout << "item info: " << this->items[i].first << "," << this->items[i].second << " frac: " << itemFrac[i] << endl; 
 }
 
 /*

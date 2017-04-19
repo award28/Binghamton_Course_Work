@@ -36,7 +36,7 @@ int main(int argc, char *argv[]) {
         i++;
     }
 
-    Knapsack *ks = new Knapsack(&items, sackInfo.first);
+    Knapsack *ks = new Knapsack(&items, sackInfo.first, sackInfo.second);
     ks->execute();
 
     free(items);
