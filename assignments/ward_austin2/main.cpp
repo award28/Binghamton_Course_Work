@@ -37,7 +37,7 @@ int main(int argc, char *argv[]) {
     }
 
     Knapsack *ks = new Knapsack(&items, sackInfo.first, sackInfo.second);
-    ks->execute();
+    ks->kwf();
 
     free(items);
     infile.close();
