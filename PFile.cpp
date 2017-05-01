@@ -1,10 +1,9 @@
-#include "ssfs.hpp"
-#include <iostream>
+// Struct for a file object, delete this file after integration into the header
 
-PFile:PFile (char name[33], int size, int _bdp[12], int *_ibp, int **_dibp) {
-    *f_name = name;
-    f_size = size;
-    bdp = _bdp;
-    ibp = _ibp;
-    dibp = _dibp;
-}
+struct p_file {
+    char name[33];
+    int size; // in bytes
+    int dbp[12];
+    int *ibp;
+    int **dibp;
+};
