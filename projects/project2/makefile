@@ -1,7 +1,7 @@
 CC=g++
 CFLAGS=-c -Wall -g -std=c++11
 LDFLAGS=
-SOURCES= main.cpp dMapped.cpp 
+SOURCES= main.cpp direct.cpp sa.cpp fullyLru.cpp fullyHot.cpp set.cpp
 OBJECTS=$(SOURCES:.cpp=.o)
 EXECUTABLE=cache-sim
 

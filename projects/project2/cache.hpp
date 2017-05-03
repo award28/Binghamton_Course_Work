@@ -5,40 +5,80 @@
 #include <vector>
 #include <utility>
 #include <algorithm>
+#include <cmath>
 
-typedef std::pair<bool, unsigned int> memInstruction;
-typedef std::pair<unsigned int, unsigned int> addr;
+typedef std::pair<bool, unsigned long long> instruction;
 
-class DMapped {
- public:
-  DMapped(const std::vector<memInstruction>& trace);
-  void execute(unsigned int size);
-  unsigned int numHits;
-  unsigned int numMisses;
+class Direct {
+    public:
+        Direct(const std::vector<instruction>& traces);
+        void execute(unsigned long long size);
+        unsigned long long hits;
+        unsigned long long total;
 
- private:
-  std::vector<unsigned int> cache;
-  std::vector<memInstruction> trace;
-  unsigned int size;
-  unsigned int capacity;
+    private:
+        std::vector<unsigned long long> cache;
+        std::vector<instruction> traces;
+        unsigned long long size;
+        unsigned long long capacity;
 };
 
-class Row {
- public:
-  Row(unsigned int size) {
-      this->capacity = size;
-      this->counter = 0;
-      this->cache.resize(this->capacity);
-
-      std::fill(this->cache.begin(), this->cache.end() + this->capacity, std::make_pair(0, 0));
-  }
-  bool inCache(unsigned int, bool);
-
- private:
-  bool compare(const addr &i, const addr &j);
-  unsigned int counter;
-  unsigned int capacity;
-  std::vector<addr> cache;
+class Set {
+    public:
+        Set(unsigned long long size);
+        bool inCache(unsigned long long tag, bool replace);
+        unsigned long long counter;
+    private:
+        std::vector<std::pair<unsigned long long, unsigned long long> > blocks;
+        unsigned long long size;
+        void replaceBlock(unsigned long long tag);
 };
 
+class SA {
+    public:
+        SA(const std::vector<instruction>& traces, bool prefetch, bool write, bool onMiss);
+        void execute(unsigned long long size);
+        unsigned long long hits;
+        unsigned long long total;
+
+    private:
+        bool check(unsigned long long addr, bool store, bool head);
+        std::vector<instruction> traces;
+        std::vector<Set*> sets;
+        unsigned long long size = 16 * 1024;
+        unsigned long long capacityPer;
+        unsigned long long assoc;
+        bool prefetch;
+        bool write;
+        bool onMiss;
+};
+
+class FullyLRU {
+    public:
+        FullyLRU(const std::vector<instruction>& traces);
+        void execute();
+        unsigned long long hits;
+        unsigned long long total;
+
+    private:
+        std::vector<instruction> traces;
+        Set *cache = new Set((16 * 1024)/ 32);
+};
+
+class FullyHot {
+    public:
+        FullyHot(const std::vector<instruction>& traces);
+        void execute();
+        unsigned long long hits;
+        unsigned long long total;
+
+    private:
+        typedef std::pair<bool, unsigned long long> hot;
+        std::vector<instruction> traces;
+        bool inCache(unsigned long long);
+        void access(unsigned long long);
+        unsigned long long findSwap();
+        void replace(unsigned long long);
+        std::vector<hot> cache;
+};
 #endif
