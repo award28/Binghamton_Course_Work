@@ -20,7 +20,7 @@ class Controller {
     public:
         char* read();
         bool write(char data[]);
-        void execute(op command);
+        std::string execute(op command);
     private:
         bool bitmap[256] = {false};
         bool inodeTable[256] = {false};
