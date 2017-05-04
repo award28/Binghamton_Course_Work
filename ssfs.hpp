@@ -4,15 +4,19 @@
 #include <string>
 #include <pthread.h>
 
-/*
-class Clock {
-    public:
-        Clock(int arr[]);
-        std::string execute(int cache);
-    private:
-        int accessed[numAccesses];
+struct SuperBlock {  
+    int dataBlocks;
+    int numInodes;
 };
-*/
+
+class Controller {
+    public:
+        char* read();
+        bool write(char data[]);
+    private:
+        bool bitmap[256] = {false};
+        bool inodeTable[256] = {false};
+};
 
 struct op {
     std::string command;
