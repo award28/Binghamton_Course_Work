@@ -10,7 +10,7 @@ int main(int argc, char* argv[]){
 	char* fileName;
 	
 	if(argc > 4 || argc < 3){
-		cout << "Usage: ./" << argv[0] << " <num blocks> <block size> <disk file name>" << endl;
+		cout << "Usage: " << argv[0] << " <num blocks> <block size> <disk file name>" << endl;
 		exit(1);
 	}
 
@@ -42,4 +42,6 @@ int main(int argc, char* argv[]){
 	fp.seekp(x);
 	fp << '\0';
 	fp.close();	
+
+    return 0;
 }

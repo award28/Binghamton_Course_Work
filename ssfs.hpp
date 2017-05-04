@@ -18,12 +18,12 @@ struct op {
 
 class Controller {
     public:
+        Controller(char disk[]);
         char* read();
         bool write(char data[]);
         std::string execute(op command);
     private:
-        bool bitmap[256] = {false};
-        bool inodeTable[256] = {false};
+        char* disk;
         std::queue<op> exe_queue;
 };
 

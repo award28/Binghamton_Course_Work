@@ -24,6 +24,9 @@
 *.lib
 
 # Executables
+# DISK
+# ssfs
+# ssfs_mkdsk
 *.exe
 *.out
 *.app
