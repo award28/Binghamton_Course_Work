@@ -9,11 +9,11 @@ struct SuperBlock {
 
 class Controller {
     public:
+        Controller(char disk[]);
         char* read();
         bool write(char data[]);
     private:
-        bool bitmap[256] = {false};
-        bool inodeTable[256] = {false};
+        char* disk;
 };
 
 #endif

@@ -5,7 +5,7 @@
 using namespace std;
 
 int main(int argc, char *argv[]) {
-    Controller *controller = new Controller();
+    Controller *controller = new Controller("DISK");
 
     char *res = controller->read();
 
