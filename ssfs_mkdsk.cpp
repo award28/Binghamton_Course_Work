@@ -1,6 +1,5 @@
 #include <iostream>
 #include <fstream>
-#include <cmath>
 
 using std::cout;
 using std::cin;
@@ -31,12 +30,12 @@ int main(int argc, char* argv[]){
 		cout << "Block size must be between 128 and 512 inclusive." << endl;
 		exit(1);
 	}
-	if(blockSize & (blockSize - 1) != 0 || numBlocks & (numBlocks - 1) != 0){
+	if((blockSize & (blockSize - 1)) != 0 || (numBlocks & (numBlocks - 1)) != 0){
 		cout << "Block size and num blocks must be powers of 2" << endl;
 		exit(1);
 	}
 
-	x = numBlocks * blockSize - 1;
+	x = (numBlocks * blockSize) - 1;
 
     std::ofstream fp;
 	fp.open(fileName);
