@@ -1,6 +1,10 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
+#include <iostream>
+#include <fstream>
+#include <cmath>
+
+using std::cout;
+using std::cin;
+using std::endl;
 
 int main(int argc, char* argv[]){
 	FILE *fp;
@@ -8,7 +12,7 @@ int main(int argc, char* argv[]){
 	char* fileName;
 	
 	if(argc > 4 || argc < 3){
-		printf("Usage: ./%s <num blocks> <block size> <disk file name>\n", argv[0]);
+		cout << "Usage: ./" << args[0] << " <num blocks> <block size> <disk file name>" << endl;
 		exit(1);
 	}
 
@@ -21,22 +25,23 @@ int main(int argc, char* argv[]){
 	}
 
 	if(numBlocks < 1024 || numBlocks > 131072){
-		printf("Num Blocks must be between 1024 and 128000 inclusive.\n");	
+		cout << "Num Blocks must be between 1024 and 128000 inclusive." << endl;
 		exit(1);
 	}
 	if(blockSize < 128 || blockSize > 512){
-		printf("Block size must be between 128 and 512 inclusive.\n");	
+		cout << "Block size must be between 128 and 512 inclusive." << endl;
 		exit(1);
 	}
 	if(blockSize & (blockSize - 1) != 0 || numBlocks & (numBlocks - 1) != 0){
-		printf("Block size and num blocks must be powers of 2\n");
+		cout << "Block size and num blocks must be powers of 2" << endl;
 		exit(1);
 	}
 
 	x = numBlocks * blockSize - 1;
 
-	fp = fopen(fileName, "wb");
-	fseek(fp, x, SEEK_SET);
-	fputc('\0', fp);
-	fclose(fp);	
+    ofstream fp;
+	fp.open(fileName, "wb");
+	fp.seekp(x);
+	fp << '\0';
+	fp.close();	
 }
