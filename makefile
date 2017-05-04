@@ -1,7 +1,7 @@
 CC=g++
 CFLAGS=-c -Wall -g -std=c++11
 LDFLAGS=
-SOURCES=#PFile.cpp
+SOURCES=ssfs_mkdsk.cpp
 OBJECTS=$(SOURCES:.cpp=.o)
 EXECUTABLE=ssfs
 

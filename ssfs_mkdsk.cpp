@@ -7,12 +7,11 @@ using std::cin;
 using std::endl;
 
 int main(int argc, char* argv[]){
-	FILE *fp;
 	int x, numBlocks, blockSize;
 	char* fileName;
 	
 	if(argc > 4 || argc < 3){
-		cout << "Usage: ./" << args[0] << " <num blocks> <block size> <disk file name>" << endl;
+		cout << "Usage: ./" << argv[0] << " <num blocks> <block size> <disk file name>" << endl;
 		exit(1);
 	}
 
@@ -39,8 +38,8 @@ int main(int argc, char* argv[]){
 
 	x = numBlocks * blockSize - 1;
 
-    ofstream fp;
-	fp.open(fileName, "wb");
+    std::ofstream fp;
+	fp.open(fileName);
 	fp.seekp(x);
 	fp << '\0';
 	fp.close();	
