@@ -5,6 +5,7 @@
 #include <pthread.h>
 #include <sys/types.h>
 #include <unistd.h>
+#include <queue>
 
 struct SuperBlock {  
     int dataBlocks;
@@ -18,18 +19,18 @@ struct op {
 
 class Controller {
     public:
-        Controller(char disk[]);
-        char* read();
-        bool write(char data[]);
+        Controller(const char *disk);
+        char* read(int, int);
+        bool write(char[], int, int);
         void execute(op command);
     private:
-        char* disk;
+        const char* disk;
         std::queue<op> exe_queue;
 };
 
 class disk_op {
     public:
-        disk_op(string f_name);
+        disk_op(std::string f_name);
 };
 
 #endif
