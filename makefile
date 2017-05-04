@@ -1,7 +1,7 @@
 CC=g++
 CFLAGS=-c -Wall -g -std=c++11
 LDFLAGS=
-SOURCES=#PFile.cpp
+SOURCES=controller.cpp main.cpp
 OBJECTS=$(SOURCES:.cpp=.o)
 EXECUTABLE=ssfs
 
