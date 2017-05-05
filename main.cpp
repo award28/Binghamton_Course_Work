@@ -1,12 +1,14 @@
-#include "ssfs.hpp"
 #include <pthread.h>
 #include <iostream>
-#include <cstdlib>
 #include <unistd.h>
 #include <assert.h>
 #include <string>
 
-using namespace std;
+#include "ssfs.hpp"
+
+using std::cout;
+using std::endl;
+using std::string;
 
 struct diskOpArg {
 	string fileName;
