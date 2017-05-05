@@ -8,18 +8,18 @@
 
 using namespace std;
 
-typedef struct diskOpArg {
+struct diskOpArg {
 	string fileName;
-	//Controller &controller;
-} diskOpArg;
+	Controller *controller;
+};
 
 void* diskOp(void *arg){
-	diskOpArg *diskOpArg = arg;
-	disk_op disOp(arg.fileName, arg.controller);
+	diskOpArg *arg = (diskOpArg*) arg;
+	disk_op disOp(arg->fileName, arg->controller);
 }
 
 void* controller(void *arg) {
-    Controller*controller = (Controller*)arg;
+    Controller *controller = (Controller*)arg;
 
     char *res = controller->read(0, 0);
     cout << res << endl;
@@ -28,10 +28,9 @@ void* controller(void *arg) {
 }
     
 int main(int argc, char *argv[]) {
-    char *disk = argv[1];
 	int numThreads, i;
-	char *diskName;
 	char *file[4];
+    char *disk = argv[1];
 
     pthread_t cThread;
 	pthread_t threads[numThreads];
@@ -49,14 +48,22 @@ int main(int argc, char *argv[]) {
     int result_code = pthread_create(&cThread, NULL, &controller, cntlr);
     assert(!result_code);
 
-    result_code = pthread_join(cThread, NULL );
-    assert( !result_code );
+    diskOpArg temp;
+    temp.controller = cntlr;
 	for(i = 0; i < numThreads; i++){
-		diskOpArg temp;
 		temp.fileName = file[i];
-		pthread_create(&threads[i], NULL, diskOp, (void *)temp);
+		result_code = pthread_create(&threads[i], NULL, diskOp, (void *)temp);
+        assert(!result_code);
 		cout << file[i] << endl;
 	}
 
-    return 0;
+    for(i = 0; i < numThreads; i++){
+        result_code = pthread_join(threads[i], NULL);
+        assert(!result_code);
+    }
+
+       result_code = pthread_join(cThread, NULL );
+    assert(!result_code);
+
+ return 0;
 }

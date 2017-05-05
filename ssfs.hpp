@@ -23,6 +23,7 @@ class Controller {
         char* read(int, int);
         bool write(char[], int, int);
         void addCmd(op cmd);
+        void execute();
     private:
         const char* disk;
         std::queue<op> buffer;

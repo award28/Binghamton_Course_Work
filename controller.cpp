@@ -1,4 +1,3 @@
-#include <deque>
 #include <fstream>
 #include <string>
 
@@ -6,10 +5,7 @@
 
 using std::string;
 
-string Controller::execute(op command) {
-    // lock
-    Controller.exe_queue.push(command);
-    // unlock
+void Controller::execute() {
 }
 
 Controller::Controller(const char *disk) {
