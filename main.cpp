@@ -50,6 +50,7 @@ int main(int argc, char *argv[]) {
     pthread_t threads[numThreads];
 
     std::queue<op> buffer;
+    disk_op lol("test", buffer);
     Controller *cntlr = new Controller(disk, buffer);
 
     numThreads = argc - 2;
