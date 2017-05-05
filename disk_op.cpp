@@ -19,6 +19,6 @@ disk_op::disk_op(string f_name, Controller &controller) {
     while (in >> line) {
         curr_op.command = line;
         curr_op.pid = getpid();
-        std::cout << controller.add_command(curr_op) << std::endl;
+        controller.addCmd(curr_op);
     }
 }

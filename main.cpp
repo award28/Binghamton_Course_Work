@@ -1,12 +1,14 @@
-#include "ssfs.hpp"
 #include <pthread.h>
 #include <iostream>
-#include <cstdlib>
 #include <unistd.h>
 #include <assert.h>
 #include <string>
 
-using namespace std;
+#include "ssfs.hpp"
+
+using std::cout;
+using std::endl;
+using std::string;
 
 struct diskOpArg {
 	string fileName;
@@ -14,8 +16,9 @@ struct diskOpArg {
 };
 
 void* diskOp(void *arg){
-	diskOpArg *arg = (diskOpArg*) arg;
-	disk_op disOp(arg->fileName, arg->controller);
+	diskOpArg *a = (diskOpArg*) arg;
+	disk_op diskOp(a->fileName, *(a->controller));
+    return NULL;
 }
 
 void* controller(void *arg) {
@@ -28,7 +31,7 @@ void* controller(void *arg) {
 }
     
 int main(int argc, char *argv[]) {
-	int numThreads, i;
+	int numThreads = 0, i;
 	char *file[4];
     char *disk = argv[1];
 
@@ -42,8 +45,6 @@ int main(int argc, char *argv[]) {
     ops.command = "Hello";
     buffer.push(ops);
 
-	disk = argv[1];
-
 	numThreads = argc - 2;
 	for(i = 2; i < argc; i++) {
 		file[i - 2] = argv[i];
@@ -51,11 +52,11 @@ int main(int argc, char *argv[]) {
 
     int result_code = pthread_create(&cThread, NULL, &controller, &cntlr);
     assert(!result_code);
-
-    diskOpArg temp;
-    temp.controller = cntlr;
+    diskOpArg *temp;
 	for(i = 0; i < numThreads; i++){
-		temp.fileName = file[i];
+        temp = (diskOpArg *)malloc(sizeof(diskOpArg));
+        temp->controller = cntlr;
+		temp->fileName = file[i];
 		result_code = pthread_create(&threads[i], NULL, diskOp, (void *)temp);
         assert(!result_code);
 		cout << file[i] << endl;
