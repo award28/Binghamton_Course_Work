@@ -1,22 +1,22 @@
 CC=g++
-CFLAGS=-c -Wall -g -std=c++11
+CFLAGS=-c -Wall -g -std=c++11 -pthreads
 LDFLAGS=
-SOURCES=#PFile.cpp
-OBJECTS=$(SOURCES:.cpp=.o)
-EXECUTABLE=ssfs
+DISK=ssfs_mkdsk.cpp
+SSFS=controller.cpp main.cpp
+DOBJECTS=$(DISK:.cpp=.o)
+SOBJECTS=$(SSFS:.cpp=.o)
+DEX=ssfs_mkdsk
+SEX=ssfs
 
-all: $(SOURCES) $(EXECUTABLE)
+all: $(SSFS) $(SEX) $(DISK) $(DEX)
+$(SEX): $(SOBJECTS)
+	$(CC) $(LDFLAGS) $(SOBJECTS) -o $@
 
-$(EXECUTABLE): $(OBJECTS)
-	$(CC) $(LDFLAGS) $(OBJECTS) -o $@
+$(DEX): $(DOBJECTS)
+	$(CC) $(LDFLAGS) $(DOBJECTS) -o $@
 
 .cpp.o:
 	$(CC) $(CFLAGS) $< -o $@
 
 clean:
-	-rm $(EXECUTABLE) *.o
-
-t:
-	make
-	./$(EXECUTABLE)
-	make clean
+	-rm $(SEX) $(DEX) *.o

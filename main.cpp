@@ -1,3 +1,4 @@
+#include "ssfs.hpp"
 #include <pthread.h>
 #include <iostream>
 #include <cstdlib>
@@ -9,7 +10,13 @@ typedef struct diskOpArg {
 	string fileName;
 	//Controller &controller;
 } diskOpArg;
-	
+
+void* diskOp(void *arg){
+	diskOpArg *diskOpArg = arg;
+	disk_op disOp(arg.fileName, arg.controller);
+}
+
+
 
 int main(int argc, char* argv[]){
 	int numThreads, i;
@@ -17,7 +24,7 @@ int main(int argc, char* argv[]){
 	char *file[4];
 	
 	if(argc < 3 || argc > 6){
-		cout << "Usage ./" << argv[0] << "<disk file name> <thread1 file name> ..." << endl;
+		cout << "Usage ./" << argv[0] << " <disk file name> <thread1 file name> ..." << endl;
 		exit(1);
 	} 
 
@@ -32,7 +39,7 @@ int main(int argc, char* argv[]){
 	for(i = 0; i < numThreads; i++){
 		diskOpArg temp;
 		temp.fileName = file[i];
-		pthread_create(&threads[i], NULL, disk_op, (void *)temp);
+		pthread_create(&threads[i], NULL, diskOp, (void *)temp);
 		cout << file[i] << endl;
 	}
 }
