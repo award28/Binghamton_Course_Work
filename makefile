@@ -2,7 +2,7 @@ CC=g++
 CFLAGS=-c -Wall -g -std=c++11
 LDFLAGS= -lpthread
 DISK=ssfs_mkdsk.cpp
-SSFS=controller.cpp main.cpp
+SSFS=controller.cpp main.cpp disk_op.cpp
 DOBJECTS=$(DISK:.cpp=.o)
 SOBJECTS=$(SSFS:.cpp=.o)
 DEX=ssfs_mkdsk

@@ -17,7 +17,7 @@ struct diskOpArg {
 
 void* diskOp(void *arg){
 	diskOpArg *a = (diskOpArg*) arg;
-	disk_op disOp(a->fileName, *(a->controller));
+	disk_op diskOp(a->fileName, *(a->controller));
     return NULL;
 }
 
