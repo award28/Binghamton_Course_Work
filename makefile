@@ -20,3 +20,11 @@ $(DEX): $(DOBJECTS)
 
 clean:
 	-rm $(SEX) $(DEX) *.o
+
+test: $(DEX) $(SEX)
+	@echo 'making disk....'
+	./ssfs_mkdsk 1024 256
+	@echo 'running....'
+	./ssfs DISK test
+	@echo 'clean'
+	clean

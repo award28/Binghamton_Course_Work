@@ -13,11 +13,12 @@ using std::string;
 struct diskOpArg {
     string fileName;
     std::queue<op> buff;
+    pthread_mutex_t *mutex;
 };
 
 void* diskOp(void *arg){
     diskOpArg *a = (diskOpArg*) arg;
-    disk_op diskOp(a->fileName, (a->buff));
+    disk_op diskOp(a->fileName, a->buff, a->mutex);
     return NULL;
 }
 
@@ -47,6 +48,7 @@ int main(int argc, char *argv[]) {
     string disk = argv[1];
 
     pthread_t cThread;
+    pthread_mutex_t mx;
     pthread_t threads[numThreads];
 
     std::queue<op> buffer;
@@ -64,6 +66,7 @@ int main(int argc, char *argv[]) {
         temp = (diskOpArg *)malloc(sizeof(diskOpArg));
         temp->buff = buffer;
         temp->fileName = file[i];
+        temp->mutex = &mx;
         result_code = pthread_create(&threads[i], NULL, diskOp, (void *)temp);
         assert(!result_code);
         cout << file[i] << endl;

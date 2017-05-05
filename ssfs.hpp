@@ -15,10 +15,12 @@ struct SuperBlock {
 struct op {
     std::string cmd;
     std::string name;
-    int start;
-    int size;
+    int start = 0;
+    int size = 0;
     char* data;
     pid_t pid;
+    std::string *response;
+    pthread_cond_t *cond;
 };
 
 struct p_file {
@@ -43,8 +45,9 @@ class Controller {
 
 class disk_op {
     public:
-        disk_op(std::string f_name, std::queue<op> &buf);
+        disk_op(std::string f_name, std::queue<op> &buf, pthread_mutex_t *mx);
     private:
         void parse(op &curr_op, std::string line);
+        void push_op(std::queue<op> &buf, op out_op, pthread_mutex_t *mx);
 };
 #endif
