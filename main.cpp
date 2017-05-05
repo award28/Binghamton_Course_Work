@@ -24,8 +24,13 @@ void* diskOp(void *arg){
 void* controller(void *arg) {
     Controller *controller = (Controller*)arg;
 
-    char *res = controller->read(0, 0);
-    cout << res << endl;
+    /*
+    showdown = false;
+
+    while(!shutdown) {
+        controller->execute();
+    }
+    */
 
     return NULL;
 }
@@ -40,10 +45,6 @@ int main(int argc, char *argv[]) {
 
     std::queue<op> buffer;
     Controller *cntlr = new Controller(disk, buffer);
-    op ops;
-    ops.pid = 1;
-    ops.command = "Hello";
-    buffer.push(ops);
 
     numThreads = argc - 2;
     for(i = 2; i < argc; i++) {
