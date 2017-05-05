@@ -1,7 +1,16 @@
 #include <deque>
 #include <fstream>
+#include <string>
 
 #include "ssfs.hpp"
+
+using std::string;
+
+string Controller::execute(op command) {
+    // lock
+    Controller.exe_queue.push(command);
+    // unlock
+}
 
 Controller::Controller(char disk[]) {
     this->disk = disk;
