@@ -2,6 +2,8 @@
 #include <pthread.h>
 #include <iostream>
 #include <cstdlib>
+#include <unistd.h>
+#include <assert.h>
 #include <string>
 
 using namespace std;
@@ -16,12 +18,25 @@ void* diskOp(void *arg){
 	disk_op disOp(arg.fileName, arg.controller);
 }
 
+void* controller(void *arg) {
+    Controller*controller = (Controller*)arg;
 
+    char *res = controller->read(0, 0);
+    cout << res << endl;
 
-int main(int argc, char* argv[]){
+    return NULL;
+}
+    
+int main(int argc, char *argv[]) {
+    char *disk = argv[1];
 	int numThreads, i;
 	char *diskName;
 	char *file[4];
+
+    pthread_t cThread;
+	pthread_t threads[numThreads];
+
+    Controller *cntlr = new Controller(disk);
 	
 	if(argc < 3 || argc > 6){
 		cout << "Usage ./" << argv[0] << " <disk file name> <thread1 file name> ..." << endl;
@@ -35,11 +50,17 @@ int main(int argc, char* argv[]){
 		file[i - 2] = argv[i];
 	}
 
-	pthread_t threads[numThreads];
+    int result_code = pthread_create(&cThread, NULL, &controller, cntlr);
+    assert(!result_code);
+
+    result_code = pthread_join(cThread, NULL );
+    assert( !result_code );
 	for(i = 0; i < numThreads; i++){
 		diskOpArg temp;
 		temp.fileName = file[i];
 		pthread_create(&threads[i], NULL, diskOp, (void *)temp);
 		cout << file[i] << endl;
 	}
+
+    return 0;
 }
