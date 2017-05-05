@@ -44,7 +44,7 @@ void* controller(void *arg) {
 }
 
 int main(int argc, char *argv[]) {
-    int numThreads = 0, i;
+    int numThreads = argc - 2, i;
     char *file[4];
     string disk = argv[1];
 
@@ -55,7 +55,6 @@ int main(int argc, char *argv[]) {
     std::queue<op> buffer;
     Controller *cntlr = new Controller(disk, buffer);
 
-    numThreads = argc - 2;
     for(i = 2; i < argc; i++) {
         file[i - 2] = argv[i];
     }
