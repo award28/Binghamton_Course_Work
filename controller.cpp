@@ -5,9 +5,6 @@
 
 using std::string;
 
-void Controller::execute() {
-}
-
 Controller::Controller(const char *disk, std::queue<op> &buffer) {
     this->disk = disk;
     this->buffer = buffer;
@@ -25,7 +22,7 @@ char* Controller::read(int pos, int numBytes) {
     return data;
 }
 
-bool Controller::write(char data[], int pos, int numBytes) {
+bool Controller::write(std::string &name, int start, int size, char *data) {
     std::ofstream write;
 
     write.open(this->disk);
@@ -35,6 +32,10 @@ bool Controller::write(char data[], int pos, int numBytes) {
     return true;
 }
 
-void Controller::addCmd(op cmd) {
-    this->buffer.push(cmd);
+void Controller::execute() {
+    op curOp = buffer.back();
+    buffer.pop();
+
+    if(curOp.cmd == "CREATE" || curOp.cmd == "IMPORT" || curOp.cmd == "WRITE")
+        write(curOp.name, curOp.start, curOp.size, curOp.data); 
 }

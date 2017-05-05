@@ -14,6 +14,7 @@ struct SuperBlock {
 
 struct op {
     std::string cmd;
+    std::string name;
     int start;
     int size;
     char* data;
@@ -33,8 +34,7 @@ class Controller {
     public:
         Controller(const char *disk, std::queue<op> &buffer);
         char* read(int, int);
-        bool write(char[], int, int);
-        void addCmd(op cmd);
+        bool write(std::string &name, int start, int size, char *data);
         void execute();
     private:
         const char* disk;
@@ -47,5 +47,4 @@ class disk_op {
     private:
         std::queue<op> buffer;
 };
-
 #endif
