@@ -11,13 +11,13 @@ using std::endl;
 using std::string;
 
 struct diskOpArg {
-	string fileName;
-	Controller *controller;
+    string fileName;
+    Controller *controller;
 };
 
 void* diskOp(void *arg){
-	diskOpArg *a = (diskOpArg*) arg;
-	disk_op diskOp(a->fileName, *(a->controller));
+    diskOpArg *a = (diskOpArg*) arg;
+    disk_op diskOp(a->fileName, *(a->controller));
     return NULL;
 }
 
@@ -29,14 +29,14 @@ void* controller(void *arg) {
 
     return NULL;
 }
-    
+
 int main(int argc, char *argv[]) {
-	int numThreads = 0, i;
-	char *file[4];
+    int numThreads = 0, i;
+    char *file[4];
     char *disk = argv[1];
 
     pthread_t cThread;
-	pthread_t threads[numThreads];
+    pthread_t threads[numThreads];
 
     std::queue<op> buffer;
     Controller *cntlr = new Controller(disk, buffer);
@@ -45,22 +45,22 @@ int main(int argc, char *argv[]) {
     ops.command = "Hello";
     buffer.push(ops);
 
-	numThreads = argc - 2;
-	for(i = 2; i < argc; i++) {
-		file[i - 2] = argv[i];
-	}
+    numThreads = argc - 2;
+    for(i = 2; i < argc; i++) {
+        file[i - 2] = argv[i];
+    }
 
     int result_code = pthread_create(&cThread, NULL, &controller, &cntlr);
     assert(!result_code);
     diskOpArg *temp;
-	for(i = 0; i < numThreads; i++){
+    for(i = 0; i < numThreads; i++){
         temp = (diskOpArg *)malloc(sizeof(diskOpArg));
         temp->controller = cntlr;
-		temp->fileName = file[i];
-		result_code = pthread_create(&threads[i], NULL, diskOp, (void *)temp);
+        temp->fileName = file[i];
+        result_code = pthread_create(&threads[i], NULL, diskOp, (void *)temp);
         assert(!result_code);
-		cout << file[i] << endl;
-	}
+        cout << file[i] << endl;
+    }
 
     for(i = 0; i < numThreads; i++){
         result_code = pthread_join(threads[i], NULL);
@@ -70,5 +70,5 @@ int main(int argc, char *argv[]) {
     result_code = pthread_join(cThread, NULL);
     assert(!result_code);
 
- return 0;
+    return 0;
 }
