@@ -12,12 +12,12 @@ using std::string;
 
 struct diskOpArg {
     string fileName;
-    Controller *controller;
+    std::queue<op> buff;
 };
 
 void* diskOp(void *arg){
     diskOpArg *a = (diskOpArg*) arg;
-    disk_op diskOp(a->fileName, *(a->controller));
+    disk_op diskOp(a->fileName, (a->buff));
     return NULL;
 }
 
@@ -42,7 +42,7 @@ int main(int argc, char *argv[]) {
     Controller *cntlr = new Controller(disk, buffer);
     op ops;
     ops.pid = 1;
-    ops.command = "Hello";
+    ops.cmd = "Hello";
     buffer.push(ops);
 
     numThreads = argc - 2;
@@ -55,7 +55,7 @@ int main(int argc, char *argv[]) {
     diskOpArg *temp;
     for(i = 0; i < numThreads; i++){
         temp = (diskOpArg *)malloc(sizeof(diskOpArg));
-        temp->controller = cntlr;
+        temp->buff = buffer;
         temp->fileName = file[i];
         result_code = pthread_create(&threads[i], NULL, diskOp, (void *)temp);
         assert(!result_code);

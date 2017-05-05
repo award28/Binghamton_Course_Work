@@ -43,8 +43,8 @@ class Controller {
 
 class disk_op {
     public:
-        disk_op(std::string f_name, Controller &controller);
+        disk_op(std::string f_name, std::queue<op> &buf);
     private:
-        std::queue<op> buffer;
+        void parse(op &curr_op, std::string line);
 };
 #endif
