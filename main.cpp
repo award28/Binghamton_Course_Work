@@ -24,19 +24,20 @@ void* diskOp(void *arg){
 void* controller(void *arg) {
     Controller *controller = (Controller*)arg;
 
+    /*
     string name = "Hello.txt";
     int start = 5000;
     int size = 28;
     char *data = "Hello Darkness my old Friend";
     controller->write(name, start, size, data);
     cout << controller->read(name, start, size) << endl;
-    /*
-    showdown = false;
-
-    while(!shutdown) {
-        controller->execute();
-    }
     */
+
+    int i = 0;
+    while(i < 20) {
+        controller->execute();
+        i++;
+    }
 
     return NULL;
 }
@@ -58,8 +59,8 @@ int main(int argc, char *argv[]) {
         file[i - 2] = argv[i];
     }
 
-    int result_code = pthread_create(&cThread, NULL, &controller, cntlr);
-    assert(!result_code);
+    int result_code;
+
     diskOpArg *temp;
     for(i = 0; i < numThreads; i++){
         temp = (diskOpArg *)malloc(sizeof(diskOpArg));
@@ -74,6 +75,9 @@ int main(int argc, char *argv[]) {
         result_code = pthread_join(threads[i], NULL);
         assert(!result_code);
     }
+
+    result_code = pthread_create(&cThread, NULL, &controller, cntlr);
+    assert(!result_code);
 
     result_code = pthread_join(cThread, NULL);
     assert(!result_code);

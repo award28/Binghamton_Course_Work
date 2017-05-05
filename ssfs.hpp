@@ -33,7 +33,7 @@ struct p_file {
 class Controller {
     public:
         Controller(std::string &disk, std::queue<op> &buffer);
-        char* read(std::string &name, int start, int size);
+        std::string read(std::string &name, int start, int size);
         bool write(std::string &name, int start, int size, char *data);
         void execute();
     private:
