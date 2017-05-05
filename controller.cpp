@@ -10,22 +10,15 @@ Controller::Controller(std::string &disk, std::queue<op> &buffer) {
     this->buffer = buffer;
 }
 
-char* Controller::read(std::string &name, int start, int size) {
+std::string Controller::read(std::string &name, int start, int size) {
     std::fstream disk(this->disk, std::fstream::in | std::fstream::out | std::fstream::binary );
+    char *data = new char[size];
+
     disk.seekp(start);
-
-    char *data = new char[size + 1];
-
     disk.read(data, size);
-    /*
-    for(int i = 0; i < size;) {
-        for(int j = 0; j < newData.length() && i < size; j++, i++) {
-        }
-    }
-    */
-
     disk.close();
-    return data;
+
+    return std::string(data);
 }
 
 bool Controller::write(std::string &name, int start, int size, char *data) {
@@ -45,8 +38,10 @@ bool Controller::write(std::string &name, int start, int size, char *data) {
 }
 
 void Controller::execute() {
-    op curOp = buffer.back();
+    op curOp = buffer.front();
     buffer.pop();
+
+    std::cout << curOp.cmd << std::endl;
 
     if(curOp.cmd == "CREATE" || curOp.cmd == "IMPORT" || curOp.cmd == "WRITE")
         write(curOp.name, curOp.start, curOp.size, curOp.data); 
