@@ -31,7 +31,7 @@ class Controller {
 
 class disk_op {
     public:
-        disk_op(std::string f_name);
+        disk_op(std::string f_name, Controller &controller);
     private:
         std::queue<op> buffer;
 };
