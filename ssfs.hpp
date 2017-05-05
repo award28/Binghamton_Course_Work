@@ -17,6 +17,15 @@ struct op {
     pid_t pid;
 };
 
+struct p_file {
+    char name[33];
+    int size; // in bytes
+    int dbp[12];
+    int *ibp;
+    int **dibp;
+    // data ??
+};
+
 class Controller {
     public:
         Controller(const char *disk);
