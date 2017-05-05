@@ -12,7 +12,7 @@ using std::string;
 
 struct diskOpArg {
     string fileName;
-    std::queue<op> buff;
+    std::queue<op> *buff;
     pthread_mutex_t *mutex;
 };
 
@@ -23,7 +23,7 @@ void* diskOp(void *arg){
 }
 
 void* controller(void *arg) {
-    Controller *controller = (Controller*)arg;
+    Controller *contr = (Controller*)arg;
 
     /*
     string name = "Hello.txt";
@@ -33,12 +33,11 @@ void* controller(void *arg) {
     controller->write(name, start, size, data);
     cout << controller->read(name, start, size) << endl;
     */
-
-    int i = 0;
-    while(i < 20) {
-        controller->execute();
-        i++;
-    }
+    // int i = 0;
+    // while(i < 20) {
+    contr->execute();
+    //     i++;
+    // }
 
     return NULL;
 }
@@ -52,7 +51,7 @@ int main(int argc, char *argv[]) {
     pthread_mutex_t mx;
     pthread_t threads[numThreads];
 
-    std::queue<op> buffer;
+    std::queue<op> *buffer = new std::queue<op>();
     Controller *cntlr = new Controller(disk, buffer);
 
     for(i = 2; i < argc; i++) {
@@ -69,7 +68,6 @@ int main(int argc, char *argv[]) {
         temp->mutex = &mx;
         result_code = pthread_create(&threads[i], NULL, diskOp, (void *)temp);
         assert(!result_code);
-        cout << file[i] << endl;
     }
 
     for(i = 0; i < numThreads; i++){
