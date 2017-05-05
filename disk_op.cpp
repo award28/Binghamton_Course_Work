@@ -1,9 +1,10 @@
 #include <fstream>
 #include <iostream>
-#include <ssfs.hpp>
 #include <string>
 #include <sys/types.h>
 #include <unistd.h>
+
+#include "ssfs.hpp"
 
 using std::string;
 
@@ -18,6 +19,6 @@ disk_op::disk_op(string f_name, Controller &controller) {
     while (in >> line) {
         curr_op.command = line;
         curr_op.pid = getpid();
-        std::cout << controller.execute(curr_op) << std::endl;
+        std::cout << controller.add_command(curr_op) << std::endl;
     }
 }

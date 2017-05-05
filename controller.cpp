@@ -4,6 +4,14 @@
 
 #include "ssfs.hpp"
 
+using std::string;
+
+string Controller::execute(op command) {
+    // lock
+    Controller.exe_queue.push(command);
+    // unlock
+}
+
 Controller::Controller(const char *disk) {
     this->disk = disk;
 }
