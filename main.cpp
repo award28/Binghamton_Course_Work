@@ -19,6 +19,7 @@ int main(int argc, char *argv[]) {
     char *disk = argv[1];
 
     Controller *cntlr = new Controller(disk);
+    std::queue<op> buffer;
 
     pthread_t cThread;
 

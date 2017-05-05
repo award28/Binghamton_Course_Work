@@ -22,15 +22,17 @@ class Controller {
         Controller(const char *disk);
         char* read(int, int);
         bool write(char[], int, int);
-        void execute(op command);
+        void addCmd(op cmd);
     private:
         const char* disk;
-        std::queue<op> exe_queue;
+        std::queue<op> buffer;
 };
 
 class disk_op {
     public:
         disk_op(std::string f_name);
+    private:
+        std::queue<op> buffer;
 };
 
 #endif

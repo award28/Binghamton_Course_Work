@@ -29,3 +29,7 @@ bool Controller::write(char data[], int pos, int numBytes) {
 
     return true;
 }
+
+void Controller::addCmd(op cmd) {
+    this->buffer.push(cmd);
+}
