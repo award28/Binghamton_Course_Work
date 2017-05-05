@@ -13,7 +13,10 @@ struct SuperBlock {
 };
 
 struct op {
-    std::string command;
+    std::string cmd;
+    int start;
+    int size;
+    char* data;
     pid_t pid;
 };
 
