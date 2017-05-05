@@ -8,8 +8,9 @@ using std::string;
 void Controller::execute() {
 }
 
-Controller::Controller(const char *disk) {
+Controller::Controller(const char *disk, std::queue<op> &buffer) {
     this->disk = disk;
+    this->buffer = buffer;
 }
 
 char* Controller::read(int pos, int numBytes) {

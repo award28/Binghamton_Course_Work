@@ -35,17 +35,21 @@ int main(int argc, char *argv[]) {
     pthread_t cThread;
 	pthread_t threads[numThreads];
 
-    Controller *cntlr = new Controller(disk);
     std::queue<op> buffer;
+    Controller *cntlr = new Controller(disk, buffer);
+    op ops;
+    ops.pid = 1;
+    ops.command = "Hello";
+    buffer.push(ops);
 
-	diskName = argv[1];
+	disk = argv[1];
 
 	numThreads = argc - 2;
-	for(i = 2; i < argc; i++){
+	for(i = 2; i < argc; i++) {
 		file[i - 2] = argv[i];
 	}
 
-    int result_code = pthread_create(&cThread, NULL, &controller, cntlr);
+    int result_code = pthread_create(&cThread, NULL, &controller, &cntlr);
     assert(!result_code);
 
     diskOpArg temp;
@@ -62,7 +66,7 @@ int main(int argc, char *argv[]) {
         assert(!result_code);
     }
 
-       result_code = pthread_join(cThread, NULL );
+    result_code = pthread_join(cThread, NULL);
     assert(!result_code);
 
  return 0;

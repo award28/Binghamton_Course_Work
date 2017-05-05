@@ -19,7 +19,7 @@ struct op {
 
 class Controller {
     public:
-        Controller(const char *disk);
+        Controller(const char *disk, std::queue<op> &buffer);
         char* read(int, int);
         bool write(char[], int, int);
         void addCmd(op cmd);
