@@ -12,11 +12,11 @@ string Controller::execute(op command) {
     // unlock
 }
 
-Controller::Controller(char disk[]) {
+Controller::Controller(const char *disk) {
     this->disk = disk;
 }
 
-char* Controller::read() {
+char* Controller::read(int pos, int numBytes) {
     std::ifstream read;
 
     read.open(this->disk);
@@ -28,7 +28,7 @@ char* Controller::read() {
     return data;
 }
 
-bool Controller::write(char data[]) {
+bool Controller::write(char data[], int pos, int numBytes) {
     std::ofstream write;
 
     write.open(this->disk);
