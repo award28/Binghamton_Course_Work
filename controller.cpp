@@ -5,37 +5,42 @@
 
 using std::string;
 
-Controller::Controller(const char *disk, std::queue<op> &buffer) {
+Controller::Controller(std::string &disk, std::queue<op> &buffer) {
     this->disk = disk;
     this->buffer = buffer;
 }
 
 char* Controller::read(std::string &name, int start, int size) {
-    std::ifstream read;
+    std::fstream disk(this->disk, std::fstream::in | std::fstream::out | std::fstream::binary );
+    disk.seekp(start);
 
-    read.open(this->disk);
+    char *data = new char[size + 1];
 
-    char *data = "";
-    data = "Hello world!";
+    disk.read(data, size);
+    /*
+    for(int i = 0; i < size;) {
+        for(int j = 0; j < newData.length() && i < size; j++, i++) {
+        }
+    }
+    */
 
-    read.close();
+    disk.close();
     return data;
 }
 
 bool Controller::write(std::string &name, int start, int size, char *data) {
-    std::ofstream write;
-    write.open(this->disk);
+    std::fstream disk(this->disk, std::fstream::in | std::fstream::out | std::fstream::binary );
+    disk.seekp(start);
 
-    write.seekp(start);
-
-    size_t length = sizeof(data)/sizeof(data[0]);
+    std::string newData(data);
 
     for(int i = 0; i < size;) {
-        for(int j = 0; j < length && i < size; j++, i++) {
-            //write >> data[j];
+        for(int j = 0; j < newData.length() && i < size; j++, i++) {
+            disk << newData[j];
         }
     }
-    write.close();
+
+    disk.close();
     return true;
 }
 

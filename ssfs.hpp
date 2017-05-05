@@ -32,12 +32,12 @@ struct p_file {
 
 class Controller {
     public:
-        Controller(const char *disk, std::queue<op> &buffer);
+        Controller(std::string &disk, std::queue<op> &buffer);
         char* read(std::string &name, int start, int size);
         bool write(std::string &name, int start, int size, char *data);
         void execute();
     private:
-        const char* disk;
+        std::string disk;
         std::queue<op> buffer;
 };
 
