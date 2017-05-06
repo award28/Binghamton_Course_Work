@@ -27,4 +27,5 @@ test: $(DEX) $(SEX)
 	@echo 'running....'
 	./ssfs DISK test
 	@echo 'clean'
+	@rm -f DISK
 	clean

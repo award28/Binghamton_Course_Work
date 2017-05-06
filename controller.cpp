@@ -5,7 +5,7 @@
 
 using std::string;
 
-Controller::Controller(std::string &disk, std::queue<op> &buffer) {
+Controller::Controller(std::string &disk, std::queue<op> *buffer) {
     this->disk = disk;
     this->buffer = buffer;
 }
@@ -43,7 +43,6 @@ void Controller::execute() {
 
     std::cout << curOp.cmd << std::endl;
 
-    /*
     if(curOp.cmd == "CREATE" || curOp.cmd == "IMPORT" || curOp.cmd == "WRITE")
         write(curOp.name, curOp.start, curOp.size, curOp.data); 
     else if(curOp.cmd == "CAT" || curOp.cmd == "READ")
@@ -52,5 +51,4 @@ void Controller::execute() {
     else if(curOp.cmd == "DELETE") {} //Delete method goes here
     else if(curOp.cmd == "SHUTDOWN") {} //SHUTDOWN EVERYTHING
     else {} //signal pid error, bad command
-    */
 }

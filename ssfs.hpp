@@ -34,20 +34,20 @@ struct p_file {
 
 class Controller {
     public:
-        Controller(std::string &disk, std::queue<op> &buffer);
+        Controller(std::string &disk, std::queue<op> *buffer);
         std::string read(std::string &name, int start, int size);
         bool write(std::string &name, int start, int size, char *data);
         void execute();
     private:
         std::string disk;
-        std::queue<op> buffer;
+        std::queue<op> *buffer;
 };
 
 class disk_op {
     public:
-        disk_op(std::string f_name, std::queue<op> &buf, pthread_mutex_t *mx);
+        disk_op(std::string f_name, std::queue<op> *buf, pthread_mutex_t *mx);
     private:
         void parse(op &curr_op, std::string line);
-        void push_op(std::queue<op> &buf, op out_op, pthread_mutex_t *mx);
+        void push_op(std::queue<op> *buf, op out_op, pthread_mutex_t *mx);
 };
 #endif

@@ -13,13 +13,14 @@ using std::string;
 using std::cout;
 using std::endl;
 
-void disk_op::push_op(std::queue<op> &buf, op out_op, pthread_mutex_t *mx) {
+void disk_op::push_op(std::queue<op> *buf, op out_op, pthread_mutex_t *mx) {
     pthread_mutex_lock(mx);
-    buf.push(out_op);
+    cout << "ayy lamao" << endl;
+    buf->push(out_op);
     pthread_mutex_unlock(mx);
 }
 
-disk_op::disk_op(string f_name, std::queue<op> &buf, pthread_mutex_t *mutex) {
+disk_op::disk_op(string f_name, std::queue<op> *buf, pthread_mutex_t *mutex) {
     std::ifstream in;
     in.open(f_name);
     if (in.fail()) {
@@ -36,15 +37,15 @@ disk_op::disk_op(string f_name, std::queue<op> &buf, pthread_mutex_t *mutex) {
 
         parse(curr_op, line);
 
-        // print op
-        cout << "line: " << line << endl;
-        cout << "~~~~~~~~ op struct ~~~~~~~~~~" << endl;
-        cout << curr_op.cmd << endl;
-        cout << curr_op.name << endl;
-        cout << curr_op.start << endl;
-        cout << curr_op.size << endl;
-        cout << curr_op.data << endl;
-        cout << curr_op.pid << endl << endl;
+        // // print op
+        // cout << "line: " << line << endl;
+        // cout << "~~~~~~~~ op struct ~~~~~~~~~~" << endl;
+        // cout << curr_op.cmd << endl;
+        // cout << curr_op.name << endl;
+        // cout << curr_op.start << endl;
+        // cout << curr_op.size << endl;
+        // cout << curr_op.data << endl;
+        // cout << curr_op.pid << endl << endl;
 
         push_op(buf, curr_op, mutex);
 

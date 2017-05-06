@@ -21,7 +21,7 @@ int main(int argc, char* argv[]){
 	if(argc == 4){
 		fileName = argv[3];
 	}else{
-		fileName = "DISK";
+		fileName = (char *)"DISK";
 	}
 
 	if(numBlocks < 1024 || numBlocks > 131072){
