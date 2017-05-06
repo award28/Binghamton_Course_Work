@@ -8,6 +8,20 @@ using std::string;
 Controller::Controller(std::string &disk, std::queue<op> *buffer) {
     this->disk = disk;
     this->buffer = buffer;
+
+    std::streampos pos;
+    std::fstream tdisk(this->disk, std::fstream::in | std::fstream::out | std::fstream::binary);
+
+    char temp;
+
+    tdisk >> temp;
+
+    while(temp != '#')
+        tdisk >> temp;
+
+    this->inodeStart = tdisk.tellg();
+
+    tdisk.close();
 }
 
 std::string Controller::read(std::string &name, int start, int size) {
@@ -37,9 +51,12 @@ bool Controller::write(std::string &name, int start, int size, char *data) {
     return true;
 }
 
-void Controller::execute() {
-    op curOp = buffer.front();
-    buffer.pop();
+bool Controller::execute() {
+    if(buffer->empty())
+        return false;
+
+    op curOp = buffer->front();
+    buffer->pop();
 
     std::cout << curOp.cmd << std::endl;
 
@@ -51,4 +68,5 @@ void Controller::execute() {
     else if(curOp.cmd == "DELETE") {} //Delete method goes here
     else if(curOp.cmd == "SHUTDOWN") {} //SHUTDOWN EVERYTHING
     else {} //signal pid error, bad command
+    return true;
 }

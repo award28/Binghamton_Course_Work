@@ -25,20 +25,24 @@ void* diskOp(void *arg){
 void* controller(void *arg) {
     Controller *controller = (Controller*)arg;
 
+    /*
     string name = "Hello.txt";
     int start = 0;
     int size = 28;
     char *data = "Hello Darkness my old Friend";
     controller->write(name, start, size, data);
-    cout << controller->read(name, start, size) << endl;
+    cout << controller->read(name, 10, size) << endl;
 
-    /*
     int i = 0;
     while(i < 20) {
         controller->execute();
         i++;
     }
     */
+
+    while (controller->execute()) {}
+
+    
     return NULL;
 }
 
@@ -48,37 +52,24 @@ int main(int argc, char *argv[]) {
     string disk = argv[1];
 
     pthread_t cThread;
-    /*
     pthread_mutex_t mx;
     pthread_t threads[numThreads];
-    */
 
-    std::queue<op> *buffer = new std::queue<op>();
+    std::queue<op> *buffer = new std::queue<op>;
     Controller *cntlr = new Controller(disk, buffer);
 
-    /*
     numThreads = argc - 2;
     for(i = 2; i < argc; i++) {
         file[i - 2] = argv[i];
     }
-    */
 
     int result_code;
 
-    /*
     diskOpArg *temp = (diskOpArg *)malloc(sizeof(diskOpArg));
     temp->buff = buffer;
     temp->mutex = &mx;
-    */
-
-    result_code = pthread_create(&cThread, NULL, &controller, cntlr);
-    assert(!result_code);
-
-    result_code = pthread_join(cThread, NULL);
-    assert(!result_code);
 
 
-    /*
     for(i = 0; i < numThreads; i++){
         temp->fileName = file[i];
         result_code = pthread_create(&threads[i], NULL, diskOp, (void *)temp);
@@ -87,10 +78,14 @@ int main(int argc, char *argv[]) {
 
     for(i = 0; i < numThreads; i++){
         result_code = pthread_join(threads[i], NULL);
-        cout << i << endl;
-        cout << result_code << endl;
-        //assert(!result_code);
+        assert(!result_code);
     }
-    */
+
+    result_code = pthread_create(&cThread, NULL, &controller, cntlr);
+    assert(!result_code);
+
+    result_code = pthread_join(cThread, NULL);
+    assert(!result_code);
+
     return 0;
 }

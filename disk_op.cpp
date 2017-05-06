@@ -15,7 +15,6 @@ using std::endl;
 
 void disk_op::push_op(std::queue<op> *buf, op out_op, pthread_mutex_t *mx) {
     pthread_mutex_lock(mx);
-    cout << "ayy lamao" << endl;
     buf->push(out_op);
     pthread_mutex_unlock(mx);
 }
@@ -75,8 +74,7 @@ void disk_op::parse(op &curr_op, string line) {
     }
     if (string("DELETE").compare(curr_op.cmd) == 0) {
         ss >> curr_op.name;
-    }
-    if (string("WRITE").compare(curr_op.cmd) == 0) {
+    } if (string("WRITE").compare(curr_op.cmd) == 0) {
         ss >> curr_op.name;
         string t;
         ss >> t;

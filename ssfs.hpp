@@ -1,5 +1,6 @@
 #ifndef SSFS_HPP
 #define SSFS_HPP
+
 #include <iostream>
 #include <string>
 #include <pthread.h>
@@ -37,9 +38,10 @@ class Controller {
         Controller(std::string &disk, std::queue<op> *buffer);
         std::string read(std::string &name, int start, int size);
         bool write(std::string &name, int start, int size, char *data);
-        void execute();
+        bool execute();
     private:
         std::string disk;
+        int inodeStart;
         std::queue<op> *buffer;
 };
 
