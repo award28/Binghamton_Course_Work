@@ -9,8 +9,8 @@
 #include <queue>
 
 struct SuperBlock {  
-    int dataBlocks;
-    int numInodes;
+    int numBlocks;
+    int blockSize;
 };
 
 struct op {
@@ -26,11 +26,10 @@ struct op {
 
 struct p_file {
     char name[33];
-    int size; // in bytes
+    int size;
     int dbp[12];
     int *ibp;
     int **dibp;
-    // data ??
 };
 
 class Controller {
@@ -40,6 +39,7 @@ class Controller {
         bool write(std::string &name, int start, int size, char *data);
         bool execute();
     private:
+        SuperBlock sb;
         std::string disk;
         int inodeStart;
         std::queue<op> *buffer;

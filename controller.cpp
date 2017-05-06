@@ -1,4 +1,5 @@
 #include <fstream>
+#include <sstream>
 #include <string>
 
 #include "ssfs.hpp"
@@ -9,15 +10,14 @@ Controller::Controller(std::string &disk, std::queue<op> *buffer) {
     this->disk = disk;
     this->buffer = buffer;
 
-    std::streampos pos;
+    char delimeter('#');
+
     std::fstream tdisk(this->disk, std::fstream::in | std::fstream::out | std::fstream::binary);
+    std::string superBlock;
+    std::getline(tdisk, superBlock, delimeter);
+    std::stringstream s(superBlock);
 
-    char temp;
-
-    tdisk >> temp;
-
-    while(temp != '#')
-        tdisk >> temp;
+    s >> this->sb.numBlocks >> this->sb.blockSize;
 
     this->inodeStart = tdisk.tellg();
 
@@ -25,7 +25,7 @@ Controller::Controller(std::string &disk, std::queue<op> *buffer) {
 }
 
 std::string Controller::read(std::string &name, int start, int size) {
-    std::fstream disk(this->disk, std::fstream::in | std::fstream::out | std::fstream::binary );
+    std::fstream disk(this->disk, std::fstream::in | std::fstream::out | std::fstream::binary);
     char *data = new char[size];
 
     disk.seekp(start);
