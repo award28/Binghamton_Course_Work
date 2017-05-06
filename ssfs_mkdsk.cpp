@@ -1,6 +1,8 @@
 #include <iostream>
 #include <fstream>
 
+#include "ssfs.hpp" 
+
 using std::cout;
 using std::cin;
 using std::endl;
@@ -41,6 +43,19 @@ int main(int argc, char* argv[]){
 	fp.open(fileName);
 	fp.seekp(x);
 	fp << '\0';
+
+    fp.seekp(0);
+    
+    fp << numBlocks << " " << blockSize << " ";
+
+    int inodeSize = sizeof(p_file);
+
+    for(int i = 0; i < 256; i++) {
+        fp << "0";
+        for(int j = 0; j < inodeSize - 1; j++)
+            fp << " ";
+    }
+        
 	fp.close();	
 
     return 0;

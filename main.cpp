@@ -25,20 +25,20 @@ void* diskOp(void *arg){
 void* controller(void *arg) {
     Controller *controller = (Controller*)arg;
 
-    /*
     string name = "Hello.txt";
-    int start = 5000;
+    int start = 0;
     int size = 28;
     char *data = "Hello Darkness my old Friend";
     controller->write(name, start, size, data);
     cout << controller->read(name, start, size) << endl;
-    */
 
+    /*
     int i = 0;
     while(i < 20) {
         controller->execute();
         i++;
     }
+    */
 
     return NULL;
 }
@@ -49,34 +49,28 @@ int main(int argc, char *argv[]) {
     string disk = argv[1];
 
     pthread_t cThread;
+    /*
     pthread_mutex_t mx;
     pthread_t threads[numThreads];
+    */
 
     std::queue<op> buffer;
     Controller *cntlr = new Controller(disk, buffer);
 
+    /*
     numThreads = argc - 2;
     for(i = 2; i < argc; i++) {
         file[i - 2] = argv[i];
     }
+    */
 
     int result_code;
 
-    diskOpArg *temp;
-    for(i = 0; i < numThreads; i++){
-        temp = (diskOpArg *)malloc(sizeof(diskOpArg));
-        temp->buff = buffer;
-        temp->fileName = file[i];
-        temp->mutex = &mx;
-        result_code = pthread_create(&threads[i], NULL, diskOp, (void *)temp);
-        assert(!result_code);
-        cout << file[i] << endl;
-    }
-
-    for(i = 0; i < numThreads; i++){
-        result_code = pthread_join(threads[i], NULL);
-        assert(!result_code);
-    }
+    /*
+    diskOpArg *temp = (diskOpArg *)malloc(sizeof(diskOpArg));
+    temp->buff = buffer;
+    temp->mutex = &mx;
+    */
 
     result_code = pthread_create(&cThread, NULL, &controller, cntlr);
     assert(!result_code);
@@ -84,5 +78,21 @@ int main(int argc, char *argv[]) {
     result_code = pthread_join(cThread, NULL);
     assert(!result_code);
 
+
+    /*
+    for(i = 0; i < numThreads; i++){
+        temp->fileName = file[i];
+        result_code = pthread_create(&threads[i], NULL, diskOp, (void *)temp);
+        assert(!result_code);
+        cout << file[i] << endl;
+    }
+
+    for(i = 0; i < numThreads; i++){
+        result_code = pthread_join(threads[i], NULL);
+        cout << i << endl;
+        cout << result_code << endl;
+        //assert(!result_code);
+    }
+    */
     return 0;
 }
