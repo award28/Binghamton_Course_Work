@@ -46,8 +46,9 @@ class Controller {
         std::string cat(std::string &name);
         bool write(std::string &name, int start, int size, std::string &data);
         InodeData createInode(std::string &name);
-        Inode findInode(std::string &name);
+        InodeData findInode(std::string &name);
         void updateInode(Inode inode, int pos);
+        bool deleteFile(std::string &name);
         std::string list();
         SuperBlock sb;
         std::string disk;
