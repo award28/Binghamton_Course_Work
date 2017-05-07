@@ -31,8 +31,6 @@ disk_op::disk_op(string f_name, std::queue<op> *buf, pthread_mutex_t *mutex) {
     while (std::getline(in, line)) {
         op curr_op;
         curr_op.cond = &cd;
-        curr_op.data = (char *)malloc(sizeof(char));
-        curr_op.data[0] = '\0';
 
         parse(curr_op, line);
 
@@ -64,10 +62,7 @@ void disk_op::parse(op &curr_op, string line) {
         ss >> curr_op.name;
         string t;
         ss >> t;
-        curr_op.data = (char *)malloc(sizeof(char)*t.length() + 1);
-        for (int i = 0; i < t.length(); i++) {
-            curr_op.data[i] = t[i];
-        }
+        curr_op.data = t;
     }
     if (string("CAT").compare(curr_op.cmd) == 0) {
         ss >> curr_op.name;
@@ -78,9 +73,7 @@ void disk_op::parse(op &curr_op, string line) {
         ss >> curr_op.name;
         string t;
         ss >> t;
-        curr_op.data = (char *)malloc(sizeof(char)*2);
-        curr_op.data[0] = t[0];
-        curr_op.data[1] = '\0';
+        curr_op.data = t;
         ss >> t;
         curr_op.start = atoi(t.c_str());
         ss >> t;

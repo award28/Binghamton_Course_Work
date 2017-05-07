@@ -47,17 +47,16 @@ std::string Controller::read(std::string &name, int start, int size) {
     return std::string(data);
 }
 
-bool Controller::write(std::string &name, int start, int size, char *data) {
-    createInode(name);
+bool Controller::write(std::string &name, int start, int size, std::string &data) {
+    Inode inode = createInode(name);
 
     std::fstream disk(this->disk, std::fstream::in | std::fstream::out | std::fstream::binary);
-    disk.seekp(this->filesStart + start);
-
-    std::string newData(data);
+    disk.seekp(inode.dbp[0] + start);
 
     for(int i = 0; i < size;) {
-        for(int j = 0; j < newData.length() && i < size; j++, i++) {
-            disk << newData[j];
+        for(int j = 0; j < data.length() && i < size; j++, i++) {
+            disk << data[j];
+            disk.seekg(disk.tellg());
         }
     }
 
@@ -107,10 +106,8 @@ Inode Controller::createInode(std::string &name) {
 
         for(int i = 0; i < 12; i++)
             s >> inode.dbp[i];
-        for(int i = 0; i < 12; i++)
-            s >> inode.ibp[i];
-        for(int i = 0; i < 12; i++)
-            s >> inode.dibp[i];
+
+        s >> inode.ibp >> inode.dibp;
 
         if(!found && inode.name == fakeName) {
             replace = inode;
@@ -151,9 +148,9 @@ Inode Controller::createInode(std::string &name) {
         std::getline(disk, temp, ' ');
         std::getline(disk, temp, ' ');
 
-        std::cout << replace.dbp[0] << std::endl;
-            val = disk.tellg();
-            disk.seekg(val);
+        val = disk.tellg();
+        disk.seekg(val);
+
         disk << replace.dbp[0];
 
         disk.seekg(pos);

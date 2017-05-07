@@ -21,7 +21,7 @@ struct op {
     std::string name;
     int start = 0;
     int size = 0;
-    char* data;
+    std::string data;
     pid_t pid;
     std::string *response;
     pthread_cond_t *cond;
@@ -31,15 +31,15 @@ struct Inode {
     std::string name;
     int size;
     int dbp[12];
-    int ibp[12];
-    int dibp[12];
+    int ibp;
+    int dibp;
 };
 
 class Controller {
     public:
         Controller(std::string &disk, std::queue<op> *buffer);
         std::string read(std::string &name, int start, int size);
-        bool write(std::string &name, int start, int size, char *data);
+        bool write(std::string &name, int start, int size, std::string &data);
         Inode createInode(std::string &name);
         bool execute();
     private:
