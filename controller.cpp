@@ -126,8 +126,6 @@ Inode Controller::findInode(std::string &name) {
         count++;
     } while(inode.name != name && count < 256);
 
-    std::cout << count << std::endl;
-
     if(count < 256) {
         disk.close();
         return inode;
@@ -157,6 +155,8 @@ Inode Controller::createInode(std::string &name) {
         std::stringstream s(temp);
         
         getline(s, temp, '\0');
+        std::stringstream nameStream(temp);
+        getline(nameStream, temp, ' ');
         inode.name = temp;
         getline(s, temp, '\0');
         inode.size = std::stoi(temp);
@@ -177,8 +177,6 @@ Inode Controller::createInode(std::string &name) {
         }
         count++;
     } while(inode.name != name && count < 256);
-
-    std::cout << count << std::endl;
 
     if(count < 256) {
         disk.close();
@@ -223,7 +221,6 @@ Inode Controller::createInode(std::string &name) {
 
         disk.seekg(pos);
         std::getline(disk, temp, '%');
-        std::cout << temp << std::endl;
 
         disk.close();
         return replace;
