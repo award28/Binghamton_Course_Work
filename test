@@ -1,6 +1,6 @@
 CAT dog.heh
 DELETE the_sa
 WRITE hey_thur a 0 69
-READ books.txt 0 1
+READ books.txt 0 100
 LIST
 SHUTDOWN

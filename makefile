@@ -23,7 +23,7 @@ clean:
 
 test: $(DEX) $(SEX)
 	@echo 'making disk....'
-	./ssfs_mkdsk 1024 256
+	./ssfs_mkdsk 1024 128
 	@echo 'running....'
 	./ssfs DISK test
 	@echo 'clean'

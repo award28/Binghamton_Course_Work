@@ -48,7 +48,7 @@ disk_op::disk_op(string f_name, std::queue<op> *buf, pthread_mutex_t *mutex) {
 
         push_op(buf, curr_op, mutex);
 
-        pthread_cond_wait(&cd, &mx);
+        //pthread_cond_wait(&cd, &mx);
     }
 }
 

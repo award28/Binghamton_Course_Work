@@ -25,7 +25,7 @@ int main(int argc, char* argv[]){
 	}
 
 	if(numBlocks < 1024 || numBlocks > 131072){
-		cout << "Num Blocks must be between 1024 and 128000 inclusive." << endl;
+		cout << "Num Blocks must be between 1024 and 131072 inclusive." << endl;
 		exit(1);
 	}
 	if(blockSize < 128 || blockSize > 512){
@@ -48,13 +48,24 @@ int main(int argc, char* argv[]){
     
     fp << numBlocks << " " << blockSize << "#";
 
-    int inodeSize = sizeof(p_file);
+    Inode temp;
+
+    for(int i = 0; i < 32; i++)
+        temp.name += "x";
+
+    temp.size = 0;
+    for(int i = 0; i < 12; i++) {
+        temp.dbp[i] = 0;
+        temp.ibp[i] = 0;
+        temp.dibp[i] = 0;
+    }
 
     for(int i = 0; i < 256; i++) {
-        fp << "0";
-        for(int j = 0; j < inodeSize - 1; j++)
-            fp << " ";
+        fp << temp.name << temp.size;
+        for(int j = 0; j < 36; j++)
+            fp << temp.dbp[i];
     }
+    fp << '#';
         
 	fp.close();	
 

@@ -21,6 +21,15 @@ Controller::Controller(std::string &disk, std::queue<op> *buffer) {
 
     this->inodeStart = tdisk.tellg();
 
+    std::getline(tdisk, superBlock, delimeter);
+
+    this->filesStart = tdisk.tellg();
+
+    int size = floor((this->sb.blockSize*this->sb.numBlocks - this->filesStart)/this->sb.blockSize);
+    
+    this->bitmap.first = (int *) malloc(sizeof(int) * size);
+    this->bitmap.second = size;
+
     tdisk.close();
 }
 
@@ -28,7 +37,7 @@ std::string Controller::read(std::string &name, int start, int size) {
     std::fstream disk(this->disk, std::fstream::in | std::fstream::out | std::fstream::binary);
     char *data = new char[size];
 
-    disk.seekp(start);
+    disk.seekp(this->filesStart + start);
     disk.read(data, size);
     disk.close();
 
@@ -37,7 +46,7 @@ std::string Controller::read(std::string &name, int start, int size) {
 
 bool Controller::write(std::string &name, int start, int size, char *data) {
     std::fstream disk(this->disk, std::fstream::in | std::fstream::out | std::fstream::binary );
-    disk.seekp(start);
+    disk.seekp(this->filesStart + start);
 
     std::string newData(data);
 
@@ -62,8 +71,9 @@ bool Controller::execute() {
 
     if(curOp.cmd == "CREATE" || curOp.cmd == "IMPORT" || curOp.cmd == "WRITE")
         write(curOp.name, curOp.start, curOp.size, curOp.data); 
-    else if(curOp.cmd == "CAT" || curOp.cmd == "READ")
-        read(curOp.name, curOp.start, curOp.size);
+    else if(curOp.cmd == "CAT" || curOp.cmd == "READ") {
+        std::cout << read(curOp.name, curOp.start, curOp.size) << std::endl;
+    }
     else if(curOp.cmd == "LIST") {} //List method goes here
     else if(curOp.cmd == "DELETE") {} //Delete method goes here
     else if(curOp.cmd == "SHUTDOWN") {} //SHUTDOWN EVERYTHING

@@ -25,23 +25,7 @@ void* diskOp(void *arg){
 void* controller(void *arg) {
     Controller *controller = (Controller*)arg;
 
-    /*
-    string name = "Hello.txt";
-    int start = 0;
-    int size = 28;
-    char *data = "Hello Darkness my old Friend";
-    controller->write(name, start, size, data);
-    cout << controller->read(name, 10, size) << endl;
-
-    int i = 0;
-    while(i < 20) {
-        controller->execute();
-        i++;
-    }
-    */
-
     while (controller->execute()) {}
-
     
     return NULL;
 }

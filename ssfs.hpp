@@ -7,6 +7,9 @@
 #include <sys/types.h>
 #include <unistd.h>
 #include <queue>
+#include <cmath>
+
+typedef std::pair<int*, int> Bitmap;
 
 struct SuperBlock {  
     int numBlocks;
@@ -24,12 +27,12 @@ struct op {
     pthread_cond_t *cond;
 };
 
-struct p_file {
-    char name[33];
+struct Inode {
+    std::string name;
     int size;
     int dbp[12];
-    int *ibp;
-    int **dibp;
+    int ibp[12];
+    int dibp[12];
 };
 
 class Controller {
@@ -37,11 +40,14 @@ class Controller {
         Controller(std::string &disk, std::queue<op> *buffer);
         std::string read(std::string &name, int start, int size);
         bool write(std::string &name, int start, int size, char *data);
+        bool createInode(std::string &name);
         bool execute();
     private:
         SuperBlock sb;
         std::string disk;
-        int inodeStart;
+        unsigned long long inodeStart;
+        unsigned long long filesStart;
+        Bitmap bitmap;
         std::queue<op> *buffer;
 };
 
