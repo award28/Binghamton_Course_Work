@@ -10,6 +10,7 @@
 #include <cmath>
 
 typedef std::pair<bool*, int> Bitmap;
+typedef std::pair<struct Inode, int> InodeData;
 
 struct SuperBlock {  
     int numBlocks;
@@ -42,8 +43,9 @@ class Controller {
     private:
         std::string read(std::string &name, int start, int size);
         bool write(std::string &name, int start, int size, std::string &data);
-        Inode createInode(std::string &name);
+        InodeData createInode(std::string &name);
         Inode findInode(std::string &name);
+        void updateInode(Inode inode, int pos);
         std::string list();
         SuperBlock sb;
         std::string disk;

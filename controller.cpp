@@ -54,7 +54,9 @@ std::string Controller::read(std::string &name, int start, int size) {
 }
 
 bool Controller::write(std::string &name, int start, int size, std::string &data) {
-    Inode inode = createInode(name);
+    InodeData inodeData = createInode(name);
+    Inode inode = inodeData.first;
+    int pos = inodeData.second;
 
     std::fstream disk(this->disk, std::fstream::in | std::fstream::out | std::fstream::binary);
     disk.seekp(inode.dbp[0] + start);
@@ -66,7 +68,10 @@ bool Controller::write(std::string &name, int start, int size, std::string &data
         }
     }
 
+    inode.size = size;
+
     disk.close();
+    updateInode(inode, pos);
     return true;
 }
 
@@ -174,7 +179,33 @@ Inode Controller::findInode(std::string &name) {
     return inode;
 }
 
-Inode Controller::createInode(std::string &name) {
+void Controller::updateInode(Inode inode, int pos) {
+    std::fstream disk(this->disk, std::fstream::in | std::fstream::out | std::fstream::binary );
+    disk.seekg(pos);
+
+    unsigned long long val;
+    string temp;
+
+    std::getline(disk, temp, '\0');
+    val = disk.tellg();
+    disk.seekg(val);
+    std::cout << inode.size << std::endl;
+    disk << inode.size;
+
+    disk.seekg(pos);
+
+    std::getline(disk, temp, '\0');
+    val = disk.tellg();
+    disk.seekg(val);
+    std::getline(disk, temp, '\0');
+    std::cout << temp << std::endl;
+
+
+    std::getline(disk, temp, '%');
+
+    disk.close();
+}
+InodeData Controller::createInode(std::string &name) {
     std::fstream disk(this->disk, std::fstream::in | std::fstream::out | std::fstream::binary );
     disk.seekp(this->inodeStart);
     
@@ -182,11 +213,12 @@ Inode Controller::createInode(std::string &name) {
 
     Inode inode, replace;
     bool found = false;
-    int pos;
+    int pos, newPos;
     int count = 0;
     do {
         if(!found)
-            pos = disk.tellg();
+            newPos = disk.tellg();
+        pos = disk.tellg();
 
         std::getline(disk, temp, '%');
         std::stringstream s(temp);
@@ -217,12 +249,12 @@ Inode Controller::createInode(std::string &name) {
 
     if(count < 256) {
         disk.close();
-        return inode;
+        return std::make_pair(inode, pos);
     }
 
     if(found) {
         found = false;
-        disk.seekg(pos);
+        disk.seekg(newPos);
 
         replace.name = name;
 
@@ -256,15 +288,15 @@ Inode Controller::createInode(std::string &name) {
 
         disk << replace.dbp[0];
 
-        disk.seekg(pos);
+        disk.seekg(newPos);
         std::getline(disk, temp, '%');
 
         disk.close();
-        return replace;
+        return std::make_pair(replace, newPos);
     }
 
     inode.size = -1;
 
     disk.close();
-    return inode;
+    return std::make_pair(inode, pos);
 }   
