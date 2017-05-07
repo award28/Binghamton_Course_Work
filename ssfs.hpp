@@ -38,12 +38,13 @@ struct Inode {
 class Controller {
     public:
         Controller(std::string &disk, std::queue<op> *buffer);
+        bool execute();
+    private:
         std::string read(std::string &name, int start, int size);
         bool write(std::string &name, int start, int size, std::string &data);
         Inode createInode(std::string &name);
         Inode findInode(std::string &name);
-        bool execute();
-    private:
+        std::string list();
         SuperBlock sb;
         std::string disk;
         unsigned long long inodeStart;

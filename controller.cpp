@@ -78,17 +78,52 @@ bool Controller::execute() {
     buffer->pop();
 
     std::cout << curOp.cmd << std::endl;
-
     if(curOp.cmd == "CREATE" || curOp.cmd == "IMPORT" || curOp.cmd == "WRITE")
         write(curOp.name, curOp.start, curOp.size, curOp.data); 
     else if(curOp.cmd == "CAT" || curOp.cmd == "READ") {
         std::cout << read(curOp.name, curOp.start, curOp.size) << std::endl;
     }
-    else if(curOp.cmd == "LIST") {} //List method goes here
+    else if(curOp.cmd == "LIST") {
+        std::cout << list() << std::endl;
+    } 
     else if(curOp.cmd == "DELETE") {} //Delete method goes here
     else if(curOp.cmd == "SHUTDOWN") {} //SHUTDOWN EVERYTHING
     else {} //signal pid error, bad command
     return true;
+}
+
+std::string Controller::list() {
+    std::fstream disk(this->disk, std::fstream::in | std::fstream::out | std::fstream::binary );
+    disk.seekp(this->inodeStart);
+
+    std::string retVal, temp, fakeName(33, 'x');
+    int count = 0;
+    do {
+        std::getline(disk, temp, '%');
+        std::stringstream s(temp);
+        
+        getline(s, temp, '\0');
+        std::stringstream nameStream(temp);
+        getline(nameStream, temp, ' ');
+         if(temp != fakeName) {
+            retVal.append(temp);
+            getline(s, temp, '\0');
+            retVal.append(" " + temp + '\n');
+         }
+         else 
+             getline(s, temp, '\0');
+
+        for(int i = 0; i < 12; i++)
+            getline(s, temp, '\0');
+
+        getline(s, temp, '\0');
+        getline(s, temp, '\0');
+
+        count++;
+    } while(count < 256);
+
+    disk.close();
+    return retVal;
 }
 
 Inode Controller::findInode(std::string &name) {
@@ -107,7 +142,9 @@ Inode Controller::findInode(std::string &name) {
         std::getline(disk, temp, '%');
         std::stringstream s(temp);
         
-        getline(s, temp, ' ');
+        getline(s, temp, '\0');
+        std::stringstream nameStream(temp);
+        getline(nameStream, temp, ' ');
         inode.name = temp;
         getline(s, temp, '\0');
         getline(s, temp, '\0');
