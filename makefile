@@ -28,4 +28,4 @@ test: $(DEX) $(SEX)
 	./ssfs DISK test
 	@echo 'clean'
 	@rm -f DISK
-	clean
+	@$(MAKE) clean
