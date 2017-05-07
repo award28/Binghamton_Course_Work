@@ -1,8 +1,11 @@
 DELETE the_sa
 WRITE hey_thur.txt a 0 69
 WRITE ohShitWaddup.txt Hello_John_Reynolds 0 19
-DELETE hey_thur.txt
 READ ohShitWaddup.txt 0 19
 CAT ohShitWaddup.txt
+IMPORT hello.txt hello.txt
+CAT hello.txt
+READ hello.txt 6 8
+DELETE hey_thur.txt
 LIST
 SHUTDOWN

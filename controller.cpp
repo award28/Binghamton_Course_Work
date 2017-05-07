@@ -60,7 +60,7 @@ std::string Controller::read(std::string &name, int start, int size) {
     std::fstream disk(this->disk, std::fstream::in | std::fstream::out | std::fstream::binary);
 
     char *data;
-    if(size - start > inode.size) {
+   if(size - start > inode.size) {
         data = new char[inode.size];
         disk.seekp(inode.dbp[0] + start);
         disk.read(data, inode.size);
@@ -103,31 +103,75 @@ bool Controller::execute() {
     buffer->pop();
 
     std::cout << curOp.cmd << std::endl;
-    if(curOp.cmd == "CREATE" || curOp.cmd == "IMPORT" || curOp.cmd == "WRITE")
+
+    if(curOp.cmd == "CREATE" || curOp.cmd == "WRITE")
         write(curOp.name, curOp.start, curOp.size, curOp.data); 
-    else if(curOp.cmd == "READ") {
+    else if(curOp.cmd == "IMPORT")
+        import(curOp.name, curOp.data); 
+    else if(curOp.cmd == "READ") 
         std::cout << read(curOp.name, curOp.start, curOp.size) << std::endl;
-    }
-    else if(curOp.cmd == "CAT") {
+    else if(curOp.cmd == "CAT")
         std::cout << cat(curOp.name) << std::endl;
-    }
-    else if(curOp.cmd == "LIST") {
+    else if(curOp.cmd == "LIST") 
         std::cout << list() << std::endl;
-    } 
     else if(curOp.cmd == "DELETE") {
         if(deleteFile(curOp.name))
             std::cout << "Success: File deleted." << std::endl;
         else
             std::cout << "Error: File " << curOp.name << " could not be found." << std::endl;
-        
-    } //Delete method goes here
-    else if(curOp.cmd == "SHUTDOWN") {
+    }
+    else if(curOp.cmd == "SHUTDOWN")
         return false;
-    } //SHUTDOWN EVERYTHING
-    else {} //signal pid error, bad command
+    else 
+        std::cout << "Error: Bad command." << std::endl; 
+
     return true;
 }
 
+bool Controller::import(std::string &name, std::string &file) {
+    std::ifstream fin(file);
+
+    if(!fin.good())
+        return false;
+    std::string contents {std::istreambuf_iterator<char>(fin), std::istreambuf_iterator<char>()};
+    fin.close();
+
+    write(name, 0, contents.length(), contents);
+
+    return true;
+    /*
+    std::string retVal, temp, fakeName(33, 'x');
+    int count = 0;
+    do {
+        std::getline(disk, temp, '%');
+        std::stringstream s(temp);
+
+        getline(s, temp, '\0');
+        std::stringstream nameStream(temp);
+        getline(nameStream, temp, ' ');
+        if(temp != fakeName) {
+            retVal.append(temp);
+            getline(s, temp, '\0');
+            std::stringstream sizeStream(temp);
+            getline(sizeStream, temp, 'x');
+            retVal.append(" " + temp + '\n');
+        }
+        else 
+            getline(s, temp, '\0');
+
+        for(int i = 0; i < 12; i++)
+            getline(s, temp, '\0');
+
+        getline(s, temp, '\0');
+        getline(s, temp, '\0');
+
+        count++;
+    } while(count < 256);
+
+    disk.close();
+    return retVal;
+    */
+}
 std::string Controller::list() {
     std::fstream disk(this->disk, std::fstream::in | std::fstream::out | std::fstream::binary );
     disk.seekp(this->inodeStart);

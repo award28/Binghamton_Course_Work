@@ -45,6 +45,7 @@ class Controller {
         std::string read(std::string &name, int start, int size);
         std::string cat(std::string &name);
         bool write(std::string &name, int start, int size, std::string &data);
+        bool import(std::string &name, std::string &file);
         InodeData createInode(std::string &name);
         InodeData findInode(std::string &name);
         void updateInode(Inode inode, int pos);
