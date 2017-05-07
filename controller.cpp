@@ -31,7 +31,7 @@ Controller::Controller(std::string &disk, std::queue<op> *buffer) {
     this->filesStart = tdisk.tellg();
 
     int size = floor((this->sb.blockSize*this->sb.numBlocks - this->filesStart)/this->sb.blockSize);
-    
+
     this->bitmap.first = (bool *) malloc(sizeof(bool) * size);
     this->bitmap.second = size;
 
@@ -42,7 +42,8 @@ Controller::Controller(std::string &disk, std::queue<op> *buffer) {
 }
 
 std::string Controller::cat(std::string &name) {
-    Inode inode = findInode(name);
+    InodeData inodeData = findInode(name);
+    Inode inode = inodeData.first;
     std::fstream disk(this->disk, std::fstream::in | std::fstream::out | std::fstream::binary);
     char *data = new char[inode.size];
 
@@ -54,7 +55,8 @@ std::string Controller::cat(std::string &name) {
 }
 
 std::string Controller::read(std::string &name, int start, int size) {
-    Inode inode = findInode(name);
+    InodeData inodeData = findInode(name);
+    Inode inode = inodeData.first;
     std::fstream disk(this->disk, std::fstream::in | std::fstream::out | std::fstream::binary);
 
     char *data;
@@ -69,8 +71,6 @@ std::string Controller::read(std::string &name, int start, int size) {
         disk.read(data, size);
     }
 
-
-    std::cout << "Collected data: " << data << std::endl;
     disk.close();
 
     return std::string(data);
@@ -114,7 +114,13 @@ bool Controller::execute() {
     else if(curOp.cmd == "LIST") {
         std::cout << list() << std::endl;
     } 
-    else if(curOp.cmd == "DELETE") {} //Delete method goes here
+    else if(curOp.cmd == "DELETE") {
+        if(deleteFile(curOp.name))
+            std::cout << "Success: File deleted." << std::endl;
+        else
+            std::cout << "Error: File " << curOp.name << " could not be found." << std::endl;
+        
+    } //Delete method goes here
     else if(curOp.cmd == "SHUTDOWN") {
         return false;
     } //SHUTDOWN EVERYTHING
@@ -131,19 +137,19 @@ std::string Controller::list() {
     do {
         std::getline(disk, temp, '%');
         std::stringstream s(temp);
-        
+
         getline(s, temp, '\0');
         std::stringstream nameStream(temp);
         getline(nameStream, temp, ' ');
-         if(temp != fakeName) {
+        if(temp != fakeName) {
             retVal.append(temp);
             getline(s, temp, '\0');
             std::stringstream sizeStream(temp);
             getline(sizeStream, temp, 'x');
             retVal.append(" " + temp + '\n');
-         }
-         else 
-             getline(s, temp, '\0');
+        }
+        else 
+            getline(s, temp, '\0');
 
         for(int i = 0; i < 12; i++)
             getline(s, temp, '\0');
@@ -158,7 +164,7 @@ std::string Controller::list() {
     return retVal;
 }
 
-Inode Controller::findInode(std::string &name) {
+InodeData Controller::findInode(std::string &name) {
     std::fstream disk(this->disk, std::fstream::in | std::fstream::out | std::fstream::binary );
     disk.seekp(this->inodeStart);
 
@@ -173,7 +179,7 @@ Inode Controller::findInode(std::string &name) {
 
         std::getline(disk, temp, '%');
         std::stringstream s(temp);
-        
+
         getline(s, temp, '\0');
         std::stringstream nameStream(temp);
         getline(nameStream, temp, ' ');
@@ -185,17 +191,17 @@ Inode Controller::findInode(std::string &name) {
 
         for(int i = 0; i < 12; i++) {
             getline(s, temp, '\0');
-          sizeStream.str(temp);
+            sizeStream.str(temp);
             getline(sizeStream, temp, 'x');
             inode.dbp[i] = std::stoi(temp);
         }
 
         getline(s, temp, '\0');
-          sizeStream.str(temp);
+        sizeStream.str(temp);
         getline(sizeStream, temp, 'x');
         inode.ibp = std::stoi(temp);
         getline(s, temp, '\0');
-          sizeStream.str(temp);
+        sizeStream.str(temp);
         getline(sizeStream, temp, 'x');
         inode.dibp = std::stoi(temp);
 
@@ -204,13 +210,13 @@ Inode Controller::findInode(std::string &name) {
 
     if(count < 256) {
         disk.close();
-        return inode;
+        return std::make_pair(inode, pos);
     }
 
     inode.size = -1;
 
     disk.close();
-    return inode;
+    return std::make_pair(inode, pos);
 }
 
 void Controller::updateInode(Inode inode, int pos) {
@@ -237,10 +243,60 @@ void Controller::updateInode(Inode inode, int pos) {
 
     disk.close();
 }
+
+bool Controller::deleteFile(std::string &name) {
+    InodeData inodeData = findInode(name);
+    Inode inode = inodeData.first;
+    int pos = inodeData.second;
+
+    if(inode.size == -1)
+        return false;
+
+    std::fstream disk(this->disk, std::fstream::in | std::fstream::out | std::fstream::binary );
+    disk.seekp(pos);
+
+    std::string fakeName(33, 'x'), fakeNum(10, 'x');
+    fakeNum[0] = '0';
+
+    for(int i = 0; i < 12; i++)
+        if(inode.dbp[i])
+            this->bitmap.first[(inode.dbp[i] - this->filesStart)/this->sb.blockSize] = false;
+    /*
+    if(inode.ibp)
+        this->bitmap.first[(inode.ibp - this->fileStart)/this->sb.blockSize] = false;
+    if(inode.dibp)
+        this->bitmap.first[(inode.dibp - this->fileStart)/this->sb.blockSize] = false;
+        */
+
+    disk.seekg(pos);
+
+    unsigned long long val;
+    for(char& c : fakeName) {
+        disk << c;
+        val = disk.tellg();
+        disk.seekg(val);
+    }
+    
+    //Delete inode numbers
+    for(int i = 0; i < 15; i++) {
+        disk << '\0';
+        val = disk.tellg();
+        disk.seekg(val);
+        for(char& c : fakeNum) {
+            disk << c;
+            val = disk.tellg();
+            disk.seekg(val);
+        }
+    }
+
+    disk.close();
+    return true;
+} 
+
 InodeData Controller::createInode(std::string &name) {
     std::fstream disk(this->disk, std::fstream::in | std::fstream::out | std::fstream::binary );
     disk.seekp(this->inodeStart);
-    
+
     std::string temp, fakeName(33, 'x');
 
     Inode inode, replace;
@@ -254,7 +310,7 @@ InodeData Controller::createInode(std::string &name) {
 
         std::getline(disk, temp, '%');
         std::stringstream s(temp);
-        
+
         getline(s, temp, '\0');
         std::stringstream nameStream(temp);
         getline(nameStream, temp, ' ');
@@ -266,17 +322,17 @@ InodeData Controller::createInode(std::string &name) {
 
         for(int i = 0; i < 12; i++) {
             getline(s, temp, '\0');
-          sizeStream.str(temp);
+            sizeStream.str(temp);
             getline(sizeStream, temp, 'x');
             inode.dbp[i] = std::stoi(temp);
         }
 
         getline(s, temp, '\0');
-      sizeStream.str(temp);
+        sizeStream.str(temp);
         getline(sizeStream, temp, 'x');
         inode.ibp = std::stoi(temp);
         getline(s, temp, '\0');
-      sizeStream.str(temp);
+        sizeStream.str(temp);
         getline(sizeStream, temp, 'x');
         inode.dibp = std::stoi(temp);
 

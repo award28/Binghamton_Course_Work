@@ -22,10 +22,6 @@ clean:
 	-rm $(SEX) $(DEX) *.o
 
 test: $(DEX) $(SEX)
-	@echo 'making disk....'
 	./ssfs_mkdsk 1024 128
-	@echo 'running....'
-	./ssfs DISK test
-	@echo 'clean'
-	@rm -f DISK
-	clean
+	./ssfs DISK test test2
+	make clean
