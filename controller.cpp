@@ -7,6 +7,8 @@
 using std::string;
 
 Controller::Controller(std::string &disk, std::queue<op> *buffer) {
+    string temp;
+
     this->disk = disk;
     this->buffer = buffer;
 
@@ -17,7 +19,10 @@ Controller::Controller(std::string &disk, std::queue<op> *buffer) {
     std::getline(tdisk, superBlock, delimeter);
     std::stringstream s(superBlock);
 
-    s >> this->sb.numBlocks >> this->sb.blockSize;
+    getline(s, temp, '\0');
+    this->sb.numBlocks = std::stoi(temp);
+    getline(s, temp, '\0');
+    this->sb.blockSize = std::stoi(temp);
 
     this->inodeStart = tdisk.tellg();
 
@@ -37,10 +42,11 @@ Controller::Controller(std::string &disk, std::queue<op> *buffer) {
 }
 
 std::string Controller::read(std::string &name, int start, int size) {
+    Inode inode = findInode(name);
     std::fstream disk(this->disk, std::fstream::in | std::fstream::out | std::fstream::binary);
     char *data = new char[size];
 
-    disk.seekp(this->filesStart + start);
+    disk.seekp(inode.dbp[0] + start);
     disk.read(data, size);
     disk.close();
 
@@ -85,11 +91,59 @@ bool Controller::execute() {
     return true;
 }
 
+Inode Controller::findInode(std::string &name) {
+    std::fstream disk(this->disk, std::fstream::in | std::fstream::out | std::fstream::binary );
+    disk.seekp(this->inodeStart);
+
+    std::string temp; 
+    Inode inode;
+    bool found = false;
+    int pos;
+    int count = 0;
+    do {
+        if(!found)
+            pos = disk.tellg();
+
+        std::getline(disk, temp, '%');
+        std::stringstream s(temp);
+        
+        getline(s, temp, ' ');
+        inode.name = temp;
+        getline(s, temp, '\0');
+        getline(s, temp, '\0');
+        inode.size = std::stoi(temp);
+
+        for(int i = 0; i < 12; i++) {
+            getline(s, temp, '\0');
+            inode.dbp[i] = std::stoi(temp);
+        }
+
+        getline(s, temp, '\0');
+        inode.ibp = std::stoi(temp);
+        getline(s, temp, '\0');
+        inode.dibp = std::stoi(temp);
+
+        count++;
+    } while(inode.name != name && count < 256);
+
+    std::cout << count << std::endl;
+
+    if(count < 256) {
+        disk.close();
+        return inode;
+    }
+
+    inode.size = -1;
+
+    disk.close();
+    return inode;
+}
+
 Inode Controller::createInode(std::string &name) {
     std::fstream disk(this->disk, std::fstream::in | std::fstream::out | std::fstream::binary );
     disk.seekp(this->inodeStart);
     
-    std::string temp, fakeName(32, 'x');
+    std::string temp, fakeName(33, 'x');
 
     Inode inode, replace;
     bool found = false;
@@ -101,13 +155,21 @@ Inode Controller::createInode(std::string &name) {
 
         std::getline(disk, temp, '%');
         std::stringstream s(temp);
+        
+        getline(s, temp, '\0');
+        inode.name = temp;
+        getline(s, temp, '\0');
+        inode.size = std::stoi(temp);
 
-        s >> inode.name >> inode.size;
+        for(int i = 0; i < 12; i++) {
+            getline(s, temp, '\0');
+            inode.dbp[i] = std::stoi(temp);
+        }
 
-        for(int i = 0; i < 12; i++)
-            s >> inode.dbp[i];
-
-        s >> inode.ibp >> inode.dibp;
+        getline(s, temp, '\0');
+        inode.ibp = std::stoi(temp);
+        getline(s, temp, '\0');
+        inode.dibp = std::stoi(temp);
 
         if(!found && inode.name == fakeName) {
             replace = inode;
@@ -129,10 +191,16 @@ Inode Controller::createInode(std::string &name) {
 
         replace.name = name;
 
-        std::cout << name << std::endl;
         unsigned long long val;
+        int nameSize = 33;
         for(char& c : name) {
             disk << c;
+            val = disk.tellg();
+            disk.seekg(val);
+            nameSize--;
+        }
+        while(nameSize--){
+            disk << ' ';
             val = disk.tellg();
             disk.seekg(val);
         }
@@ -145,8 +213,8 @@ Inode Controller::createInode(std::string &name) {
             }
         }
 
-        std::getline(disk, temp, ' ');
-        std::getline(disk, temp, ' ');
+        std::getline(disk, temp, '\0');
+        std::getline(disk, temp, '\0');
 
         val = disk.tellg();
         disk.seekg(val);

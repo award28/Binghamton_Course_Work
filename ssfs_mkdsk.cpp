@@ -47,21 +47,21 @@ int main(int argc, char* argv[]){
 
     fp.seekp(0);
     
-    fp << numBlocks << " " << blockSize << "#";
+    fp << numBlocks << '\0' << blockSize << "#";
 
     Inode temp;
 
-    for(int i = 0; i < 32; i++)
-        temp.name += "x";
+    for(int i = 0; i < 33; i++)
+        temp.name += 'x';
 
     temp.size = 0;
     for(int i = 0; i < 12; i++)
         temp.dbp[i] = 0;
 
     for(int i = 0; i < 256; i++) {
-        fp << temp.name << " " << temp.size;
+        fp << temp.name << '\0' << temp.size;
         for(int j = 0; j < 35; j++)
-            fp << " " << temp.dbp[i % 12];
+            fp << '\0' << temp.dbp[i % 12];
         fp << "%";
     }
     fp << '#';

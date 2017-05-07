@@ -41,6 +41,7 @@ class Controller {
         std::string read(std::string &name, int start, int size);
         bool write(std::string &name, int start, int size, std::string &data);
         Inode createInode(std::string &name);
+        Inode findInode(std::string &name);
         bool execute();
     private:
         SuperBlock sb;

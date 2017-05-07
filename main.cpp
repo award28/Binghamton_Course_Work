@@ -41,6 +41,7 @@ int main(int argc, char *argv[]) {
 
     std::queue<op> *buffer = new std::queue<op>;
     Controller *cntlr = new Controller(disk, buffer);
+    cout << "Getting here" << endl;
 
     numThreads = argc - 2;
     for(i = 2; i < argc; i++) {
@@ -48,6 +49,7 @@ int main(int argc, char *argv[]) {
     }
 
     int result_code;
+
 
     diskOpArg *temp = (diskOpArg *)malloc(sizeof(diskOpArg));
     temp->buff = buffer;
