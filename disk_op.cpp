@@ -15,6 +15,7 @@ using std::endl;
 
 void disk_op::push_op(std::queue<op> *buf, op out_op, pthread_mutex_t *mx) {
     pthread_mutex_lock(mx);
+    cout << "pushing op: " << out_op.cmd << " onto buffer." << endl;
     buf->push(out_op);
     pthread_mutex_unlock(mx);
 }

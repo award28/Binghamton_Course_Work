@@ -25,8 +25,8 @@ void* diskOp(void *arg){
 void* controller(void *arg) {
     Controller *controller = (Controller*)arg;
 
-    while (controller->execute())
-        ;
+    while (controller->execute());
+
     int bufferSize = controller->buffer->size();
 
     while(bufferSize--)
