@@ -59,9 +59,9 @@ int main(int argc, char* argv[]){
         temp.dbp[i] = 0;
 
     for(int i = 0; i < 256; i++) {
-        fp << temp.name << '\0' << temp.size;
+        fp << temp.name << '\0' << "0xxxxxxxxx";
         for(int j = 0; j < 35; j++)
-            fp << '\0' << temp.dbp[i % 12];
+            fp << '\0' << "0xxxxxxxxx";
         fp << "%";
     }
     fp << '#';

@@ -41,13 +41,36 @@ Controller::Controller(std::string &disk, std::queue<op> *buffer) {
     tdisk.close();
 }
 
+std::string Controller::cat(std::string &name) {
+    Inode inode = findInode(name);
+    std::fstream disk(this->disk, std::fstream::in | std::fstream::out | std::fstream::binary);
+    char *data = new char[inode.size];
+
+    disk.seekp(inode.dbp[0]);
+    disk.read(data, inode.size);
+    disk.close();
+
+    return std::string(data);
+}
+
 std::string Controller::read(std::string &name, int start, int size) {
     Inode inode = findInode(name);
     std::fstream disk(this->disk, std::fstream::in | std::fstream::out | std::fstream::binary);
-    char *data = new char[size];
 
-    disk.seekp(inode.dbp[0] + start);
-    disk.read(data, size);
+    char *data;
+    if(size - start > inode.size) {
+        data = new char[inode.size];
+        disk.seekp(inode.dbp[0] + start);
+        disk.read(data, inode.size);
+    }
+    else {
+        data = new char[size];
+        disk.seekp(inode.dbp[0] + start);
+        disk.read(data, size);
+    }
+
+
+    std::cout << "Collected data: " << data << std::endl;
     disk.close();
 
     return std::string(data);
@@ -76,23 +99,25 @@ bool Controller::write(std::string &name, int start, int size, std::string &data
 }
 
 bool Controller::execute() {
-    if(buffer->empty())
-        return false;
-
     op curOp = buffer->front();
     buffer->pop();
 
     std::cout << curOp.cmd << std::endl;
     if(curOp.cmd == "CREATE" || curOp.cmd == "IMPORT" || curOp.cmd == "WRITE")
         write(curOp.name, curOp.start, curOp.size, curOp.data); 
-    else if(curOp.cmd == "CAT" || curOp.cmd == "READ") {
+    else if(curOp.cmd == "READ") {
         std::cout << read(curOp.name, curOp.start, curOp.size) << std::endl;
+    }
+    else if(curOp.cmd == "CAT") {
+        std::cout << cat(curOp.name) << std::endl;
     }
     else if(curOp.cmd == "LIST") {
         std::cout << list() << std::endl;
     } 
     else if(curOp.cmd == "DELETE") {} //Delete method goes here
-    else if(curOp.cmd == "SHUTDOWN") {} //SHUTDOWN EVERYTHING
+    else if(curOp.cmd == "SHUTDOWN") {
+        return false;
+    } //SHUTDOWN EVERYTHING
     else {} //signal pid error, bad command
     return true;
 }
@@ -113,6 +138,8 @@ std::string Controller::list() {
          if(temp != fakeName) {
             retVal.append(temp);
             getline(s, temp, '\0');
+            std::stringstream sizeStream(temp);
+            getline(sizeStream, temp, 'x');
             retVal.append(" " + temp + '\n');
          }
          else 
@@ -152,17 +179,24 @@ Inode Controller::findInode(std::string &name) {
         getline(nameStream, temp, ' ');
         inode.name = temp;
         getline(s, temp, '\0');
-        getline(s, temp, '\0');
+        std::stringstream sizeStream(temp);
+        getline(sizeStream, temp, 'x');
         inode.size = std::stoi(temp);
 
         for(int i = 0; i < 12; i++) {
             getline(s, temp, '\0');
+          sizeStream.str(temp);
+            getline(sizeStream, temp, 'x');
             inode.dbp[i] = std::stoi(temp);
         }
 
         getline(s, temp, '\0');
+          sizeStream.str(temp);
+        getline(sizeStream, temp, 'x');
         inode.ibp = std::stoi(temp);
         getline(s, temp, '\0');
+          sizeStream.str(temp);
+        getline(sizeStream, temp, 'x');
         inode.dibp = std::stoi(temp);
 
         count++;
@@ -189,7 +223,6 @@ void Controller::updateInode(Inode inode, int pos) {
     std::getline(disk, temp, '\0');
     val = disk.tellg();
     disk.seekg(val);
-    std::cout << inode.size << std::endl;
     disk << inode.size;
 
     disk.seekg(pos);
@@ -198,7 +231,6 @@ void Controller::updateInode(Inode inode, int pos) {
     val = disk.tellg();
     disk.seekg(val);
     std::getline(disk, temp, '\0');
-    std::cout << temp << std::endl;
 
 
     std::getline(disk, temp, '%');
@@ -228,16 +260,24 @@ InodeData Controller::createInode(std::string &name) {
         getline(nameStream, temp, ' ');
         inode.name = temp;
         getline(s, temp, '\0');
+        std::stringstream sizeStream(temp);
+        getline(sizeStream, temp, 'x');
         inode.size = std::stoi(temp);
 
         for(int i = 0; i < 12; i++) {
             getline(s, temp, '\0');
+          sizeStream.str(temp);
+            getline(sizeStream, temp, 'x');
             inode.dbp[i] = std::stoi(temp);
         }
 
         getline(s, temp, '\0');
+      sizeStream.str(temp);
+        getline(sizeStream, temp, 'x');
         inode.ibp = std::stoi(temp);
         getline(s, temp, '\0');
+      sizeStream.str(temp);
+        getline(sizeStream, temp, 'x');
         inode.dibp = std::stoi(temp);
 
         if(!found && inode.name == fakeName) {

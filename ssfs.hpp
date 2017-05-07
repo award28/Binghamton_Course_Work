@@ -40,8 +40,10 @@ class Controller {
     public:
         Controller(std::string &disk, std::queue<op> *buffer);
         bool execute();
+        std::queue<op> *buffer;
     private:
         std::string read(std::string &name, int start, int size);
+        std::string cat(std::string &name);
         bool write(std::string &name, int start, int size, std::string &data);
         InodeData createInode(std::string &name);
         Inode findInode(std::string &name);
@@ -52,7 +54,6 @@ class Controller {
         unsigned long long inodeStart;
         unsigned long long filesStart;
         Bitmap bitmap;
-        std::queue<op> *buffer;
 };
 
 class disk_op {
