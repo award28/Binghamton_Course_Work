@@ -18,6 +18,7 @@ int main(int argc, char* argv[]){
 
 	numBlocks = atoi(argv[1]);
 	blockSize = atoi(argv[2]);
+
 	if(argc == 4){
 		fileName = argv[3];
 	}else{
@@ -54,16 +55,14 @@ int main(int argc, char* argv[]){
         temp.name += "x";
 
     temp.size = 0;
-    for(int i = 0; i < 12; i++) {
+    for(int i = 0; i < 12; i++)
         temp.dbp[i] = 0;
-        temp.ibp[i] = 0;
-        temp.dibp[i] = 0;
-    }
 
     for(int i = 0; i < 256; i++) {
-        fp << temp.name << temp.size;
-        for(int j = 0; j < 36; j++)
-            fp << temp.dbp[i];
+        fp << temp.name << " " << temp.size;
+        for(int j = 0; j < 35; j++)
+            fp << " " << temp.dbp[i % 12];
+        fp << "%";
     }
     fp << '#';
         

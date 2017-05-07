@@ -27,8 +27,11 @@ Controller::Controller(std::string &disk, std::queue<op> *buffer) {
 
     int size = floor((this->sb.blockSize*this->sb.numBlocks - this->filesStart)/this->sb.blockSize);
     
-    this->bitmap.first = (int *) malloc(sizeof(int) * size);
+    this->bitmap.first = (bool *) malloc(sizeof(bool) * size);
     this->bitmap.second = size;
+
+    for(int i = 0; i < size; i++)
+        this->bitmap.first[i] = false;
 
     tdisk.close();
 }
@@ -45,7 +48,9 @@ std::string Controller::read(std::string &name, int start, int size) {
 }
 
 bool Controller::write(std::string &name, int start, int size, char *data) {
-    std::fstream disk(this->disk, std::fstream::in | std::fstream::out | std::fstream::binary );
+    createInode(name);
+
+    std::fstream disk(this->disk, std::fstream::in | std::fstream::out | std::fstream::binary);
     disk.seekp(this->filesStart + start);
 
     std::string newData(data);
@@ -80,3 +85,87 @@ bool Controller::execute() {
     else {} //signal pid error, bad command
     return true;
 }
+
+Inode Controller::createInode(std::string &name) {
+    std::fstream disk(this->disk, std::fstream::in | std::fstream::out | std::fstream::binary );
+    disk.seekp(this->inodeStart);
+    
+    std::string temp, fakeName(32, 'x');
+
+    Inode inode, replace;
+    bool found = false;
+    int pos;
+    int count = 0;
+    do {
+        if(!found)
+            pos = disk.tellg();
+
+        std::getline(disk, temp, '%');
+        std::stringstream s(temp);
+
+        s >> inode.name >> inode.size;
+
+        for(int i = 0; i < 12; i++)
+            s >> inode.dbp[i];
+        for(int i = 0; i < 12; i++)
+            s >> inode.ibp[i];
+        for(int i = 0; i < 12; i++)
+            s >> inode.dibp[i];
+
+        if(!found && inode.name == fakeName) {
+            replace = inode;
+            found = true;
+        }
+        count++;
+    } while(inode.name != name && count < 256);
+
+    std::cout << count << std::endl;
+
+    if(count < 256) {
+        disk.close();
+        return inode;
+    }
+
+    if(found) {
+        found = false;
+        disk.seekg(pos);
+
+        replace.name = name;
+
+        std::cout << name << std::endl;
+        unsigned long long val;
+        for(char& c : name) {
+            disk << c;
+            val = disk.tellg();
+            disk.seekg(val);
+        }
+
+        for(int i = 0; i < this->bitmap.second && !found; i++) {
+            if(!this->bitmap.first[i]) {
+                replace.dbp[0] = this->filesStart + (i * this->sb.blockSize);
+                this->bitmap.first[i] = true;
+                found = true;
+            }
+        }
+
+        std::getline(disk, temp, ' ');
+        std::getline(disk, temp, ' ');
+
+        std::cout << replace.dbp[0] << std::endl;
+            val = disk.tellg();
+            disk.seekg(val);
+        disk << replace.dbp[0];
+
+        disk.seekg(pos);
+        std::getline(disk, temp, '%');
+        std::cout << temp << std::endl;
+
+        disk.close();
+        return replace;
+    }
+
+    inode.size = -1;
+
+    disk.close();
+    return inode;
+}   

@@ -9,7 +9,7 @@
 #include <queue>
 #include <cmath>
 
-typedef std::pair<int*, int> Bitmap;
+typedef std::pair<bool*, int> Bitmap;
 
 struct SuperBlock {  
     int numBlocks;
@@ -40,7 +40,7 @@ class Controller {
         Controller(std::string &disk, std::queue<op> *buffer);
         std::string read(std::string &name, int start, int size);
         bool write(std::string &name, int start, int size, char *data);
-        bool createInode(std::string &name);
+        Inode createInode(std::string &name);
         bool execute();
     private:
         SuperBlock sb;
