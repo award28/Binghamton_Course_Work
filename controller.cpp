@@ -135,9 +135,7 @@ std::string Controller::read(std::string &name, int start, int size) {
 }
 
 bool Controller::write(std::string &name, int start, int size, std::string &data) {
-    bool finished = false;
     int available = 0;
-    int bytesLeft;
 
     for(int i = 0; i < this->bitmap.second; i++) {
         if(!this->bitmap.first[i])
