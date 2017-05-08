@@ -27,11 +27,13 @@ disk_op::disk_op(string f_name, std::queue<op> *buf, pthread_mutex_t *mutex) {
         std::cerr << "Error: " << strerror(errno);
     }
     string line;
-    pthread_cond_t cd;
-    pthread_mutex_t mx;
+    pthread_cond_t cd = PTHREAD_COND_INITIALIZER;
+    pthread_cond_init(&cd, NULL);
+    pthread_mutex_t mx = PTHREAD_MUTEX_INITIALIZER;
     while (std::getline(in, line)) {
         op curr_op;
         curr_op.cond = &cd;
+        curr_op.response = new string;
 
         parse(curr_op, line);
 
@@ -47,7 +49,15 @@ disk_op::disk_op(string f_name, std::queue<op> *buf, pthread_mutex_t *mutex) {
 
         push_op(buf, curr_op, mutex);
 
-        //pthread_cond_wait(&cd, &mx);
+        pthread_cond_wait(&cd, &mx);
+
+        if ((*curr_op.response).compare("exit") == 0) {
+            // cout << "shutdown" << endl;
+            in.close();
+            break;
+        }
+
+        cout << "response: "<< *curr_op.response;
     }
 }
 

@@ -19,9 +19,9 @@ $(DEX): $(DOBJECTS)
 	$(CC) $(CFLAGS) $< -o $@
 
 clean:
-	-rm $(SEX) $(DEX) *.o
+	-rm $(SEX) $(DEX) *.o DISK
 
 test: $(DEX) $(SEX)
 	./ssfs_mkdsk 1024 128
-	./ssfs DISK test test2
+	./ssfs DISK test
 	make clean

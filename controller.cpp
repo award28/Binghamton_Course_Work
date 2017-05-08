@@ -9,6 +9,7 @@ using std::string;
 Controller::Controller(std::string &disk, std::queue<op> *buffer) {
     string temp;
 
+    this->shutdown = false;
     this->disk = disk;
     this->buffer = buffer;
 
@@ -102,30 +103,41 @@ bool Controller::execute() {
     op curOp = buffer->front();
     buffer->pop();
 
-    std::cout << curOp.cmd << std::endl;
+    string out;
+    // std::cout << curOp.cmd << std::endl;
+    out += curOp.cmd + "\n";
     if(curOp.cmd == "CREATE" || curOp.cmd == "IMPORT" || curOp.cmd == "WRITE")
         write(curOp.name, curOp.start, curOp.size, curOp.data); 
     else if(curOp.cmd == "READ") {
-        std::cout << read(curOp.name, curOp.start, curOp.size) << std::endl;
+        // std::cout << read(curOp.name, curOp.start, curOp.size) << std::endl;
+        out += read(curOp.name, curOp.start, curOp.size) + "\n";
     }
     else if(curOp.cmd == "CAT") {
-        std::cout << cat(curOp.name) << std::endl;
+        // std::cout << cat(curOp.name) << std::endl;
+        out += cat(curOp.name) + "\n";
     }
     else if(curOp.cmd == "LIST") {
-        std::cout << list() << std::endl;
+        // std::cout << list() << std::endl;
+        out += list() + "\n";
     } 
     else if(curOp.cmd == "DELETE") {
         if(deleteFile(curOp.name))
-            std::cout << "Success: File deleted." << std::endl;
+            // std::cout << "Success: File deleted." << std::endl;
+            out += "Success: File deleted.\n";
         else
-            std::cout << "Error: File " << curOp.name << " could not be found." << std::endl;
+            // std::cout << "Error: File " << curOp.name << " could not be found." << std::endl;
+            out += "Error: File " + curOp.name + " could not be found.\n";
         
     } //Delete method goes here
     else if(curOp.cmd == "SHUTDOWN") {
-        return false;
+        shutdown = true;
     } //SHUTDOWN EVERYTHING
     else {} //signal pid error, bad command
-    return true;
+    // std::cout << "controller out: " << out << std::endl;
+    *curOp.response = out;
+    if (shutdown) *curOp.response = "exit";
+    pthread_cond_signal(curOp.cond);
+    return shutdown;
 }
 
 std::string Controller::list() {

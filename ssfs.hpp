@@ -55,6 +55,7 @@ class Controller {
         unsigned long long inodeStart;
         unsigned long long filesStart;
         Bitmap bitmap;
+        bool shutdown;
 };
 
 class disk_op {
