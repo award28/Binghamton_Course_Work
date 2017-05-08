@@ -41,17 +41,39 @@ Controller::Controller(std::string &disk, std::queue<op> *buffer) {
     tdisk.close();
 }
 
-std::string Controller::cat(std::string &name) {
-    InodeData inodeData = findInode(name);
-    Inode inode = inodeData.first;
-    std::fstream disk(this->disk, std::fstream::in | std::fstream::out | std::fstream::binary);
-    char *data = new char[inode.size];
+bool Controller::execute() {
+    op curOp = buffer->front();
+    buffer->pop();
 
-    disk.seekp(inode.dbp[0]);
-    disk.read(data, inode.size);
-    disk.close();
+    std::cout << curOp.cmd << std::endl;
 
-    return std::string(data);
+    if(curOp.cmd == "CREATE" || curOp.cmd == "WRITE") {
+        if(write(curOp.name, curOp.start, curOp.size, curOp.data))
+            std::cout << "Success." << std::endl;
+        else
+            std::cout << "Error: Not enough space in memory to write " << curOp.name << " of size " << curOp.size << "." << std::endl;
+    }
+
+    else if(curOp.cmd == "IMPORT")
+        import(curOp.name, curOp.data); 
+    else if(curOp.cmd == "READ") 
+        std::cout << read(curOp.name, curOp.start, curOp.size) << std::endl;
+    else if(curOp.cmd == "CAT")
+        std::cout << cat(curOp.name) << std::endl;
+    else if(curOp.cmd == "LIST") 
+        std::cout << list() << std::endl;
+    else if(curOp.cmd == "DELETE") {
+        if(deleteFile(curOp.name))
+            std::cout << "Success: File deleted." << std::endl;
+        else
+            std::cout << "Error: File " << curOp.name << " could not be found." << std::endl;
+    }
+    else if(curOp.cmd == "SHUTDOWN")
+        return false;
+    else 
+        std::cout << "Error: Bad command." << std::endl; 
+
+    return true;
 }
 
 std::string Controller::read(std::string &name, int start, int size) {
@@ -77,9 +99,22 @@ std::string Controller::read(std::string &name, int start, int size) {
 }
 
 bool Controller::write(std::string &name, int start, int size, std::string &data) {
+    int available = 0;
+
+    for(int i = 0; i < this->bitmap.second; i++) {
+        if(!this->bitmap.first[i])
+            available += this->sb.blockSize;
+    }
+
+    if(available < size - start)
+        return false;
+
     InodeData inodeData = createInode(name);
     Inode inode = inodeData.first;
     int pos = inodeData.second;
+    
+    if(inode.size == -1)
+        return false;
 
     std::fstream disk(this->disk, std::fstream::in | std::fstream::out | std::fstream::binary);
     disk.seekp(inode.dbp[0] + start);
@@ -98,34 +133,17 @@ bool Controller::write(std::string &name, int start, int size, std::string &data
     return true;
 }
 
-bool Controller::execute() {
-    op curOp = buffer->front();
-    buffer->pop();
+std::string Controller::cat(std::string &name) {
+    InodeData inodeData = findInode(name);
+    Inode inode = inodeData.first;
+    std::fstream disk(this->disk, std::fstream::in | std::fstream::out | std::fstream::binary);
+    char *data = new char[inode.size];
 
-    std::cout << curOp.cmd << std::endl;
+    disk.seekp(inode.dbp[0]);
+    disk.read(data, inode.size);
+    disk.close();
 
-    if(curOp.cmd == "CREATE" || curOp.cmd == "WRITE")
-        write(curOp.name, curOp.start, curOp.size, curOp.data); 
-    else if(curOp.cmd == "IMPORT")
-        import(curOp.name, curOp.data); 
-    else if(curOp.cmd == "READ") 
-        std::cout << read(curOp.name, curOp.start, curOp.size) << std::endl;
-    else if(curOp.cmd == "CAT")
-        std::cout << cat(curOp.name) << std::endl;
-    else if(curOp.cmd == "LIST") 
-        std::cout << list() << std::endl;
-    else if(curOp.cmd == "DELETE") {
-        if(deleteFile(curOp.name))
-            std::cout << "Success: File deleted." << std::endl;
-        else
-            std::cout << "Error: File " << curOp.name << " could not be found." << std::endl;
-    }
-    else if(curOp.cmd == "SHUTDOWN")
-        return false;
-    else 
-        std::cout << "Error: Bad command." << std::endl; 
-
-    return true;
+    return std::string(data);
 }
 
 bool Controller::import(std::string &name, std::string &file) {
@@ -139,39 +157,9 @@ bool Controller::import(std::string &name, std::string &file) {
     write(name, 0, contents.length(), contents);
 
     return true;
-    /*
-    std::string retVal, temp, fakeName(33, 'x');
-    int count = 0;
-    do {
-        std::getline(disk, temp, '%');
-        std::stringstream s(temp);
 
-        getline(s, temp, '\0');
-        std::stringstream nameStream(temp);
-        getline(nameStream, temp, ' ');
-        if(temp != fakeName) {
-            retVal.append(temp);
-            getline(s, temp, '\0');
-            std::stringstream sizeStream(temp);
-            getline(sizeStream, temp, 'x');
-            retVal.append(" " + temp + '\n');
-        }
-        else 
-            getline(s, temp, '\0');
-
-        for(int i = 0; i < 12; i++)
-            getline(s, temp, '\0');
-
-        getline(s, temp, '\0');
-        getline(s, temp, '\0');
-
-        count++;
-    } while(count < 256);
-
-    disk.close();
-    return retVal;
-    */
 }
+
 std::string Controller::list() {
     std::fstream disk(this->disk, std::fstream::in | std::fstream::out | std::fstream::binary );
     disk.seekp(this->inodeStart);
