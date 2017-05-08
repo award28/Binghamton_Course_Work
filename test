@@ -7,6 +7,7 @@ CAT ohShitWaddup.txt
 IMPORT hello.txt hello.txt
 LIST
 CAT hello.txt
+CAT ho.txt
 READ hello.txt 6 8
 DELETE hey_thur.txt
 SHUTDOWN

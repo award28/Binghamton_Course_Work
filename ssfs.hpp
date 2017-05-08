@@ -7,6 +7,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 #include <queue>
+#include <vector>
 #include <cmath>
 
 typedef std::pair<bool*, int> Bitmap;
@@ -50,6 +51,9 @@ class Controller {
         InodeData findInode(std::string &name);
         void updateInode(Inode inode, int pos);
         bool deleteFile(std::string &name);
+        std::vector<int> posArray(Inode inode);
+        std::vector<int> ibpArray(int ibp);
+        int findFreePos();
         std::string list();
         SuperBlock sb;
         std::string disk;

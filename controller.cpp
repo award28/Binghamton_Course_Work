@@ -80,26 +80,57 @@ std::string Controller::read(std::string &name, int start, int size) {
     InodeData inodeData = findInode(name);
     Inode inode = inodeData.first;
     std::fstream disk(this->disk, std::fstream::in | std::fstream::out | std::fstream::binary);
-
+    std::vector<int> posArr = posArray(inode);
     char *data;
-   if(size - start > inode.size) {
-        data = new char[inode.size];
-        disk.seekp(inode.dbp[0] + start);
-        disk.read(data, inode.size);
+    string content = "";
+    int bytesLeft;
+
+    if(size - start > inode.size) 
+        bytesLeft = inode.size - start;
+    else
+        bytesLeft = size - start;
+
+    int index = floor(start/128);
+    int offset = start % 128;
+
+    if(index)
+        posArr.erase(posArr.begin(), posArr.begin() + index);
+
+    data = new char[128];
+
+    disk.seekp(posArr.front() + offset);
+    posArr.erase(posArr.begin());
+
+    if(bytesLeft > 128) {
+        disk.read(data, 128);
+        bytesLeft -= 128;
+        content += data;
+
+        for(auto pos : posArr) {
+            disk.seekp(pos);
+            if(bytesLeft > 128) {
+                disk.read(data, 128);
+                bytesLeft -= 128;
+            }
+            else
+                disk.read(data, bytesLeft);
+            content += data;
+        }
     }
     else {
-        data = new char[size];
-        disk.seekp(inode.dbp[0] + start);
-        disk.read(data, size);
+        disk.read(data, bytesLeft);
+        content += data;
     }
 
     disk.close();
 
-    return std::string(data);
+    return std::string(content);
 }
 
 bool Controller::write(std::string &name, int start, int size, std::string &data) {
+    bool finished = false;
     int available = 0;
+    int bytesLeft;
 
     for(int i = 0; i < this->bitmap.second; i++) {
         if(!this->bitmap.first[i])
@@ -112,19 +143,27 @@ bool Controller::write(std::string &name, int start, int size, std::string &data
     InodeData inodeData = createInode(name);
     Inode inode = inodeData.first;
     int pos = inodeData.second;
+    int dataLeft = data.length();
     
     if(inode.size == -1)
         return false;
-
+    
     std::fstream disk(this->disk, std::fstream::in | std::fstream::out | std::fstream::binary);
     disk.seekp(inode.dbp[0] + start);
 
-    for(int i = 0; i < size;) {
-        for(int j = 0; j < data.length() && i < size; j++, i++) {
-            disk << data[j];
-            disk.seekg(disk.tellg());
-        }
+    for(int j = 0; j < this->sb.blockSize && dataLeft--; j++) {
+        disk << data[j];
+        disk.seekg(disk.tellg());
     }
+
+    for(int i = 1; i < 12 && dataLeft; i++) {
+        inode.dbp[i] = findFreePos();
+        disk.seekp(inode.dbp[i]);
+        for(int j = 0; j < this->sb.blockSize && dataLeft--; j++) {
+        disk << data[j];
+        disk.seekg(disk.tellg());
+        }
+   }
 
     inode.size = size;
 
@@ -136,6 +175,10 @@ bool Controller::write(std::string &name, int start, int size, std::string &data
 std::string Controller::cat(std::string &name) {
     InodeData inodeData = findInode(name);
     Inode inode = inodeData.first;
+
+    if(inode.size == -1)
+        return "Error: No file with name " + name + " found.";
+
     std::fstream disk(this->disk, std::fstream::in | std::fstream::out | std::fstream::binary);
     char *data = new char[inode.size];
 
@@ -428,3 +471,53 @@ InodeData Controller::createInode(std::string &name) {
     disk.close();
     return std::make_pair(inode, pos);
 }   
+
+std::vector<int> Controller::posArray(Inode inode) {
+    std::vector<int> arr, ibp, dibp;
+    for(int i = 0; i < 12; i++)
+        if(inode.dbp[i])
+            arr.push_back(inode.dbp[i]);
+
+    //ibp = ibpArray(inode.ibp);
+    return arr;
+}
+
+std::vector<int> Controller::ibpArray(int ibp) {
+    std::fstream disk(this->disk, std::fstream::in | std::fstream::out | std::fstream::binary);
+    disk.seekg(ibp);
+    std::string temp;
+    std::vector<int> resArr;
+
+    std::getline(disk, temp, '%');
+    std::stringstream s(temp);
+
+    getline(s, temp, '\0');
+    std::stringstream sizeStream(temp);
+    getline(sizeStream, temp, 'x');
+    resArr.push_back(std::stoi(temp));
+
+    for(int i = 0; i < floor(this->sb.blockSize/11); i++) {
+        getline(s, temp, '\0');
+        sizeStream.str(temp);
+        getline(sizeStream, temp, 'x');
+        resArr.push_back(std::stoi(temp));
+    }
+
+    disk.close();
+    return resArr;
+}
+
+int Controller::findFreePos() {
+    bool found = false;
+    int ret;
+
+    for(int i = 0; i < this->bitmap.second && !found; i++) {
+        if(!this->bitmap.first[i]) {
+            ret = this->filesStart + (i * this->sb.blockSize);
+            this->bitmap.first[i] = true;
+            found = true;
+        }
+    }
+
+    return ret;
+}
