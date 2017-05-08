@@ -1,0 +1,2 @@
+IMPORT smallRead testFiles/smallRead
+READ smallRead 5 38 

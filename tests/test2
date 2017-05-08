@@ -1,0 +1,3 @@
+IMPORT smallImport testFiles/smallImport
+IMPORT mediumImport testFiles/mediumImport
+LIST
