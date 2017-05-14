@@ -5,7 +5,7 @@ FullyLRU::FullyLRU(const std::vector<instruction>& traces) {
 }
 void FullyLRU::execute() {
     for (auto trace : this->traces) {
-        if (cache->inCache(trace.second/32, true)) 
+        if (cache->inCache(trace.second/32, true, this->total)) 
             this->hits++;
         this->total++;
     }

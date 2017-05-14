@@ -26,12 +26,12 @@ class Direct {
 class Set {
     public:
         Set(unsigned long long size);
-        bool inCache(unsigned long long tag, bool replace);
+        bool inCache(unsigned long long tag, bool replace, unsigned long long count);
         unsigned long long counter;
     private:
         std::vector<std::pair<unsigned long long, unsigned long long> > blocks;
+        void replaceBlock(unsigned long long tag, unsigned long long count);
         unsigned long long size;
-        void replaceBlock(unsigned long long tag);
 };
 
 class SA {
@@ -44,7 +44,7 @@ class SA {
     private:
         bool check(unsigned long long addr, bool store, bool head);
         std::vector<instruction> traces;
-        std::vector<Set*> sets;
+        std::vector<Set> sets;
         unsigned long long size = 16 * 1024;
         unsigned long long capacityPer;
         unsigned long long assoc;

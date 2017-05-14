@@ -12,9 +12,10 @@ void SA::execute(unsigned long long assoc) {
     this->total = 0;
     this->assoc = assoc;
     this->capacityPer = ceil((size / 32) / assoc);
-    this->sets.resize(this->capacityPer);
+    this->sets.reserve(this->capacityPer);
 
-    std::fill(this->sets.begin(), this->sets.end() + this->capacityPer, new Set(assoc));
+    for(unsigned long long i = 0; i < this->capacityPer; i++)
+        this->sets.push_back(Set(assoc));
 
     unsigned long long addr;
 
@@ -31,8 +32,15 @@ bool SA::check(unsigned long long addr, bool store, bool head) {
     unsigned long long tag, set;
     bool res;
 
-    tag = (addr / this->capacityPer);
+    unsigned int mask = 0;
+
+    for(int i = log2(this->capacityPer); i <= 27; i++)
+        mask |= 1 << i;
+
+    tag = (addr & mask);
     set = (addr % this->capacityPer);
+
+    //std::cout << set << " " << tag << std::endl;
 
     if(!set)
         set = this->capacityPer - 1;
@@ -40,9 +48,9 @@ bool SA::check(unsigned long long addr, bool store, bool head) {
         set--;
 
     if(store && this->write) 
-        res = this->sets.at(set)->inCache(tag, true);
+        res = this->sets.at(set).inCache(tag, true, this->total);
     else
-        res = this->sets.at(set)->inCache(tag, true);
+        res = this->sets.at(set).inCache(tag, true, this->total);
 
     if(head) {
         if(res) {
