@@ -17,12 +17,12 @@ TEST(LexerTest, Newline) {
 }
   
 TEST(LexerTest, Parenthesis) {
-  Token lperen(TokenKind::lperen, "(");
-  EXPECT_EQ(lperen, Lexer("(").NextToken());
-  EXPECT_EQ(lperen, Lexer(" \t (").NextToken());
-  Token rperen(TokenKind::rperen, ")");
-  EXPECT_EQ(rperen, Lexer(")").NextToken());
-  EXPECT_EQ(rperen, Lexer(" \t )").NextToken());
+  Token lparen(TokenKind::lparen, "(");
+  EXPECT_EQ(lparen, Lexer("(").NextToken());
+  EXPECT_EQ(lparen, Lexer(" \t (").NextToken());
+  Token rparen(TokenKind::rparen, ")");
+  EXPECT_EQ(rparen, Lexer(")").NextToken());
+  EXPECT_EQ(rparen, Lexer(" \t )").NextToken());
 }
 
 TEST(LexerTest, Operators) {

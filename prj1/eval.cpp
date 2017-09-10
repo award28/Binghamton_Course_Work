@@ -1,9 +1,5 @@
 #include "eval.h"
-
 #include "lexer.h"
-
-
-enum State { want_integer, want_operator };
 
 const EvalResult Eval::NextEvalResult() {
   if (token_.kind == TokenKind::nl) {
@@ -12,38 +8,61 @@ const EvalResult Eval::NextEvalResult() {
   else if (token_.kind == TokenKind::eof) {
     return EvalResult({EvalStatus::eof, 0});
   }
+
+  //recursion
+  return this->Rec(0);
+}
+
+const EvalResult Eval::Rec(int stackCount) {
   auto result = 0;
-  auto state = State::want_integer;
-  auto sign = 1;
-  auto is_error = false;  
-  while (!is_error && token_.kind != TokenKind::nl
-	 && token_.kind != TokenKind::eof) {
-    switch (state) {
+  while (token_.kind != TokenKind::nl && token_.kind != TokenKind::eof) {
+     switch (state_) {
       case State::want_integer: {
-	state = State::want_operator;
-	is_error =
-	  (token_.kind != TokenKind::integer);
-	if (!is_error) result += sign * token_.value;
+        if (token_.kind == TokenKind::lparen) {
+	  auto outerSign = sign_;
+	  sign_ = 1;
+          token_ = lexer_.NextToken();
+	  auto innerRes = this->Rec(stackCount + 1);
+          auto is_error = innerRes.status != EvalStatus::ok;
+	  if (!is_error) {
+             result += outerSign * innerRes.result;
+	  }
+	  else
+            return EvalResult({EvalStatus::error, 0});
+	}
+	else if (token_.kind == TokenKind::rparen) {
+            return EvalResult({EvalStatus::error, 0});
+	}
+	else {
+	  state_ = State::want_operator;
+	  if (token_.kind == TokenKind::integer) 
+	    result += sign_ * token_.value;
+	  else
+            return EvalResult({EvalStatus::error, 0});
+	}
 	break;
       }
       default: {
-	state = State::want_integer;
-	if (token_.kind == TokenKind::lparen) {
-		
+	if (token_.kind == TokenKind::rparen) {
+            state_ = State::want_operator;
+	    if (stackCount > 0) 
+              return EvalResult({EvalStatus::ok, result});
+	    else
+              return EvalResult({EvalStatus::error, 0});
 	}
-	is_error = (token_.kind != TokenKind::add &&
-		    token_.kind != TokenKind::sub);
-	if (!is_error) {
-	  sign = (token_.kind == TokenKind::sub) ? -1 : +1;
+	
+	state_ = State::want_integer;
+
+        if (token_.kind == TokenKind::add || token_.kind == TokenKind::sub)
+	  sign_ = (token_.kind == TokenKind::sub) ? -1 : +1;
+	else
+            return EvalResult({EvalStatus::error, 0});
 	}
-	break;
-      }
-    } //switch
-    if (!is_error) token_ = lexer_.NextToken();
-  } //while 
-  is_error =
-    is_error || (state != State::want_operator);
-  return is_error
-    ?  EvalResult({EvalStatus::error, 0})
+    }
+    token_ = lexer_.NextToken();
+  }
+
+  return (stackCount != 0)
+    ? EvalResult({EvalStatus::error, 0})
     : EvalResult({EvalStatus::ok, result});
 }

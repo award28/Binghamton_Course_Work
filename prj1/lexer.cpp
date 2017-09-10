@@ -27,11 +27,11 @@ const Token Lexer::NextToken() {
   } 
   else if (ch == '(') {
     ++index_;
-    return Token(TokenKind::lperen, "(");
+    return Token(TokenKind::lparen, "(");
   } 
   else if (ch == ')') {
     ++index_;
-    return Token(TokenKind::rperen, ")");
+    return Token(TokenKind::rparen, ")");
   } 
   else if (ch == '+') {
     ++index_;

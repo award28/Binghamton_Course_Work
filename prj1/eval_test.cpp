@@ -38,4 +38,30 @@ TEST(EvalTest, Sub) {
   EXPECT_EQ(result.result, 42);
 }
 
+TEST(EvalTest, RightAssocTest) {
+  Lexer lexer("16 - (4 + 8) - (12 + ((18 - 42) + 16))");
+  EvalResult result(Eval(lexer).NextEvalResult());
+  ASSERT_EQ(result.status, EvalStatus::ok);
+  EXPECT_EQ(result.result, 0);
+}
 
+TEST(EvalTest, StartParen) {
+  Lexer lexer("(4)");
+  EvalResult result(Eval(lexer).NextEvalResult());
+  ASSERT_EQ(result.status, EvalStatus::ok);
+  EXPECT_EQ(result.result, 4);
+}
+
+TEST(EvalTest, MissMatchRparen) {
+  Lexer lexer("(1))");
+  EvalResult result(Eval(lexer).NextEvalResult());
+  ASSERT_EQ(result.status, EvalStatus::error);
+  EXPECT_EQ(result.result, 0);
+}
+
+TEST(EvalTest, MissMatchLparen) {
+  Lexer lexer("(1");
+  EvalResult result(Eval(lexer).NextEvalResult());
+  ASSERT_EQ(result.status, EvalStatus::error);
+  EXPECT_EQ(result.result, 0);
+}

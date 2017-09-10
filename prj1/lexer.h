@@ -6,8 +6,8 @@
 
 enum TokenKind {
   //language tokens
-  lperen,
-  rperen,
+  lparen,
+  rparen,
   add,
   integer,
   nl,
