@@ -5,7 +5,7 @@
 #include <cstring>
 #include <cstdlib>
 #include <sys/time.h>
-#include "Sort.h"
+#include "Sort.hpp"
 
 #define SMALL_SIZE 20
 #define SORTED_SIZE 1000
