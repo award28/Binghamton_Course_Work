@@ -14,8 +14,18 @@
  *          BITMAP_OP_NOT_FOUND (defined in "common.h") if the bit of interest does not exist in the bitmap
  *          BITMAP_OP_ERROR (defined in "common.h") on any other errors
  */
-int bitmap_find_first_bit(unsigned char * bitmap, int size, int val)
-{
+int bitmap_find_first_bit(unsigned char * bitmap, int size, int val) {
+	if (NULL == bitmap) {
+		printf("ERROR: NULL bit map.\n");
+		return BITMAP_OP_ERROR;
+	} else if (val < 0) {
+		printf("ERROR: val can not be negative.\n");
+		return BITMAP_OP_ERROR;
+	} else if (size*BIT_PER_BYTE <= val) {
+		printf("ERROR: val too high.\n");
+		return BITMAP_OP_ERROR;
+	}
+
 	//Try to find O(1) solution
 	for (int i = 0;  i < size; ++i) {
 		for (int j = 0; j < BIT_PER_BYTE; ++j) {
@@ -27,7 +37,7 @@ int bitmap_find_first_bit(unsigned char * bitmap, int size, int val)
 		}
 	}
 
-	return BITMAP_OP_ERROR;	
+	return BITMAP_OP_NOT_FOUND;	
 }
 
 /*
@@ -39,7 +49,16 @@ int bitmap_find_first_bit(unsigned char * bitmap, int size, int val)
  *          BITMAP_OP_ERROR (defined in "common.h") on any errors
  */
 int bitmap_set_bit(unsigned char * bitmap, int size, int target_pos) {
-	if (target_pos < 0 || size*BIT_PER_BYTE <= target_pos) return BITMAP_OP_ERROR;
+	if (NULL == bitmap) {
+		printf("ERROR: NULL bit map.\n");
+		return BITMAP_OP_ERROR;
+	} else if (target_pos < 0) {
+		printf("ERROR: target_pos can not be negative.\n");
+		return BITMAP_OP_ERROR;
+	} else if (size*BIT_PER_BYTE <= target_pos) {
+		printf("ERROR: target_pos too high.\n");
+		return BITMAP_OP_ERROR;
+	}
 
 	int target_bit = target_pos % BIT_PER_BYTE;
 	int target_byte = target_pos / BIT_PER_BYTE;
@@ -57,10 +76,17 @@ int bitmap_set_bit(unsigned char * bitmap, int size, int target_pos) {
  * @return: BITMAP_OP_SUCCEED (defined in "common.h") on success
  *          BITMAP_OP_ERROR (defined in "common.h") on any errors
  */
-int bitmap_clear_bit(unsigned char * bitmap, int size, int target_pos)
-{
-    /* Your code here */
-	if (target_pos < 0 || size*BIT_PER_BYTE <= target_pos) return BITMAP_OP_ERROR;
+int bitmap_clear_bit(unsigned char * bitmap, int size, int target_pos) {
+	if (NULL == bitmap) {
+		printf("ERROR: NULL bit map.\n");
+		return BITMAP_OP_ERROR;
+	} else if (target_pos < 0) {
+		printf("ERROR: target_pos can not be negative.\n");
+		return BITMAP_OP_ERROR;
+	} else if (size*BIT_PER_BYTE <= target_pos) {
+		printf("ERROR: target_pos too high.\n");
+		return BITMAP_OP_ERROR;
+	}
 
 	int target_bit = target_pos % BIT_PER_BYTE;
 	int target_byte = target_pos / BIT_PER_BYTE;
@@ -81,8 +107,16 @@ int bitmap_clear_bit(unsigned char * bitmap, int size, int target_pos)
  */
 int bitmap_bit_is_set(unsigned char * bitmap, int size, int pos)
 {
-    /* Your code here */
-	if (pos < 0 || size*BIT_PER_BYTE <= pos) return BITMAP_OP_ERROR;
+	if (NULL == bitmap) {
+		printf("ERROR: NULL bit map.\n");
+		return BITMAP_OP_ERROR;
+	} else if (pos < 0) {
+		printf("ERROR: pos can not be negative.\n");
+		return BITMAP_OP_ERROR;
+	} else if (size*BIT_PER_BYTE <= pos) {
+		printf("ERROR: pos too high.\n");
+		return BITMAP_OP_ERROR;
+	}
 
 	int target_bit = pos % BIT_PER_BYTE;
 	int target_byte = pos / BIT_PER_BYTE;
