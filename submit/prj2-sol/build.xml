@@ -1,0 +1,117 @@
+<?xml version="1.0"?>
+
+<project name="prj2-sol" default="jar">
+  <description>
+    Build file for decaf java-subset pretty-printer.
+  </description>
+
+  <!--
+      All paths are relative to this file.
+
+      Assumes all source files in src directory.  Specifically,
+      grammar file is src/main/antlr/Decaf.g4 and all java source
+      files in src/main/java (in the appropriate package directory,
+
+      Creates build directory for generated class-files
+      (build/classes) and java-files (build/java).
+
+      Leaves jar file in created target directory.
+  -->
+
+  <!-- ***** Global Property Definitions ***** -->
+  <property name="project" value="prj2-sol"/>
+  <property name="course" value="cs572"/>
+  <property name="course-dir" value="${user.home}/${course}"/>
+  <property name="src.dir" location="src"/>
+  <property name="main-src.dir" location="${src.dir}/main"/>
+  <property name="java-src.dir" location="${main-src.dir}/java"/>
+  <property name="antlr-src.dir" location="${main-src.dir}/antlr"/>
+  <property name="build.dir" location="build"/>
+  <property name="target.dir" location="${build.dir}/libs"/>
+  <property name="classes.dir" location="${build.dir}/classes"/>
+  <property name="gen-java.dir" location="${build.dir}/java"/>
+
+  <path id="lib.classpath">
+    <fileset dir="${course-dir}/lib" includes="*.jar"/>
+  </path>
+
+  <path id="compile.classpath">
+    <path refid="lib.classpath"/>
+    <pathelement location="${classes.dir}"/>
+  </path>
+
+  <path id="run.classpath">
+    <path refid="lib.classpath"/>
+    <pathelement location="${target.dir}/${project}.jar"/>
+  </path>
+
+  <target name="init">
+    <description>Creates directories.</description>
+    <mkdir dir="${classes.dir}"/>
+    <mkdir dir="${gen-java.dir}/${course}"/>
+    <mkdir dir="${target.dir}"/>
+  </target>
+
+  <target name="antlr" depends="init">
+    <java classname="org.antlr.v4.Tool" fork="true" failonerror="true"
+	  dir="${antlr-src.dir}">
+      <arg value="-o"/> <arg value="${gen-java.dir}"/>
+      <!-- change to -no-listener if no-listener is needed -->
+      <arg value="-listener"/>
+      <!-- change to -visitor if visitor is needed -->
+      <arg value="-no-visitor"/>
+      <arg value="Decaf.g4"/>
+      <classpath>
+	<path refid="lib.classpath"/>
+      </classpath>
+    </java>
+  </target>
+
+  <target name="compile"  depends="antlr">
+    <description>Compiles all source code.</description>
+    <javac destdir="${classes.dir}" source="1.8"
+	   includeantruntime="false" debug="yes">
+      <src path="${java-src.dir}"/>
+      <src path="${gen-java.dir}"/>
+      <classpath refid="compile.classpath"/>
+      <compilerarg value="-Xlint:unchecked"/>
+    </javac>
+  </target> 
+
+  <target name="jar" depends="compile">
+    <description>Creates jar file.</description>
+    <jar destfile="${target.dir}/${project}.jar"
+         compress="false" basedir="${classes.dir}">
+    </jar>
+  </target>
+
+  <target name="clean">
+    <description>
+      Removes temporary directories and all compiled files.
+    </description>
+    <delete dir="${build.dir}"/>
+    <delete dir="${target.dir}"/>
+    <delete file="${project}.tar.gz"/>
+  </target>
+
+  <target name="submit" >
+    <description>
+      Target which builds compressed archive containing all source files to be
+      submitted for project.
+    </description>
+    <tar destfile="${project}.tar.gz" 
+         includes="README,Makefile,build.xml,src/**" basedir="." 
+	 compression="gzip" />
+   </target>
+
+
+  <target name="display">
+    <description>Ant debugging target to display ant vars.</description>
+    <property name="compile-classpath" refid="compile.classpath"/>
+    <property name="run-classpath" refid="run.classpath"/>
+    <echo>compile path is ${compile-classpath}</echo>
+    <echo>run path is ${run-classpath}</echo>
+    <echoproperties/>
+  </target>
+
+</project>
