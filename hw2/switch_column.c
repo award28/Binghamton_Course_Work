@@ -98,7 +98,6 @@ int main(int argc, char *argv[]) {
 	write(out_fd, "===\n", 4);
 
 	int rv = get_line(buf, in_fd);
-
 	int num_cols;
 	int i;
 
