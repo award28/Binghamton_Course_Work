@@ -32,5 +32,4 @@ typedef struct _mapreduce_result
 void mapreduce(MAPREDUCE_SPEC * spec, MAPREDUCE_RESULT * result);
 
 
-
 #endif

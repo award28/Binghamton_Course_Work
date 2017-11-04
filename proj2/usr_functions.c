@@ -18,6 +18,7 @@
 int letter_counter_map(DATA_SPLIT * split, int fd_out)
 {
     // add your implementation here ...
+    //printf("size: %d\n", split->size);
     
     return 0;
 }
