@@ -20,7 +20,6 @@ void mapreduce(MAPREDUCE_SPEC * spec, MAPREDUCE_RESULT * result)
     close(fd);
 
     int chunk = size/spec->split_num;
-    int excess = size % spec->split_num;
     int is_letter_counter = spec->usr_data == NULL;
     int fork_num = spec->split_num;
 
@@ -39,9 +38,9 @@ void mapreduce(MAPREDUCE_SPEC * spec, MAPREDUCE_RESULT * result)
     if (!driver) {
         DATA_SPLIT split;
         split.fd = open(spec->input_data_filepath, O_RDONLY);
-        split.size = chunk;
         split.usr_data = spec->usr_data;
-        if (fork_num - 1 == spec->split_num) split.size += excess;
+        if (fork_num + 1 == spec->split_num) split.size = size - chunk*fork_num;
+	else split.size = chunk;
 
         int from = chunk*fork_num;
         if (fork_num) {
@@ -69,9 +68,9 @@ void mapreduce(MAPREDUCE_SPEC * spec, MAPREDUCE_RESULT * result)
     	word_finder_map(&split, fd_out);
     	//word_finder_reduce(&split, fd_out);
         }
+
         free(fd_out_name);
         free(fork_num_str);
-
         close(split.fd);
         close(fd_out);
 
