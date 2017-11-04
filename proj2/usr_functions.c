@@ -17,22 +17,37 @@
  */
 int letter_counter_map(DATA_SPLIT * split, int fd_out)
 {
-    // add your implementation here ...
-    //printf("size: %d\n", split->size);
+    int rv;
+    int num_len;
+    char* line = NULL;
     char * data = malloc(split->size + 1);
     int counter[26] = {0};
-    read(split->fd, data, split->size);
+
+    rv = read(split->fd, data, split->size);
+    if (rv < 0) {
+	    free(data);
+	    return rv;
+    }
     for (int i = 0; i < split->size; i++) {
 	    if (data[i] > 64 && data[i] < 91) 
 		    counter[data[i] - 65]++;
 	    else if (data[i] > 96 && data[i] < 123) 
 		    counter[data[i] - 97]++;
     }
-    //printf("Data: %s\n", data);
-    for (int i = 0; i < 26; i++)
-	    printf("%c %d\n", i + 65, counter[i]);
 
-    printf("\n\n");
+    for (int i = 0; i < 26; i++) {
+    	num_len = snprintf( NULL, 0, "%d", counter[i] );
+    	line = malloc( num_len + 4 );
+    	snprintf( line, num_len + 4, "%c %d\n", i + 65, counter[i] );
+
+	rv = write(fd_out, line, num_len + 3);
+	free(line);
+
+	if (rv < 0) { 
+		free(data); 
+		return rv; 
+	}
+    }
 
     free(data);
     return 0;
