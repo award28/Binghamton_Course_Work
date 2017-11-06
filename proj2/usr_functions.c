@@ -53,6 +53,22 @@ int letter_counter_map(DATA_SPLIT * split, int fd_out)
     return 0;
 }
 
+int get_line(char* buf, int fd) {
+    ssize_t line = read(fd, buf, 13);
+    if (1 > line) return line;
+    ssize_t loc = 0;
+    while(loc < line && buf[loc] != '\n') loc++;
+    buf[loc] = '\0';
+    lseek(fd, loc - line + 1, SEEK_CUR);
+    return loc;
+}
+
+const char* getLineNum(char* line) {
+	const char* number = line;
+	while (*number++ != ' ');
+	return number;
+} 
+
 /* User-defined reduce function for the "Letter counter" task.  
    This reduce function is called in a reduce worker process.
    @param p_fd_in: The address of the buffer holding the intermediate data files' file descriptors.
@@ -67,8 +83,33 @@ int letter_counter_map(DATA_SPLIT * split, int fd_out)
 */
 int letter_counter_reduce(int * p_fd_in, int fd_in_num, int fd_out)
 {
-    // add your implementation here ...
+    int rv;
+    int num_len;
+    char * line = NULL;
+    int counter[26] = {0};
+
+    for(int i = 0; i < fd_in_num; i++) {
+	line = malloc(13);
+	while(get_line(line, p_fd_in[i])) 
+            counter[line[0] - 65] += strtol(getLineNum(line), NULL, 10);
+    }
     
+    free(line);
+
+    for (int i = 0; i < 26; i++) {
+    	num_len = snprintf( NULL, 0, "%d", counter[i] );
+    	line = malloc( num_len + 4 );
+    	snprintf( line, num_len + 4, "%c %d\n", i + 65, counter[i] );
+
+	rv = write(fd_out, line, num_len + 3);
+	if (rv < 0) return rv; 
+    }
+    free(line);
+    /*
+    for (int i = 0; i < 26; i++) {
+	    printf("%c %d\n", i + 65, counter[i]);
+    }
+    */
     return 0;
 }
 
