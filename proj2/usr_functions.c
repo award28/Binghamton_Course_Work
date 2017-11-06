@@ -7,6 +7,61 @@
 #include "common.h"
 #include "usr_functions.h"
 
+int get_line_num(int fd) {
+	char buf[1];
+	int line = 0;
+	int cur_loc = lseek(fd, 0, SEEK_CUR);
+	int loc = lseek(fd, 0, SEEK_SET);
+
+	while(read(fd, buf, 1) && loc != cur_loc) {
+		line += buf[0] == '\n';
+		loc++;
+	}
+
+	return line;
+}
+
+int get_line(char* buf, int fd) {
+    ssize_t line = read(fd, buf, 13);
+    if (1 > line) return line;
+    ssize_t loc = 0;
+    while(loc < line && buf[loc] != '\n') loc++;
+    buf[loc] = '\0';
+    lseek(fd, loc - line + 1, SEEK_CUR);
+    return loc;
+}
+
+int get_line_n(char* buf, int fd) {
+    ssize_t line = read(fd, buf, 13);
+    if (1 > line) return line;
+    ssize_t loc = 0;
+    while(loc < line && buf[loc] != '\n') loc++;
+    lseek(fd, loc - line + 1, SEEK_CUR);
+    return loc;
+}
+
+const char* getLineNum(char* line) {
+	const char* number = line;
+	while (*number++ != ' ');
+	return number;
+} 
+
+int word_in_line(int fd, char * word) {
+    char buf[1];
+    int cur = lseek(fd, 0, SEEK_CUR) - 1;
+    lseek(fd, cur, SEEK_SET);
+    while(read(fd, buf, 1) && buf[0] != '\n');
+    int eol = lseek(fd, 0, SEEK_CUR);
+    int line_len = eol - cur;
+    lseek(fd, cur, SEEK_SET);
+
+    char * line = malloc(line_len + 1);
+    read(fd, line, line_len);
+    lseek(fd, 1, SEEK_CUR);
+
+    return strstr(line, word) != NULL;
+}
+
 /* User-defined map function for the "Letter counter" task.  
    This map function is called in a map worker process.
    @param split: The data split that the map function is going to work on.
@@ -52,22 +107,6 @@ int letter_counter_map(DATA_SPLIT * split, int fd_out)
     free(data);
     return 0;
 }
-
-int get_line(char* buf, int fd) {
-    ssize_t line = read(fd, buf, 13);
-    if (1 > line) return line;
-    ssize_t loc = 0;
-    while(loc < line && buf[loc] != '\n') loc++;
-    buf[loc] = '\0';
-    lseek(fd, loc - line + 1, SEEK_CUR);
-    return loc;
-}
-
-const char* getLineNum(char* line) {
-	const char* number = line;
-	while (*number++ != ' ');
-	return number;
-} 
 
 /* User-defined reduce function for the "Letter counter" task.  
    This reduce function is called in a reduce worker process.
@@ -123,8 +162,20 @@ int letter_counter_reduce(int * p_fd_in, int fd_in_num, int fd_out)
  */
 int word_finder_map(DATA_SPLIT * split, int fd_out)
 {
-    // add your implementation here ...
-    
+    int num_len;
+    char * line = NULL;
+    int start_line = get_line_num(split->fd);
+
+    for(int i = 0; i < split->size; i++) 
+        if (word_in_line(split->fd, split->usr_data)) {
+	    num_len = snprintf( NULL, 0, "%d\n", i + start_line );
+    	    line = malloc( num_len + 1  );
+    	    snprintf( line, num_len + 1, "%d\n", i + start_line);
+	    write(fd_out, line, num_len  );
+	}
+
+    free(line);
+
     return 0;
 }
 
@@ -142,8 +193,23 @@ int word_finder_map(DATA_SPLIT * split, int fd_out)
 */
 int word_finder_reduce(int * p_fd_in, int fd_in_num, int fd_out)
 {
-    // add your implementation here ...
+    int len;
+    long int actual_line;
+    char * line = NULL;
+
+    for(int i = 0; i < fd_in_num; i++) {
+	line = malloc(13);
+	while(get_line_n(line, p_fd_in[i])) {
+		actual_line = strtol(line, NULL, 10) + 1;
+    		len = snprintf( NULL, 0, "%ld", actual_line );
+		snprintf( line, len + 2, "%ld\n", actual_line );
+	
+		write(fd_out, line, len + 1);
+	}
+    }
     
+    free(line);
+   
     return 0;
 }
 

@@ -22,6 +22,14 @@ int count_lines(int fd) {
     return lines;
 }
 
+int go_to_line(int fd, int line) {
+    char buf[1];
+    int lines = 0;
+
+    while(read(fd, buf, 1) && lines < line) lines+= buf[0] == '\n';
+    return lines;
+}
+
 void mapreduce(MAPREDUCE_SPEC * spec, MAPREDUCE_RESULT * result)
 {
     char buf[5];
@@ -65,9 +73,12 @@ void mapreduce(MAPREDUCE_SPEC * spec, MAPREDUCE_RESULT * result)
 	if (fork_num + 1 == spec->split_num) split.size = size - chunk*fork_num;
 	else split.size = chunk;
 
-	if (!letter_counter) { printf("Split size: %d\n", split.size); _exit(0); }
-        if (fork_num) lseek(split.fd, chunk*fork_num + 1, SEEK_SET);
-	else lseek(split.fd, chunk*fork_num, SEEK_SET);
+	if (letter_counter) { 
+            if (fork_num) lseek(split.fd, chunk*fork_num + 1, SEEK_SET);
+	    else lseek(split.fd, chunk*fork_num, SEEK_SET);
+
+	} else go_to_line(split.fd, chunk*fork_num);
+
 
         //Define fd out names; i.e. mr-0.itm, mr-1.itm, etc...
         int num_len = snprintf( NULL, 0, "%d", fork_num );
