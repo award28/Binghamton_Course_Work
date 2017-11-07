@@ -7,22 +7,20 @@
 #include "common.h"
 #include "usr_functions.h"
 
-int get_line_num(int fd) {
-	char buf[1];
-	int line = 0;
-	int cur_loc = lseek(fd, 0, SEEK_CUR);
-	int loc = lseek(fd, 0, SEEK_SET);
+int line_len(int fd) {
+    char buf[1];
+    int cur = lseek(fd, 0, SEEK_CUR);
+    lseek(fd, cur, SEEK_SET);
+    while(read(fd, buf, 1) && buf[0] != '\n');
+    int eol = lseek(fd, 0, SEEK_CUR);
+    int line_len = eol - cur;
+    lseek(fd, cur, SEEK_SET);
 
-	while(read(fd, buf, 1) && loc != cur_loc) {
-		line += buf[0] == '\n';
-		loc++;
-	}
-
-	return line;
+    return line_len;
 }
 
-int get_line(char* buf, int fd) {
-    ssize_t line = read(fd, buf, 13);
+int get_line(char* buf, int fd, int len) {
+    ssize_t line = read(fd, buf, len);
     if (1 > line) return line;
     ssize_t loc = 0;
     while(loc < line && buf[loc] != '\n') loc++;
@@ -31,8 +29,8 @@ int get_line(char* buf, int fd) {
     return loc;
 }
 
-int get_line_n(char* buf, int fd) {
-    ssize_t line = read(fd, buf, 13);
+int get_line_n(char* buf, int fd, int len) {
+    ssize_t line = read(fd, buf, len);
     if (1 > line) return line;
     ssize_t loc = 0;
     while(loc < line && buf[loc] != '\n') loc++;
@@ -40,26 +38,28 @@ int get_line_n(char* buf, int fd) {
     return loc;
 }
 
-const char* getLineNum(char* line) {
+const char* get_line_num(char* line) {
 	const char* number = line;
 	while (*number++ != ' ');
 	return number;
 } 
 
-int word_in_line(int fd, char * word) {
+int word_in_line(int fd_out, int fd_in, char * word) {
     char buf[1];
-    int cur = lseek(fd, 0, SEEK_CUR) - 1;
-    lseek(fd, cur, SEEK_SET);
-    while(read(fd, buf, 1) && buf[0] != '\n');
-    int eol = lseek(fd, 0, SEEK_CUR);
+    int cur = lseek(fd_in, 0, SEEK_CUR) - 1;
+    lseek(fd_in, cur, SEEK_SET);
+    while(read(fd_in, buf, 1) && buf[0] != '\n');
+    int eol = lseek(fd_in, 0, SEEK_CUR);
     int line_len = eol - cur;
-    lseek(fd, cur, SEEK_SET);
+    lseek(fd_in, cur, SEEK_SET);
 
     char * line = malloc(line_len + 1);
-    read(fd, line, line_len);
-    lseek(fd, 1, SEEK_CUR);
+    read(fd_in, line, line_len);
+    lseek(fd_in, 1, SEEK_CUR);
 
-    return strstr(line, word) != NULL;
+    if (strstr(line, word) != NULL) write(fd_out, line, line_len);
+
+    return 0;
 }
 
 /* User-defined map function for the "Letter counter" task.  
@@ -129,8 +129,8 @@ int letter_counter_reduce(int * p_fd_in, int fd_in_num, int fd_out)
 
     for(int i = 0; i < fd_in_num; i++) {
 	line = malloc(13);
-	while(get_line(line, p_fd_in[i])) 
-            counter[line[0] - 65] += strtol(getLineNum(line), NULL, 10);
+	while(get_line(line, p_fd_in[i], 13)) 
+            counter[line[0] - 65] += strtol(get_line_num(line), NULL, 10);
     }
     
     free(line);
@@ -162,20 +162,8 @@ int letter_counter_reduce(int * p_fd_in, int fd_in_num, int fd_out)
  */
 int word_finder_map(DATA_SPLIT * split, int fd_out)
 {
-    int num_len;
-    char * line = NULL;
-    int start_line = get_line_num(split->fd);
-
     for(int i = 0; i < split->size; i++) 
-        if (word_in_line(split->fd, split->usr_data)) {
-	    num_len = snprintf( NULL, 0, "%d\n", i + start_line );
-    	    line = malloc( num_len + 1  );
-    	    snprintf( line, num_len + 1, "%d\n", i + start_line);
-	    write(fd_out, line, num_len  );
-	}
-
-    free(line);
-
+	    word_in_line(fd_out, split->fd, split->usr_data);
     return 0;
 }
 
@@ -194,22 +182,20 @@ int word_finder_map(DATA_SPLIT * split, int fd_out)
 int word_finder_reduce(int * p_fd_in, int fd_in_num, int fd_out)
 {
     int len;
-    long int actual_line;
     char * line = NULL;
 
     for(int i = 0; i < fd_in_num; i++) {
-	line = malloc(13);
-	while(get_line_n(line, p_fd_in[i])) {
-		actual_line = strtol(line, NULL, 10) + 1;
-    		len = snprintf( NULL, 0, "%ld", actual_line );
-		snprintf( line, len + 2, "%ld\n", actual_line );
-	
-		write(fd_out, line, len + 1);
+	len = line_len(p_fd_in[i]);
+	line = malloc(len);
+	while(get_line_n(line, p_fd_in[i], len)) {
+		write(fd_out, line, len);
+		len = line_len(p_fd_in[i]);
+		line = malloc(len);
+
 	}
     }
     
     free(line);
-   
     return 0;
 }
 
