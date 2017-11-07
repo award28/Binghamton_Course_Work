@@ -11,8 +11,6 @@
 #include "mapreduce.h"
 #include "common.h"
 
-// add your code here ...
-
 int count_lines(int fd) {
     char buf[1];
     int lines = 0;
@@ -76,7 +74,6 @@ void mapreduce(MAPREDUCE_SPEC * spec, MAPREDUCE_RESULT * result)
 	if (letter_counter) { 
             if (fork_num) lseek(split.fd, chunk*fork_num + 1, SEEK_SET);
 	    else lseek(split.fd, chunk*fork_num, SEEK_SET);
-
 	} else go_to_line(split.fd, chunk*fork_num);
 
 
