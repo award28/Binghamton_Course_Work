@@ -44,7 +44,7 @@ void mapreduce(MAPREDUCE_SPEC * spec, MAPREDUCE_RESULT * result)
 
     int chunk = size/spec->split_num;
 
-    for(int i = 1; i < fork_num; i++) pipe(pipes_fd[i]);
+    for(int i = 0; i < fork_num; i++) pipe(pipes_fd[i]);
 
     struct timeval start, end;
 
@@ -132,7 +132,12 @@ void mapreduce(MAPREDUCE_SPEC * spec, MAPREDUCE_RESULT * result)
 	else word_finder_reduce(p_fd_in, spec->split_num, fd_out);
 
 	for(int i = 0; i < spec->split_num; i++) close(p_fd_in[i]);
+	close(pipes_fd[fork_num][0]);
+        write(pipes_fd[fork_num][1], "gg", 2);
         _exit(0);
+    } else {
+	    close(pipes_fd[0][1]);
+	    read(pipes_fd[0][0], buf, 2);
     }
 
     gettimeofday(&end, NULL);   
