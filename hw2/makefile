@@ -1,4 +1,4 @@
-CFLAGS=-g -std=c11 -Wall -Wextra -Werror
+CFLAGS=-g -std=gnu11 -Wall -Wextra -Werror
 CC=gcc
 
 all: switch_column dir_stat oz_demo
