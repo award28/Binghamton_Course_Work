@@ -1,5 +1,5 @@
 TARGET=threaded_msort mygetenv.o
-CFLAGS=-Wall -pthread
+CFLAGS=-Wall -lm -pthread
 CC=gcc
 
 all: $(TARGET)
