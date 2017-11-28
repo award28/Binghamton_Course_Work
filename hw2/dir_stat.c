@@ -22,7 +22,7 @@ void get_dirs(DIR* dp, dir_stat* stats, char p[p_length]) {
     while (start) {
 	type = start->d_type;
         if (type == DT_REG) stats->reg++;
-	else if (type ==  DT_LNK) stats->syms++;
+	else if (type == DT_LNK) stats->syms++;
 	else if (type == DT_DIR) {
 		if (strncmp(start->d_name, ".", p_length) != 0 && strncmp(start->d_name, "..", p_length) != 0) {
 			stats->dirs++;
