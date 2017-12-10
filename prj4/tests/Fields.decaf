@@ -1,0 +1,24 @@
+class Super {
+  int x, y, a;
+  Super(int x) { this.x = x; a = y = 55; }
+}
+
+class Fields extends Super {
+  int a, b;
+  char c;
+
+  Fields() {
+    super(19);
+    a = 22; b = 33;
+    c = '0';
+  }
+
+  public static void main(String[] args) {
+    Fields fields = new Fields();
+    Sys.putString("a (expect 22) = "); Sys.putIntNl(fields.a);
+    Sys.putString("a (expect 33) = "); Sys.putIntNl(fields.b);
+    Sys.putString("a (expect 48) = "); Sys.putIntNl(fields.c);
+    Sys.putString("x (expect 19) = "); Sys.putIntNl(fields.x);
+    Sys.putString("y (expect 55) = "); Sys.putIntNl(fields.y);
+  }
+}
