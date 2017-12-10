@@ -1,0 +1,7 @@
+test5.decaf:5:6: incompatible return type; found boolean, expected int
+test5.decaf:8:6: BREAK not valid outside a loop
+test5.decaf:11:4: incompatible return type; found $nil, expected int
+test5.decaf:15:4: missing return statement at end of function
+test5.decaf:19:4: missing return statement at end of function
+test5.decaf:31:4: missing return statement at end of function
+test5.decaf:1:6: no main() method defined

@@ -1,0 +1,22 @@
+class C1 extends C2 {  //undefined C2
+  int a, b;
+  boolean c[][];
+  boolean[] a(int d) { 
+    a = b + 1*'d';     //ok
+    c = a < b;         //incompatible
+    b = a < c;         //incompatible operand for <; bool to int assign
+    a[c] = c[2];       //a not array, c not int index
+    boolean x = c[1];  //incompatible
+    char c[] = new char[10];   
+    char d[] = new int[10]; //incompatible
+  }
+  C1 a(int i) { }      //multiply defined method
+}
+
+class C2 extends C1 {
+
+}
+
+class C1 {
+
+}

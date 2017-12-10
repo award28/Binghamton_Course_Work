@@ -1,0 +1,36 @@
+class T1 { 
+  
+  int a;
+  int b;
+  boolean a;  //multiply defined field
+
+  int f(int a) { 
+    f(true);        //incompatible argument
+    while (a = 1) { //non-boolean test
+      int a = new T1(); //incompatible types
+      g(a + 1).b = 2; //ok
+      T2.b = 3;  //static assignment to instance variable
+      int[] a = new char[2]; //multiply defined id; + type mismatch
+      int[] x = null; //ok
+      g(3).c[1] = null; //incompatible
+      null = 1; //bad lvalue
+      String s = "123";
+      return + 1;
+    }
+  }
+
+  T2 g(int x) { return new T2(); }
+
+}
+
+class T2  extends T1 {
+
+  int b;
+  int[] c;
+
+}
+
+class T3 extends T2 {
+
+}
+

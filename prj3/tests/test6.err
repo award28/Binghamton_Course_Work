@@ -1,0 +1,9 @@
+test6.decaf:4:8: undefined x in C
+test6.decaf:5:9: undefined y in Object
+test6.decaf:12:5: attempt to call a instance method foo as static method of class C
+test6.decaf:13:8: incompatible type void assigned to int var i
+test6.decaf:14:4: cannot refer to this in a static context
+test6.decaf:15:5: # of arguments for call to C1 does not match declaration: found 0, expected 1
+test6.decaf:16:4: cannot call instance method foo from a static context
+test6.decaf:21:6: must define constructor with explicit call to super
+test6.decaf:2:6: multiple main() methods defined in classes [C1, C2]

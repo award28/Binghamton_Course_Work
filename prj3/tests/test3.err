@@ -1,0 +1,13 @@
+test3.decaf:5:2: multiply defined field a; previous definition at test3.decaf:3:2
+test3.decaf:8:4: type mismatch for parameter 1 for call to f: formal type is int, but actual type is boolean
+test3.decaf:9:4: missing return statement at end of function
+test3.decaf:9:4: expected while condition to be of boolean type; found int type
+test3.decaf:10:10: incompatible type T1 assigned to int var a
+test3.decaf:12:8: attempt to access a non-static field b as static field of class T2
+test3.decaf:13:6: multiply defined variable a; previous definition at test3.decaf:10:6
+test3.decaf:13:12: incompatible type char[] assigned to int[] var a
+test3.decaf:14:12: incompatible type $null assigned to int[] var x
+test3.decaf:15:16: $null may not be assigned to int
+test3.decaf:16:11: int may not be assigned to $null
+test3.decaf:16:11: invalid lvalue in assignment
+test3.decaf:1:6: no main() method defined

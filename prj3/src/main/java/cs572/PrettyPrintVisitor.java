@@ -56,12 +56,7 @@ public class PrettyPrintVisitor extends EmptyVisitor {
   public void visit(AssignAst ast) { doAst(ast); }
   public void visit(BinaryExpAst ast) { doAst(ast, ast.getOp().toString()); }
   public void visit(BlockAst ast) { doBegin(ast); }
-  public void visit(CallAst ast) { 
-	  System.out.println("Calling " + ast.getName());
-	  //for (AbstractExpAst actual : ast.getActuals()) 
-
-	  doAst(ast, ast.getName()); 
-  }
+  public void visit(CallAst ast) { doAst(ast, ast.getName()); }
   public void visit(ClassAst ast) {
     doBegin(ast, "%s:%s", ast.getName(), ast.getSuperClass());
   }

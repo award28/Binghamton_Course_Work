@@ -1,0 +1,23 @@
+//test from Ben Koller which was failing
+class C {
+  void foo(){
+    this.x;  
+    super.y; 
+   }
+}
+
+class C1 extends C {
+  C1(int n) { }
+  static void bar() {
+    C.foo();  //instance method as static
+    int i = (new C()).foo(); //assign void to int
+    this.foo(); //no this in static context
+    (new C1()).bar(); //ok: call static method on instance
+    foo(); //inherited instance method in static context
+  }
+  static void main(String[] args) { }
+}
+
+class C2 extends C1 {
+  static void main(String[] args) { }
+}

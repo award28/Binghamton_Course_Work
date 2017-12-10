@@ -1,0 +1,10 @@
+test4.decaf:3:9: multiply defined field a; previous definition at test4.decaf:2:2
+test4.decaf:12:7: multiply defined method f; previous definition at test4.decaf:10:17
+test4.decaf:7:4: call to super constructor must be first statement
+test4.decaf:10:21: missing return statement at end of function
+test4.decaf:13:9: int is not a class type
+test4.decaf:14:22: missing return statement at end of function
+test4.decaf:14:5: boolean is not a class type
+test4.decaf:14:24: undefined x
+test4.decaf:20:4: missing return statement at end of function
+test4.decaf:1:6: no main() method defined
