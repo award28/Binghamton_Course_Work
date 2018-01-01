@@ -34,11 +34,6 @@ with open(sys.argv[1] + "/training_set.csv") as f:
     target_attr = attrs[-1]
     attrs = attrs[:-1]
 
-    print("attributes: " + str(attrs))
-    print("Num of training data: " + str(len(training_data)))
-
-    # print(training_data)
-
 dt = DecisionTree(training_data, target_attr, attrs)
 root = dt.ID3()
 
@@ -56,13 +51,14 @@ with open(sys.argv[1] + "/test_set.csv") as f:
 
 correct = total = 0
 for d in test_data:
-    # print("Prediction: " + str(dt.predict(root, d)))
-    # print("Actual: " + str(d[target_attr]))
     correct += dt.predict(root, d) == d[target_attr]
     total += 1
-
 percent = 100 * correct/total
 
 print("Predicted " + str(correct) + " correct out of " + str(total) + ", thus " + str(percent) + "% accuracy achieved")
 
-print()
+'''
+val = dt.split(training_data)
+print("Hello " + str(val))
+print(dt.n_gain(training_data, attrs[0]))
+'''
