@@ -56,7 +56,7 @@ Methods:
     ID3(3)      Recursively creates a decision tree and returns the root node
     best(2)     Determines which attribute should be used as the label on a 
                 given node
-    gain(2)     Calcuates the reduction in entropy given a list and attribute
+    e_gain(2)     Calcuates the reduction in entropy given a list and attribute
     Entropy(1)  Calcuates the entropy of a given integer list
 """
 class DecisionTree:
@@ -69,11 +69,12 @@ class DecisionTree:
         self.set_values()
 
 
-    def ID3(self):
-        return self._ID3(self.data, self.t_attr, self.attrs)
+    def ID3(self, is_info_gain=True, prune=False):
+        self.is_info_gain = is_info_gain
+        return self.__ID3(self.data, self.t_attr, self.attrs)
 
 
-    def _ID3(self, data, t_attr, attrs):
+    def __ID3(self, data, t_attr, attrs):
         root = Node()
         num_pos = num_neg = 0
         for item in data:
@@ -89,7 +90,10 @@ class DecisionTree:
         elif not len(attrs):                # attributes is empty
             root.set_label(num_pos >= num_neg)
             return root
-        best_attr = self.best_attr(data, attrs)
+        if self.is_info_gain:
+            best_attr = self.best_g_attr(data, attrs)
+        else:
+            best_attr = self.best_vi_attr(data, attrs)
 
         root.set_label(best_attr)
         
@@ -104,32 +108,64 @@ class DecisionTree:
                 root.inject_node(v, p[0] > p[1])
             else:
                 attrs.remove(best_attr)
-                root.inject_node(v, self._ID3(subset, t_attr, attrs))
+                root.inject_node(v, self.__ID3(subset, t_attr, attrs))
                 attrs.append(best_attr)
 
         return root 
 
-    def best_attr(self, s, attrs):
+    def best_g_attr(self, s, attrs):
         best, gain = None, 0
         for attr in attrs:
-            g = self.gain(s, attr)
+            g = self.e_gain(s, attr)
             if g >= gain:
                 best = attr
                 gain = g 
         return best
        
 
-    def gain(self, s, a):
-        values_entropy = 0
+    def best_vi_attr(self, s, attrs):
+        best, gain = None, 0
+        for attr in attrs:
+            g = self.vi_gain(s, attr)
+            if g >= gain:
+                best = attr
+                gain = g 
+        return best
+       
+    def variance_impurity(self, s):
+        split_ = self.split(s)
+        total = 0
+        vi = 1 
+        for key, value in split_.items():
+            total += value
+        for key, value in split_.items():
+            vi *= value/total
+        return vi
+
+    def vi_gain(self, s, a):
+        gain_ = 0
         for v in self.get_values(a):
             subset = []
             for item in s:
                 if item[a] == v:
                     subset.append(item)
             if len(subset):
-                values_entropy += (len(subset)/len(s)) * self.entropy(self.split(subset))
+                gain_ += (len(subset)/len(s)) * self.variance_impurity(subset)
 
-        return self.entropy(self.split(s)) - values_entropy
+        return self.variance_impurity(s) - gain_
+
+
+    def e_gain(self, s, a):
+        gain_ = 0
+        for v in self.get_values(a):
+            subset = []
+            for item in s:
+                if item[a] == v:
+                    subset.append(item)
+            if len(subset):
+                gain_ += (len(subset)/len(s)) * self.entropy(self.split(subset))
+
+        return self.entropy(self.split(s)) - gain_ 
 
 
     def entropy(self, s):
@@ -146,12 +182,12 @@ class DecisionTree:
 
     def split(self, s):
         split_ = {}
-        for a in self.attr_values[self.t_attr]:
-            split_[a] = 0
+        for attr in self.attr_values[self.t_attr]:
+            split_[attr] = 0
         for item in s:
-            for a in self.attr_values[self.t_attr]:
-                if item[self.t_attr] == a:
-                    split_[a] += 1
+            for attr in self.attr_values[self.t_attr]:
+                if item[self.t_attr] == attr:
+                    split_[attr] += 1
         return split_ 
 
 

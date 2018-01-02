@@ -56,9 +56,3 @@ for d in test_data:
 percent = 100 * correct/total
 
 print("Predicted " + str(correct) + " correct out of " + str(total) + ", thus " + str(percent) + "% accuracy achieved")
-
-'''
-val = dt.split(training_data)
-print("Hello " + str(val))
-print(dt.n_gain(training_data, attrs[0]))
-'''
