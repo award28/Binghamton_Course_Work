@@ -1,6 +1,10 @@
 from math import log
+import copy
 
-
+"""
+Class:          Node
+Description:    Node object for creating new nodes in the decision tree
+"""
 class Node(object):
     def __init__(self):
         self.values = {} 
@@ -15,7 +19,7 @@ class Node(object):
         return self.label
 
 
-    def set_parent(self, p):
+    def __set_parent(self, p):
         self.parent = p
 
 
@@ -25,11 +29,12 @@ class Node(object):
 
     def create_child(self, value):
         self.values[value] = Node()
+        self.values[value].__set_parent(self)
 
 
     def inject_child(self, value, node):
         self.values[value] = node
-    
+        self.values[value].__set_parent(self)
 
     def get_child(self, value):
         return self.values[value]
@@ -40,7 +45,9 @@ class Node(object):
 
 
 """
-Class:      DecisionTree
+Class:          DecisionTree
+Description:    Creates a decision tree with methods for predicting
+                accuracy and printing the tree
 Constructor Parameters:
     training_data   A dictionary with attribute-value pairings
     target_attr     The attribute we want the decision tree to decide on
@@ -56,10 +63,10 @@ class DecisionTree:
         self.attrs = attrs
         self.validate = validate
         self.attr_values = {}
-        self.set_values()
+        self.__set_values()
 
 
-    def set_values(self):
+    def __set_values(self):
         for attr in self.attrs:
             self.attr_values[attr] = []
         self.attr_values[self.t_attr] = []
@@ -69,18 +76,6 @@ class DecisionTree:
                     self.attr_values[attr].append(item[attr])
             if item[self.t_attr] not in self.attr_values[self.t_attr]:
                 self.attr_values[self.t_attr].append(item[self.t_attr])
-
-
-    def get_values(self, a):
-        return self.attr_values[a] 
-
-
-    def set_parent(self, root):
-        children = root.get_children()
-        for val, child in children:
-            if type(child) is type(Node()):
-                child.set_parent(root)
-                self.set_parent(child)
 
 
     def tree_ctor(self, is_info_gain=True):
@@ -107,7 +102,7 @@ class DecisionTree:
         else:
             best_attr = self.best_vi_attr(data, attrs)
         root.set_label(best_attr)
-        for v in self.get_values(best_attr):
+        for v in self.attr_values[best_attr]:
             root.create_child(v)
             subset = []
             for d in data:
@@ -125,139 +120,122 @@ class DecisionTree:
 
 
     def prune(self, root):
-        root.set_parent(None)
-        self.set_parent(root)
-        nodes = root.get_children()
-        results = []
+        nodes = []
+        for val, node in root.get_children():
+            label = node.get_parent().get_label()
+            nodes.append(({label : val}, (node, val)))
         while True:
             new_nodes = []
             if not len(nodes):
                 break
-            for val, node in nodes:
-                results.append((val, node))
+            for item in nodes:
                 old_accuracy = self.accuracy(root, self.validate)
-                most_common_value_ = self.most_common_value(node)
+                av_pairings, (node, val) = item
+                satisfies_attrs_data = self.get_validation_data(av_pairings)
+                label = self.most_common_label(self.split(satisfies_attrs_data))
                 new_node = Node()
-                new_node.set_label(most_common_value_)
+                new_node.set_label(label)
                 parent = node.get_parent()
                 parent.inject_child(val, new_node)
-                # if tree performs better with node change, keep node change
-                if self.accuracy(root, self.validate) >= old_accuracy:
-                    pass
-                # add child nodes to new_nodes
-                else:
+                # if tree performs worse with node change, remove node change
+                if self.accuracy(root, self.validate) < old_accuracy:
                     parent.inject_child(val, node)
-                    for v, child in node.get_children():
-                        new_nodes.append((v, child))
+                    for val, child in node.get_children():
+                        av_pairings[node.get_label()] = val
+                        new_nodes.append((av_pairings, (child, val)))
                 nodes = new_nodes
         return root
 
 
+    def get_validation_data(self, attrs):
+        ret_data = copy.deepcopy(self.validate)
+        for attr, val in attrs.items():
+            for item in ret_data:
+                if item[attr] != val:
+                    ret_data.remove(item)
+        return ret_data
+
+
     def most_common_label(self, split_):
-        l, a = None, 0
+        label_, amount_ = None, 0
         for label, amount in split_.items():
-            if amount >= a:
-                l = label
-                a = amount
-        return l
+            if amount >= amount_:
+                label_ = label
+                amount_ = amount
+        return label_
 
 
-    def most_common_value(self, node):
-        k, v = None, 0
-        for key, val in self.__most_common_value(node).items():
-            if val >= v:
-                v = val
-                k = key
-        return k
-
-
-    def __most_common_value(self, node, d={}):
-        if not len(node.get_children()):
-            if node.get_label() in d:
-                d[node.get_label()] += 1
-            else: 
-                d[node.get_label()] = 1
-            return d 
-        for val, child in node.get_children():
-            for key, val in self.__most_common_value(child).items():
-                if key in d:
-                    d[key] += val
-                else:
-                    d[key] = val
-        return d
-                
-
-    def best_vi_attr(self, s, attrs):
+    def best_vi_attr(self, set_, attrs):
         best, gain = None, 0
         for attr in attrs:
-            g = self.vi_gain(s, attr)
-            if g >= gain:
+            gain_ = self.vi_gain(set_, attr)
+            if gain_ >= gain:
                 best = attr
-                gain = g 
+                gain = gain_
         return best
        
 
-    def vi_gain(self, s, a):
+    def vi_gain(self, set_, attr):
         gain_ = 0
-        for v in self.get_values(a):
+        for val in self.attr_values[attr]:
             subset = []
-            for item in s:
-                if item[a] == v:
+            for item in set_:
+                if item[attr] == val:
                     subset.append(item)
             if len(subset):
-                gain_ += (len(subset)/len(s)) * self.variance_impurity(subset)
-        return self.variance_impurity(s) - gain_
+                gain_ += (len(subset)/len(set_)) * self.variance_impurity(subset)
+        return self.variance_impurity(set_) - gain_
 
 
-    def variance_impurity(self, s):
-        split_ = self.split(s)
+    def variance_impurity(self, set_):
+        split_ = self.split(set_)
         total = 0
         vi = 1 
-        for key, value in split_.items():
+        for value in split_.values():
             total += value
-        for key, value in split_.items():
+        for value in split_.values():
             vi *= value/total
         return vi
 
 
-    def best_ig_attr(self, s, attrs):
+    def best_ig_attr(self, set_, attrs):
         best, gain = None, 0
         for attr in attrs:
-            g = self.e_gain(s, attr)
-            if g >= gain:
+            gain_ = self.e_gain(set_, attr)
+            if gain_ >= gain:
                 best = attr
-                gain = g 
+                gain = gain_
         return best
        
 
-    def e_gain(self, s, a):
+    def e_gain(self, set_, attr):
         gain_ = 0
-        for v in self.get_values(a):
+        for val in self.attr_values[attr]:
             subset = []
-            for item in s:
-                if item[a] == v:
+            for item in set_:
+                if item[attr] == val:
                     subset.append(item)
             if len(subset):
-                gain_ += (len(subset)/len(s)) * self.entropy(self.split(subset))
-        return self.entropy(self.split(s)) - gain_ 
+                gain_ += (len(subset)/len(set_)) * self.entropy(self.split(subset))
+        return self.entropy(self.split(set_)) - gain_ 
 
 
-    def entropy(self, s):
+    def entropy(self, set_):
         total = entropy_ = 0
-        for key, value in s.items():
+        for value in set_.values():
             total += value 
-        for key, value in s.items():
+        for value in set_.values():
             p = (value/total)
             if p:
                 entropy_ -= p*log(p, 2)
         return entropy_ 
  
 
-    def split(self, s):
+    def split(self, set_):
         split_ = {}
         for attr in self.attr_values[self.t_attr]:
             split_[attr] = 0
-        for item in s:
+        for item in set_:
             for attr in self.attr_values[self.t_attr]:
                 if item[self.t_attr] == attr:
                     split_[attr] += 1
@@ -279,8 +257,7 @@ class DecisionTree:
     def accuracy(self, root, data):
         correct = total = 0
         for item in data:
-            p = self.predict(root, item)
-            if p == item[self.t_attr]:
+            if self.predict(root, item) == item[self.t_attr]:
                 correct += 1
             total += 1
         return 100 * (correct/total)
