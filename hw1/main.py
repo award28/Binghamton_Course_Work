@@ -34,7 +34,18 @@ with open(sys.argv[1] + "/training_set.csv") as f:
     target_attr = attrs[-1]
     attrs = attrs[:-1]
 
-dt = DecisionTree(training_data, target_attr, attrs)
+with open(sys.argv[1] + "/validation_set.csv") as f:
+    validate_data = []
+    v_attrs = f.readline().replace('\n','').split(',')
+
+    for line in f:
+        item = {}
+        values = line.replace('\n', '').split(',')
+        for attr, value in zip(v_attrs, values):
+            item[attr] = int(value)
+        validate_data.append(item)
+
+dt = DecisionTree(training_data, target_attr, attrs, validate_data)
 root = dt.ID3()
 
 
@@ -55,4 +66,4 @@ for d in test_data:
     total += 1
 percent = 100 * correct/total
 
-print("Predicted " + str(correct) + " correct out of " + str(total) + ", thus " + str(percent) + "% accuracy achieved")
+print("Predicted " + str(dt.accuracy(root, test_data)) + "% Correct")

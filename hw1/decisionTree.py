@@ -1,4 +1,5 @@
 from math import log
+import queue
 
 
 """
@@ -9,11 +10,11 @@ Constructor Parameters:
 Methods:
     set_label(1)        Sets the label for the current node
     get_label(0)        Returns the label for the current node
-    create_sub_node(1)  Creates a new node at the attr value on the current 
+    create_child(1)  Creates a new node at the attr value on the current 
                         node
-    inject_node(2)      Injects a given node at the attr value on the current
+    inject_child(2)      Injects a given node at the attr value on the current
                         node
-    get_node(1)         Given an attr value it returns a node
+    get_child(1)         Given an attr value it returns a node
 """
 class Node(object):
     def __init__(self):
@@ -29,16 +30,28 @@ class Node(object):
         return self.label
 
 
-    def create_sub_node(self, value):
-            self.values[value] = Node()
+    def set_parent(self, p):
+        self.parent = p
 
 
-    def inject_node(self, value, node):
+    def get_parent(self):
+        return self.parent
+
+
+    def create_child(self, value):
+        self.values[value] = Node()
+
+
+    def inject_child(self, value, node):
         self.values[value] = node
     
 
-    def get_node(self, value):
+    def get_child(self, value):
         return self.values[value]
+
+
+    def get_children(self):
+        return self.values.items()
 
 
 """
@@ -69,9 +82,13 @@ class DecisionTree:
         self.set_values()
 
 
-    def ID3(self, is_info_gain=True, prune=False):
+    def ID3(self, is_info_gain=True):
         self.is_info_gain = is_info_gain
-        return self.__ID3(self.data, self.t_attr, self.attrs)
+        root = self.__ID3(self.data, self.t_attr, self.attrs)
+        if self.validate is not None:
+            return self.prune(root)
+        else:
+            return root
 
 
     def __ID3(self, data, t_attr, attrs):
@@ -80,7 +97,6 @@ class DecisionTree:
         for item in data:
             num_pos += item[t_attr]
             num_neg += not item[t_attr]
-
         if num_pos > 0 and not num_neg:     # all positive
             root.set_label(1)
             return root
@@ -94,24 +110,102 @@ class DecisionTree:
             best_attr = self.best_g_attr(data, attrs)
         else:
             best_attr = self.best_vi_attr(data, attrs)
-
         root.set_label(best_attr)
-        
         for v in self.get_values(best_attr):
-            root.create_sub_node(v)
+            root.create_child(v)
             subset = []
             for d in data:
                 if d[best_attr] == v:
                     subset.append(d)
             if not len(subset):
                 p = self.split(data)
-                root.inject_node(v, p[0] > p[1])
+                node = Node()
+                node.set_label(int(p[0] > p[1]))
+                root.inject_child(v, node)
             else:
                 attrs.remove(best_attr)
-                root.inject_node(v, self.__ID3(subset, t_attr, attrs))
+                root.inject_child(v, self.__ID3(subset, t_attr, attrs))
                 attrs.append(best_attr)
-
         return root 
+
+
+    def set_p(self, root):
+        children = root.get_children()
+        for val, child in children:
+            if type(child) is type(Node()):
+                child.set_parent(root)
+                self.set_p(child)
+
+
+    def prune(self, root):
+        root.set_parent(None)
+        self.set_p(root)
+        return self.__prune(root, self.validate)
+
+
+    def __prune(self, root, data):
+        nodes = root.get_children()
+        results = []
+        while True:
+            new_nodes = []
+            if not len(nodes):
+                break
+            for val, node in nodes:
+                results.append((val, node))
+                
+                # replace node
+                old_accuracy = self.accuracy(root, self.validate)
+                mcv_ = self.mcv(node)
+                new_node = Node()
+                new_node.set_label(mcv_)
+                parent = node.get_parent()
+                parent.inject_child(val, new_node)
+                # if tree performs better with node change, keep node change
+                if self.accuracy(root, self.validate) >= old_accuracy:
+                    pass
+                # else, add child nodes to new_nodes
+                else:
+                    parent.inject_child(val, node)
+                    for v, child in node.get_children():
+                        new_nodes.append((v, child))
+                nodes = new_nodes
+        return root
+
+
+    def accuracy(self, root, data):
+        correct = total = 0
+        for item in data:
+            p = self.predict(root, item)
+            if p == item[self.t_attr]:
+                correct += 1
+            total += 1
+        return 100 * (correct/total)
+
+    def mcv(self, node):
+        k, v = None, 0
+        for key, val in self.__mcv(node).items():
+            if val >= v:
+                v = val
+                k = key
+        return k
+
+
+    def __mcv(self, node, d={}):
+        if type(node.get_label()) is int:
+            if node.get_label() in d:
+                d[node.get_label()] += 1
+            else: 
+                d[node.get_label()] = 1
+            return d 
+
+        for val, child in node.get_children():
+            for key, val in self.__mcv(child).items():
+                if key in d:
+                    d[key] += val
+                else:
+                    d[key] = val
+        return d
+                
 
     def best_g_attr(self, s, attrs):
         best, gain = None, 0
@@ -208,6 +302,22 @@ class DecisionTree:
 
 
     def predict(self, node, item):
-        while(type(node.get_label()) != int):
-            node = node.get_node(item[node.get_label()])
+        while(type(node) == type(Node()) and len(node.get_children())):
+            node = node.get_child(item[node.get_label()])
         return node.get_label()
+
+
+    def iterate_nodes(self, root):
+        nodes = root.get_children()
+        results = []
+        while True:
+            new_nodes = []
+            if not len(nodes):
+                break
+            for val, node in nodes:
+                results.append((val, node))
+                if len(node.get_children()):
+                    for v, child in node.get_children():
+                        new_nodes.append((v, child))
+            nodes = new_nodes
+        return results
