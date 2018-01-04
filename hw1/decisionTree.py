@@ -73,7 +73,7 @@ Methods:
     Entropy(1)  Calcuates the entropy of a given integer list
 """
 class DecisionTree:
-    def __init__(self, training_data, target_attr, attrs, validate=None):
+    def __init__(self, training_data, target_attr, attrs, validate):
         self.data = training_data
         self.t_attr = target_attr
         self.attrs = attrs
@@ -85,10 +85,7 @@ class DecisionTree:
     def ID3(self, is_info_gain=True):
         self.is_info_gain = is_info_gain
         root = self.__ID3(self.data, self.t_attr, self.attrs)
-        if self.validate is not None:
-            return self.prune(root)
-        else:
-            return root
+        return root
 
 
     def __ID3(self, data, t_attr, attrs):
