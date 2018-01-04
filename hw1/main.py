@@ -10,7 +10,7 @@ def get_data_set(name, start=False):
             item = {}
             values = line.replace('\n', '').split(',')
             for attr, value in zip(attrs, values):
-                item[attr] = int(value)
+                item[attr] = value
             data.append(item)
 
         target_attr = attrs[-1]
@@ -22,7 +22,7 @@ validation = get_data_set("validation")
 test = get_data_set("test")
 
 dt = DecisionTree(training, t_attr, attrs, validation)
-root = dt.ID3()
+root = dt.tree_ctor()
 
 print("Pre-pruning: Predicted " + str(dt.accuracy(root, test)) + "% Correct")
 dt.prune(root)

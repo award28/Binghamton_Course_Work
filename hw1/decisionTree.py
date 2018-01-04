@@ -1,5 +1,4 @@
 from math import log
-import queue
 
 
 """
@@ -65,8 +64,8 @@ Constructor Parameters:
     validate        A dictionary with attribute-value pairings
 
 Methods:
-    ID3(1)      Returns ID3(3)
-    ID3(3)      Recursively creates a decision tree and returns the root node
+    tree_ctor(1)      Returns tree_ctor(3)
+    tree_ctor(3)      Recursively creates a decision tree and returns the root node
     best(2)     Determines which attribute should be used as the label on a 
                 given node
     e_gain(2)     Calcuates the reduction in entropy given a list and attribute
@@ -82,26 +81,24 @@ class DecisionTree:
         self.set_values()
 
 
-    def ID3(self, is_info_gain=True):
+    def tree_ctor(self, is_info_gain=True):
         self.is_info_gain = is_info_gain
-        root = self.__ID3(self.data, self.t_attr, self.attrs)
+        root = self.__tree_ctor(self.data, self.t_attr, self.attrs)
         return root
 
 
-    def __ID3(self, data, t_attr, attrs):
+    def __tree_ctor(self, data, t_attr, attrs):
         root = Node()
         num_pos = num_neg = 0
-        for item in data:
-            num_pos += item[t_attr]
-            num_neg += not item[t_attr]
-        if num_pos > 0 and not num_neg:     # all positive
-            root.set_label(1)
-            return root
-        elif num_neg > 0 and not num_pos:   # all negative
-            root.set_label(0)
-            return root
-        elif not len(attrs):                # attributes is empty
-            root.set_label(num_pos >= num_neg)
+        split_ = self.split(data)
+        mcl_ = self.mcl(split_)
+        all_same = True
+        for label, amount in split_.items():
+            if label != mcl_ and amount > 0:
+                all_same = False
+                break
+        if all_same or not len(attrs):
+            root.set_label(mcl_)
             return root
         if self.is_info_gain:
             best_attr = self.best_g_attr(data, attrs)
@@ -115,15 +112,23 @@ class DecisionTree:
                 if d[best_attr] == v:
                     subset.append(d)
             if not len(subset):
-                p = self.split(data)
                 node = Node()
-                node.set_label(int(p[0] > p[1]))
+                node.set_label(self.mcl(self.split(data)))
                 root.inject_child(v, node)
             else:
                 attrs.remove(best_attr)
-                root.inject_child(v, self.__ID3(subset, t_attr, attrs))
+                root.inject_child(v, self.__tree_ctor(subset, t_attr, attrs))
                 attrs.append(best_attr)
         return root 
+
+
+    def mcl(self, split_):
+        l, a = None, 0
+        for label, amount in split_.items():
+            if amount >= a:
+                l = label
+                a = amount
+        return l
 
 
     def set_p(self, root):
