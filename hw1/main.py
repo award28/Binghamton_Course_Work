@@ -25,5 +25,9 @@ dt = DecisionTree(training, t_attr, attrs, validation)
 root = dt.tree_ctor()
 
 print("Pre-pruning: Predicted " + str(dt.accuracy(root, test)) + "% Correct")
+'''
 dt.prune(root)
 print("Post-pruning: Predicted " + str(dt.accuracy(root, test)) + "% Correct")
+'''
+
+dt.print_tree(root)

@@ -122,6 +122,17 @@ class DecisionTree:
         return root 
 
 
+    def print_tree(self, root, level=0):
+        if not len(root.get_children()):
+            print(root.get_label())
+            return
+        print()
+        for value, node in root.get_children():
+            for i in range(level):
+                print("| ", end='')
+            print(str(root.get_label()) + " = " + str(value) + " : ", end='')
+            self.print_tree(node, level + 1)
+
     def mcl(self, split_):
         l, a = None, 0
         for label, amount in split_.items():
