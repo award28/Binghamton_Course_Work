@@ -1,0 +1,174 @@
+Austin Ward
+CS471 Assignment 2
+
+1.
+  1. 
+    command ::= expr
+    expr    ::= term '+' expr | term
+    term    ::= factor '*' term | factor
+    factor  ::= '(' expr ')' | number
+    number  ::= digit number | digit
+    digit   ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+  2. 
+    The grammar is right recursive.
+    The associativity is affected, now right associative.
+
+
+2.
+command ::= expr
+expr    ::= sub '+' expr | sub 
+sub     ::= term '-' sub | term
+term    ::= at '*' term | at 
+at      ::= factor '@' at | factor
+factor  ::= '(' expr ')' | number
+number  ::= digit number | digit
+digit   ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+   
+
+3.
+  a.
+     command
+     expr
+     sub + expr
+     term + expr
+     at + expr
+     factor + expr
+     number + expr
+     1 + expr
+     1 + sub
+     1 + term - sub
+     1 + at - sub
+     1 + factor - sub
+     1 + number - sub
+     1 + 2 - sub
+     1 + 2 - term
+     1 + 2 - at
+     1 + 2 - factor
+     1 + 2 - number
+     1 + 2 - 2
+  b. 
+     command
+     expr
+     sub
+     term - sub
+     ...
+     2 - sub
+     2 - term
+     2 - at * term
+     ...
+     2 - 3 * term
+     ...
+     2 - 3 * 5
+  c.
+     command
+     expr
+     sub
+     term - sub
+     ...
+     10 - sub
+     10 - at
+     10 - factor @ at
+     ...
+     10 - 5 @ at
+     ...
+     10 - 5 @ 2
+  d.
+     command
+     expr
+      command
+     expr
+     sub
+     term - sub
+     ...
+     10 - sub
+     10 - term - sub
+     ...
+     10 - 7 - sub
+     ...
+     10 - 7 - 2
+ 
+
+4. 
+See arith1.c
+
+
+5.
+  1. 
+    command ::= expr
+    expr    ::= expr '+' term | term
+    term    ::= term '*' factor | factor
+    factor  ::= '(' expr ')' | number
+    number  ::= digit number | digit
+    digit   ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+  2. 
+    The grammar is left recursive.
+    The associativity is affected, now left associative.
+
+
+6.
+command ::= expr
+expr    ::= expr '+' sub | sub 
+sub     ::= sub '-' term | term
+term    ::= term '*' at | at 
+at      ::= at '@' factor | factor
+factor  ::= '(' expr ')' | number
+number  ::= digit number | digit
+digit   ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+   
+
+7.
+  a.
+     command
+     expr
+     expr + sub
+     ...
+     1 + sub
+     1 + sub - term
+     ...
+     1 + 2 - term
+     ...
+     1 + 2 - 2
+  b.
+     command
+     expr
+     sub
+     sub - term
+     ...
+     2 - term
+     2 - term * at
+     ...
+     2 - 3 * at
+     ...
+     2 - 3 * 5
+  c.
+     command
+     expr
+     sub
+     sub - term
+     ...
+     10 - term
+     10 - at
+     10 - at @ factor
+     ...
+     10 - 5 @ factor
+     ...
+     10 - 5 @ 2
+   d.
+     command
+     expr
+     sub
+     sub - term
+     sub - term - term
+     ...
+     10 - term - term
+     ...
+     10 - 7 - term
+     ...
+     10 - 7 - 2
+
+
+8.
+See arith2.c
+
+9.
+
