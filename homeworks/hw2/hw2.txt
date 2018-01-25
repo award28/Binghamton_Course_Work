@@ -170,5 +170,40 @@ digit   ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
 8.
 See arith2.c
 
-9.
 
+9.
+  1. [a-zA-Z_][a-zA-Z0-9_]*
+  2. "([^"\\]|\\"|\\)*"
+  3. (a*ba*ba*)*
+  4. [ab]*c[ab]*([ab]*c[ab]*c[ab]*|[ab]*)*
+
+
+10.
+  1. Both are used to represent the values for true and 
+     false as 'true' and 'false' respectively.
+  2. C99 used _Bool makes objects that either contain 1 or 0 
+     while bool is in <stdbool.h> as a macro where 'bool' is
+     the _Bool object, 'true' is 1 and 'false' is 0. bool 
+     exisits because it's more user friendly.
+  3. bool is easier for people to write each time rather than
+     _Bool, so one could argue that bool is better. On the 
+     other hand, bool could be considered syntactic sugar and
+     be considered pointless, thus _Bool would be better.
+
+
+11. 
+Pragmas "provide directives or hints to the compiler." (Scott, 2016).
+
+
+12.
+  a. z ^ w ^ x + y ==> + ^ ^ z w x y
+  b. w + x + y * z ==> + w + x * y z
+  c. w * x * y ^ z ==> * * w x ^ y z
+  d. w * x / y * z ==> * / * w x y z
+
+
+13.
+  a. z ^ w ^ x + y ==> z w ^ x ^ y +
+  b. w + x + y * z ==> w x y z * + +
+  c. w * x * y ^ z ==> w x * y z ^ *
+  d. w * x / y * z ==> w x * y / z *
