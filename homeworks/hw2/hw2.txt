@@ -51,40 +51,53 @@ digit   ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
      expr
      sub
      term - sub
-     ...
+     at - sub
+     factor - sub
+     number - sub
      2 - sub
      2 - term
      2 - at * term
-     ...
+     2 - factor * term
+     2 - number * term
      2 - 3 * term
-     ...
+     2 - 3 * at
+     2 - 3 * factor
+     2 - 3 * number 
      2 - 3 * 5
   c.
      command
      expr
      sub
      term - sub
-     ...
+     at - sub
+     factor - sub
+     number - sub
      10 - sub
      10 - at
      10 - factor @ at
-     ...
+     10 - number @ at
      10 - 5 @ at
-     ...
+     10 - 5 @ factor 
+     10 - 5 @ number
      10 - 5 @ 2
   d.
      command
      expr
-      command
-     expr
      sub
      term - sub
-     ...
+     at - sub
+     factor - sub
+     number - sub
      10 - sub
      10 - term - sub
-     ...
+     10 - at - sub
+     10 - factor - sub
+     10 - number - sub
      10 - 7 - sub
-     ...
+     10 - 7 - term
+     10 - 7 - at
+     10 - 7 - factor
+     10 - 7 - number
      10 - 7 - 2
  
 
@@ -121,37 +134,56 @@ digit   ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
      command
      expr
      expr + sub
-     ...
+     sub + sub
+     term + sub
+     at + sub
+     factor + sub
+     number + sub
      1 + sub
      1 + sub - term
-     ...
+     1 + term - term
+     1 + at - term
+     1 + factor - term
+     1 + number - term
      1 + 2 - term
-     ...
+     1 + 2 - at
+     1 + 2 - factor
+     1 + 2 - number
      1 + 2 - 2
   b.
      command
      expr
      sub
      sub - term
-     ...
+     term - term
+     at - term
+     factor - term
+     number - term
      2 - term
      2 - term * at
-     ...
+     2 - at * at
+     2 - factor * at
+     2 - number * at
      2 - 3 * at
-     ...
+     2 - 3 * factor
+     2 - 3 * number
      2 - 3 * 5
   c.
      command
      expr
      sub
      sub - term
-     ...
+     term - term
+     at - term
+     factor - term
+     number - term
      10 - term
      10 - at
      10 - at @ factor
-     ...
+     10 - factor @ factor
+     10 - number @ factor
      10 - 5 @ factor
-     ...
+     10 - 5 @ number
      10 - 5 @ 2
    d.
      command
@@ -159,11 +191,18 @@ digit   ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
      sub
      sub - term
      sub - term - term
-     ...
+     term - term - term
+     at - term - term
+     factor - term - term
+     number - term - term
      10 - term - term
-     ...
+     10 - at - term
+     10 - factor - term
+     10 - number - term
      10 - 7 - term
-     ...
+     10 - 7 - at 
+     10 - 7 - factor
+     10 - 7 - number 
      10 - 7 - 2
 
 
@@ -192,17 +231,28 @@ See arith2.c
 
 
 11. 
-Pragmas "provide directives or hints to the compiler." (Scott, 2016).
+  ~ Pragmas "provide directives or hints to the compiler." (Scott, 2016).
+    By directives this means that pragmas have the ability to do run-time 
+    checks at certain points, do certain optimizations and performance
+    profiling. By hints this means that pragmas can keep a heavily used
+    variable in a register, non recursive subroutines can be statically
+    stored and a lower precision will suffice if higher precision is not
+    utilized.
+  ~ The reason pragmas are in the scanner keeps the complication of the
+    parser to a minimum.
+  ~ Providing pragmas in a language will allow for better code generation
+    if implemented quickly. Otherwise, pragmas may become to cumbersome
+    and and complicate the parser.
 
 
-12.
+12. To Prefix
   a. z ^ w ^ x + y ==> + ^ ^ z w x y
   b. w + x + y * z ==> + w + x * y z
   c. w * x * y ^ z ==> * * w x ^ y z
   d. w * x / y * z ==> * / * w x y z
 
 
-13.
+13. To Postfix
   a. z ^ w ^ x + y ==> z w ^ x ^ y +
   b. w + x + y * z ==> w x y z * + +
   c. w * x * y ^ z ==> w x * y z ^ *
