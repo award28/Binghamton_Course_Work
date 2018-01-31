@@ -82,7 +82,7 @@ int at(void) {
   int result = factor();
   while (token == '@') { 
     match('@');
-    result -= factor();
+    result = (result + factor())/2;
   }
   return result;
 }

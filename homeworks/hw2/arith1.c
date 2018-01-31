@@ -84,7 +84,7 @@ int at(void) {
   int result = factor();
   if (token == '@') {
     match('@');
-    result -= at();
+    result = (result + at())/2;
   } 
   return result;
 }
