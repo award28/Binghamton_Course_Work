@@ -1,7 +1,10 @@
 /* Homework Assignment 4 - Prolog 2
    Programming Languages
    CS471, Spring 2017
-   Binghamton University */
+   Binghamton University 
+   Austin Ward
+   B00518794
+   */
 
 /* Instructions */
 
@@ -271,18 +274,18 @@ edge(f,e).
 /* Problem 6 Answer */
 
 
-outgoing(V, []) :- not(edge(V, _X)).
-outgoing(V, [H|T]) :- edge(V, H), outgoing(V, T).
+outgoing(V, L) :- findall(X, edge(V, X), L).
+incoming(V, L) :- findall(X, edge(X, V), L).
 
 /* Problem 6 Test */
-% :- outgoing(a,X), X = [b,e,c].
-% :- outgoing(e,X), X = [].
-% :- outgoing(a,X), X = [b,e,c].
-% :- incoming(a,X), X = [b].
-% :- incoming(f,X), X = [].
+:- outgoing(a,X), X = [b,e,c].
+:- outgoing(e,X), X = [].
+:- outgoing(a,X), X = [b,e,c].
+:- incoming(a,X), X = [b].
+:- incoming(f,X), X = [].
 
-% :- outgoing(e,X), X = [a] -> fail ; true.
-% :- incoming(e,X), X = [] -> fail ; true.
+:- outgoing(e,X), X = [a] -> fail ; true.
+:- incoming(e,X), X = [] -> fail ; true.
 
 
 
@@ -295,7 +298,14 @@ outgoing(V, [H|T]) :- edge(V, H), outgoing(V, T).
    (See page 584 and Chapter 12)
 */
 
-/* Problem 7 Answer: */
+/* Problem 7 Answer:
+homoiconic - the programming language text has the same 
+             structure as its AST
+Yes, Prolog is homoiconic.
+A language is reflective if it can analyize it's structure 
+at runtime and modify it and it's behavior.
+No, Prolog is not fully reflective.
+*/
 
 
 
@@ -320,7 +330,6 @@ computeS(Op, Arg1, Arg2, Result) :- E =.. [Op, Arg1, Arg2], Result is E.
 :- catch((computeS(sin, 90, 1, _), fail), error(_Err, _Context), true).
 
 
-
 /* Problem 9:
    In class we discussed the 'is' predicate for evaluating expressions. Write a
    predicate results/2.
@@ -329,7 +338,6 @@ computeS(Op, Arg1, Arg2, Result) :- E =.. [Op, Arg1, Arg2], Result is E.
 */
 
 /* Problem 9 Answer: */
-
 result([], []).
 result([E|Elst], [R|Rlst]) :- R is E, result(Elst, Rlst).
 /* Problem 9 Test */
@@ -338,8 +346,6 @@ result([E|Elst], [R|Rlst]) :- R is E, result(Elst, Rlst).
 :- result([+(3,7), +(15, -(3,11))],X), X = [10, 7].
 
 :- result([+(3,7), mod(104,7)],[10,13]) -> fail ; true.
-
-
 
 /* Problem 10:
    A good example of symbolic computation is symbolic differentiation. Below
@@ -361,7 +367,6 @@ result([E|Elst], [R|Rlst]) :- R is E, result(Elst, Rlst).
 */
 
 /* Problem 10 Answer: */
-
 d(Var, Var, R) :- R is 1.
 d(C, _Var, R) :- number(C), R is 0.
 d(C*Var, Var, R) :- number(C), R is C.
@@ -373,7 +378,6 @@ d(U^N, Var, N*U^(N1)*R) :- N1 is N-1, d(U, Var, R).
 /*
 */
 
-
 /* Problem 10 Test: */
 :- d(x,x,R), R = 1 .
 :- d(7*x,x,R), R = 7 .
@@ -383,8 +387,6 @@ d(U^N, Var, N*U^(N1)*R) :- N1 is N-1, d(U, Var, R).
 
 % Pay careful attention to why this fails.
 :- d(x +2*(x^3 + x*x),x,Result), Result = 1+ (2* (3*x^(3-1)*1+ (x*1+x*1))+ (x^3+x*x)*0) -> fail ; true.
-
-
 
 /* Problem 11:
    (Exercise 3.5 from Learn Prolog Now!)
