@@ -1,3 +1,5 @@
+# Copyright 2018 Austin Ward
+
 from math import log
 import copy
 

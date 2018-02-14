@@ -1,5 +1,7 @@
-#!/usr/local/bin/python3
-from decisionTree import DecisionTree
+#!/usr/bin/python3
+# Copyright 2018 Austin Ward
+
+from DecisionTree import DecisionTree
 import sys
 
 
@@ -21,7 +23,7 @@ def get_data_set(name, start=False):
 
 
 if len(sys.argv) != 6:
-    print(".\main.py <training-set> <validation-set> <test-set> <to-print> <prune>\
+    print("./main.py <training-set> <validation-set> <test-set> <to-print> <prune>\
             \nto-print:{yes,no} prune:{yes, no}")
     sys.exit()
 training, t_attr, attrs = get_data_set(sys.argv[1], True)
@@ -33,18 +35,28 @@ vi = DecisionTree(training, t_attr, attrs, validation)
 vi_root = vi.tree_ctor(is_info_gain=False)
 ig_pre = ig.accuracy(ig_root, test)
 vi_pre = vi.accuracy(vi_root, test)
-if sys.argv[5] == 'yes':
-    print("==================Pre Pruning===================")
-print("Info Gain:\t\tPredicted {:0.2f}% Correct".format(ig_pre))
-print("Variance Impurity:\tPredicted {:0.2f}% Correct".format(vi_pre))
+
+# INFO GAIN
+
+print("H1 NP Training\t\t{:0.2f}".format(ig.accuracy(ig_root, training)))
+print("H1 NP Validation\t{:0.2f}".format(ig.accuracy(ig_root, validation)))
+print("H1 NP Test\t\t{:0.2f}".format(ig.accuracy(ig_root, test)))
 if sys.argv[5] == 'yes':
     ig.prune(ig_root)
+    print("H1 P  Training\t\t{:0.2f}".format(ig.accuracy(ig_root, training)))
+    print("H1 P  Validation\t{:0.2f}".format(ig.accuracy(ig_root, validation)))
+    print("H1 P  Test\t\t{:0.2f}".format(ig.accuracy(ig_root, test)))
+
+# VARIANCE IMPURITY
+
+print("H2 NP Training\t\t{:0.2f}".format(vi.accuracy(vi_root, training)))
+print("H2 NP Validation\t{:0.2f}".format(vi.accuracy(vi_root, validation)))
+print("H2 NP Test\t\t{:0.2f}".format(vi.accuracy(vi_root, test)))
+if sys.argv[5] == 'yes':
     vi.prune(vi_root)
-    ig_post = ig.accuracy(ig_root, test)
-    vi_post = vi.accuracy(vi_root, test)
-    print("==================Post Pruning==================")
-    print("Info Gain:\t\tPredicted {:0.2f}% Correct".format(ig_post))
-    print("Variance Impurity:\tPredicted {:0.2f}% Correct".format(vi_post))
+    print("H2 P  Training\t\t{:0.2f}".format(vi.accuracy(vi_root, training)))
+    print("H2 P  Validation\t{:0.2f}".format(vi.accuracy(vi_root, validation)))
+    print("H2 P  Test\t\t{:0.2f}".format(vi.accuracy(vi_root, test)))
 if sys.argv[4] == 'yes':
     print('==============Info Gain Tree==============')
     ig.print_tree(ig_root)
