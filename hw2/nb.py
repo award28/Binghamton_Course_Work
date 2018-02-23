@@ -39,3 +39,18 @@ def predict(data, email, word_count, unique, type_):
         return 1
     elif(type_ == 'spam'):
         return 0
+
+
+def accuracy(data):
+    correct = total = 0
+    ham_emails, ham_word_count = data['ham']
+    spam_emails, spam_word_count  = data['spam']
+    smoothed_train = data['smoothed_train']
+    unique_words = data['unique_words']
+    for email in ham_emails:
+        correct += predict(smoothed_train, email, ham_word_count, unique_words, 'ham')
+        total += 1
+    for email in spam_emails:
+        correct += predict(smoothed_train, email, spam_word_count, unique_words, 'spam')
+        total += 1
+    return correct/total

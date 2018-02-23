@@ -1,10 +1,10 @@
 #!/usr/bin/python3
 # Copyright 2018 Austin Ward
 
+from nb import smooth, predict, accuracy
 from os.path import isfile, join
 from nltk.corpus import stopwords
 from nltk.stem.porter import *
-from nb import smooth, predict
 from os import listdir
 import pandas as pd
 import pickle
@@ -51,7 +51,7 @@ def get_data(name, remove_stopwords=False):
                         spam_data.append(stemmed_subject + stemmed_data)
                         spam_file_count += 1
                 except:
-                    print("Could not read " + type_ + file_)
+                    pass
     return {'ham':ham_data, 'spam':spam_data, 'ham_file_count':ham_file_count, 'spam_file_count':spam_file_count}
 
 
@@ -86,31 +86,36 @@ def get_count(d):
             'spam':(spam_dict, spam_word_count, spam_file_count), 
             'unique_words':unique_words}
 
+def execute(train, test, remove_stopwords):
+    parsed_train = get_count(get_data(train, remove_stopwords))
+    smoothed_train = smooth(parsed_train)
+
+    ham_train, ham_word_count, ham_file_count = parsed_train['ham']
+    spam_train, spam_word_count, spam_file_count = parsed_train['spam']
+    unique_words = parsed_train['unique_words']
     
+    parsed_test_emails = get_data(test, remove_stopwords)
+    ham_test_emails = parsed_test_emails['ham']
+    spam_test_emails = parsed_test_emails['spam']
+        
+    accuracy_data = {
+            'ham': (ham_test_emails, ham_word_count), 
+            'spam': (spam_test_emails, spam_word_count),
+            'smoothed_train': smoothed_train, 
+            'unique_words':unique_words
+            }
+     
+    if remove_stopwords:
+        print("NB w/out stopwords: {:0.2f}".format(accuracy(accuracy_data)))
+    else:
+        print("NB w/ stopwords: {:0.2f}".format(accuracy(accuracy_data)))
+
+
 if len(sys.argv) != 3:
     print("./main <train> <test>")
     sys.exit()
-pn = "parsed_train.pickle"
 train = sys.argv[1]
 test = sys.argv[2]
 
-parsed_train = get_count(get_data(train, True))
-smoothed_train = smooth(parsed_train)
-
-ham_train, ham_word_count, ham_file_count = parsed_train['ham']
-spam_train, spam_word_count, spam_file_count = parsed_train['spam']
-unique_words = parsed_train['unique_words']
-
-parsed_test_emails = get_data(test, True)
-ham_test_emails = parsed_test_emails['ham']
-spam_test_emails = parsed_test_emails['spam']
-
-correct = total = 0
-for email in ham_test_emails:
-    correct += predict(smoothed_train, email, ham_word_count, unique_words, 'ham')
-    total += 1
-for email in spam_test_emails:
-    correct += predict(smoothed_train, email, spam_word_count, unique_words, 'spam')
-    total += 1
-
-print("Predicted correctly: " + str(correct/total))
+execute(train, test, False)
+execute(train, test, True)
