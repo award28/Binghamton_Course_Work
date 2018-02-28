@@ -12,9 +12,9 @@ def smooth(data):
     new_spam_dict = {}
     
     for word, count in ham_dict.items():
-        new_ham_dict[word] =  laplace(1, count, ham_word_count, unique_words)
+        new_ham_dict[word] =  laplace(1, count[0], ham_word_count, unique_words)
     for word, count in spam_dict.items():
-        new_spam_dict[word] =  laplace(1, count, spam_word_count, unique_words)
+        new_spam_dict[word] =  laplace(1, count[0], spam_word_count, unique_words)
     
     return {'ham':(new_ham_dict, ham_prior), 'spam':(new_spam_dict, spam_prior)}
 
