@@ -28,7 +28,6 @@ def logistic_regression(learning_rate, lambda_, examples, dict_, bias=-5):
         else:
             converged = 10
         prev_accuracy = accuracy
-    print()
     return (features, weights)
 
 
