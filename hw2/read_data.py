@@ -13,11 +13,13 @@ from LogisticRegression import *
 import pickle
 import sys
 
+
 stemmer = PorterStemmer()
 STOPWORDS = pickle.load(open('stopwords/stopwords.pickle', 'rb'))
 NUMBERS = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
 SPECIAL = ['_', '-', ':', '/', '@', '#', '$', '.', ',', '(', ')', ';', \
            "'", '"', '!', '$', '%', '^', '&', '*', '?', '|', '+', '\n']
+
 
 def clean_message(text, remove_stopwords):
     for c in NUMBERS + SPECIAL:
@@ -76,21 +78,21 @@ def create_dicts(d):
     spam_dict = {}
     spam_word_count = 0
     unique_words = 0
-    for ham in hams:
-        for word in ham:
+    for email in hams:
+        for word in email:
             ham_word_count += 1
             if word in ham_dict:
-                ham_dict[word][0] += 1
+                ham_dict[word] += 1
             else:
-                ham_dict[word] = [1, random()]
+                ham_dict[word] = 1
                 unique_words += 1
-    for spam in spams:
-        for word in spam:
+    for email in spams:
+        for word in email:
             spam_word_count += 1
             if word in spam_dict:
-                spam_dict[word][0] += 1
+                spam_dict[word] += 1
             else:
-                spam_dict[word] = [1, random()]
+                spam_dict[word] = 1
                 if word not in ham_dict:
                     unique_words += 1
     return {

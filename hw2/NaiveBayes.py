@@ -1,5 +1,45 @@
+from math import log
+
+
+def get_docs_containing_word(docs, word):
+    count = 0
+    for email in emails:
+        if word in email:
+            count += 1
+
+
+def multinomial_nb(vocab, doc_count, docs_in_class, emails):
+    prior = {'ham':0, 'spam':0}
+    cond_prob = {'ham':{}, 'spam':{}}
+    for class_ in ['ham', 'spam']:
+        prior[class_] = docs_in_class[class_] / doc_count
+        for word in vocab:
+            docs_with_word_and_class = sum([1 for email in emails[class_] if word in email])
+            cond_prob[class_][word] = laplace(1, docs_with_word_and_class, docs_in_class[class_], len(vocab))
+    return prior, cond_prob
+
+
+def nb_accuracy(vocab, prior, cond_prob, emails):
+    correct = total = 0
+    for (email, class_) in emails:
+        correct += (class_ == nb_predict(vocab, prior, cond_prob, email))
+        total += 1
+    return correct/total
+
+
+def nb_predict(vocab, prior, cond_prob, email):
+    score = {}
+    for class_ in ['ham', 'spam']:
+        score[class_] = log(prior[class_])
+        for word in vocab:
+            prob = cond_prob[class_][word] if word in email else (1 - cond_prob[class_][word])
+            score[class_] += log(prob)
+    return score['spam'] > score['ham']
+
+
 def laplace(k, count, total, unique):
     return (count + k)/(total + k*unique)
+
 
 def smooth(data):
     ham_dict, ham_word_count, ham_file_count = data['ham']
@@ -10,35 +50,18 @@ def smooth(data):
     unique_words = data['unique_words']
     new_ham_dict = {}
     new_spam_dict = {}
-    
-    for word, count in ham_dict.items():
-        new_ham_dict[word] =  laplace(1, count[0], ham_word_count, unique_words)
-    for word, count in spam_dict.items():
-        new_spam_dict[word] =  laplace(1, count[0], spam_word_count, unique_words)
-    
+    for (h_word, h_count), (s_word, s_count) in zip(ham_dict.items(), spam_dict.items()):
+        new_ham_dict[h_word] =  laplace(1, h_count, ham_word_count, unique_words)
+        new_spam_dict[s_word] =  laplace(1, s_count, spam_word_count, unique_words)
     return {'ham':(new_ham_dict, ham_prior), 'spam':(new_spam_dict, spam_prior)}
 
-def predict(data, email, word_count, unique, type_):
-    ham, ham_p = data['ham']
-    spam, spam_p = data['spam']
 
+def predict(data, email, word_count, unique, type_):
+    (ham, ham_p), (spam, spam_p) = (data['ham'], data['spam'])
     for word in email:
-        if word in ham:
-            ham_p *= ham[word]
-        else:
-            ham_p *= laplace(1, 0, word_count, unique)
-        if word in spam:
-            spam_p *= spam[word]
-        else:
-            spam_p *= laplace(1, 0, word_count, unique)
-    if(type_ == 'ham' and ham_p > spam_p):
-        return 1
-    elif(type_ == 'ham'):
-        return 0
-    if(type_ == 'spam' and spam_p > ham_p):
-        return 1
-    elif(type_ == 'spam'):
-        return 0
+        ham_p *= ham[word] if word in ham else laplace(1, 0, word_count, unique)
+        spam_p *= spam[word] if word in spam else laplace(1, 0, word_count, unique)
+    return (type_ == 'ham' and ham_p > spam_p) or (type_ == 'spam' and spam_p > ham_p)
 
 
 def accuracy(data):
