@@ -6,19 +6,12 @@ Due:		3/02/18
 Binghamton University
 
 HOW TO RUN:
-  pip3 install -r requirements.txt
-    chmod u+x main.py
-    ./main.py <train> <test>
-  OR
-    python3 main.py <train> <test>
-
-IF the stopwords pickle is not found:
-  cd stopwords/
-  python3 create_stopwords_pickle.py
+  make
+  ./main <train> <test>
 
 REMARKS:
   Naive Bayes:
-    After implementing stopwork removal my accuracy 
+    After implementing stopword removal my accuracy 
     increased to 90%. Since the removed words are 
     causing the data to overfit, it makes sense
     their removal would increase the accuracy.

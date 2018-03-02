@@ -6,7 +6,7 @@ import pickle
 
 
 stemmer = PorterStemmer()
-STOPWORDS = pickle.load(open('stopwords/stopwords.pickle', 'rb'))
+STOPWORDS = pickle.load(open('stopwords.pickle', 'rb'))
 NUMBERS = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
 SPECIAL = ['_', '-', ':', '/', '@', '#', '$', '.', ',', '(', ')', ';', \
            "'", '"', '!', '$', '%', '^', '&', '*', '?', '|', '+', '\n']
