@@ -10,6 +10,7 @@ STOPWORDS = pickle.load(open('stopwords/stopwords.pickle', 'rb'))
 NUMBERS = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
 SPECIAL = ['_', '-', ':', '/', '@', '#', '$', '.', ',', '(', ')', ';', \
            "'", '"', '!', '$', '%', '^', '&', '*', '?', '|', '+', '\n']
+BOUNDRY = 200 
 
 
 def clean_message(text, remove_stopwords):
@@ -21,6 +22,39 @@ def clean_message(text, remove_stopwords):
             while c in data:
                 data.remove(c)
     return data
+
+
+def best_features(vocab, L):
+    for class_ in ['ham', 'spam']:
+        for word in vocab:
+            if L[class_][word] <= BOUNDRY:
+                del L[class_][word]
+    return L
+
+
+def compute_feature_utility(emails, word):
+    res = []
+    pop = sum([len(email) for email in emails])
+    for email in emails:
+        if word in email:
+            observed = email.count(word)
+            prob = observed/len(email)
+            res.append((observed/pop - prob)**2/prob)
+    return pop * sum(res)
+
+
+def feature_selection(vocab, emails):
+    L = {'ham':{}, 'spam':{}}
+    for class_ in ['ham', 'spam']:
+        for word in vocab:
+            L[class_][word] = compute_feature_utility(emails[class_], word)
+    best_ = best_features(vocab, L)
+    new_vocab = []
+    for class_ in ['ham', 'spam']:
+        for word in vocab:
+            if word in L[class_] and word not in new_vocab:
+                new_vocab.append(word)
+    return new_vocab
 
 
 def get_data(name, remove_stopwords=False):

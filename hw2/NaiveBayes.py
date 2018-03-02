@@ -3,7 +3,7 @@ from ParseData import *
 from numpy import log
 
 
-def execute_nb(train, test, remove_stopwords):
+def execute_nb(train, test, remove_stopwords, select_features):
     train_data = get_data(train, remove_stopwords)
     parsed_train = create_dicts(train_data)
     vocab = []
@@ -16,6 +16,7 @@ def execute_nb(train, test, remove_stopwords):
     docs_in_class = {'ham':ham_file_count, 'spam':spam_file_count}
     total_docs = ham_file_count + spam_file_count
     emails = {'ham':train_data['ham'], 'spam':train_data['spam']}
+    if select_features: vocab = feature_selection(vocab, emails)
     prior, cond_prob = multinomial_nb(vocab, total_docs, docs_in_class, emails)
     parsed_test_emails = get_data(test, remove_stopwords)
     emails = []
@@ -24,7 +25,6 @@ def execute_nb(train, test, remove_stopwords):
     for email in parsed_test_emails['spam']:
         emails.append((email, 1))
     return nb_accuracy(vocab, prior, cond_prob, emails)
-    return 0
 
 
 def multinomial_nb(vocab, doc_count, docs_in_class, emails):

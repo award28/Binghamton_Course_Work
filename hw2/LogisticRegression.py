@@ -4,27 +4,33 @@ from numpy import log, exp
 from random import random
 
 
-def get_ex_and_dict(data):
+def get_ex_and_dict(data, select_features):
     examples = []
     for ham in data['ham']:
         examples.append((ham, 0))
     for spam in data['spam']:
         examples.append((spam, 1))
-    weight_dict = create_dicts(data)
-    dict_ = weight_dict['ham'][0]
-    for word, values in weight_dict['spam'][0].items():
+    old_dict_ = create_dicts(data)
+    dict_ = old_dict_['ham'][0]
+    for word, values in old_dict_['spam'][0].items():
         if word not in dict_:
             dict_[word] = values
         else:
             dict_[word] += values
+    if select_features:
+        temp_dict = {'ham': old_dict_['ham'][0], 'spam': old_dict_['spam'][0]}
+        new_vocab = feature_selection([word for word in dict_], temp_dict)
+        for word in dict_:
+            if word not in new_vocab:
+                del dict_[word]
     return (examples, dict_)
 
 
-def execute_lr(l, train, test, remove_stopwords):
+def execute_lr(l, train, test, remove_stopwords, select_features):
     parsed_train = get_data(train, remove_stopwords)
     parsed_test = get_data(test, remove_stopwords)
-    train_ex, train_dict_ = get_ex_and_dict(parsed_train)
-    test_ex, test_dict_ = get_ex_and_dict(parsed_test)
+    train_ex, train_dict_ = get_ex_and_dict(parsed_train, select_features)
+    test_ex, test_dict_ = get_ex_and_dict(parsed_test, select_features)
     features, weights = logistic_regression(1, l, test_ex, test_dict_, bias=2)
     return lr_accuracy(test_ex, features, weights, bias=2)
 
