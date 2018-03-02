@@ -1,17 +1,8 @@
-#!/usr/bin/python3
 # Copyright 2018 Austin Ward
-
-
 from os.path import isfile, join
-from nltk.corpus import stopwords
-from nltk.stem.porter import *
-from random import random
+from nltk.stem.porter import PorterStemmer
 from os import listdir
-import pandas as pd
-from NaiveBayes import * 
-from LogisticRegression import *
 import pickle
-import sys
 
 
 stemmer = PorterStemmer()
@@ -97,6 +88,5 @@ def create_dicts(d):
                     unique_words += 1
     return {
             'ham':(ham_dict, ham_word_count, ham_file_count), 
-            'spam':(spam_dict, spam_word_count, spam_file_count), 
-            'unique_words':unique_words
+            'spam':(spam_dict, spam_word_count, spam_file_count)
             }

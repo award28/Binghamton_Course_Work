@@ -1,4 +1,7 @@
+#!/usr/bin/python3
+# Copyright 2018 Austin Ward
 import pickle
+
 
 with open('stopwords.txt', 'r') as f:
     words = f.read()

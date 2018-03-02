@@ -1,14 +1,19 @@
 Name:		Austin Ward
 B-Number:	B00518794
 Semester:	Spring 2018
-Due:		2/28/18
+Due:		3/02/18
 
 Binghamton University
 
 HOW TO RUN:
-  bash init.sh
-OR
   chmod u+x main.py
+  ./main.py <train> <test>
+  OR
+  python3 main.py <train> <test>
+
+IF the stopwords pickle is not found:
+  cd stopwords/
+  python3 create_stopwords_pickle.py
 
 ACCURACY FILE:
   results.txt

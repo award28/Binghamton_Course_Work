@@ -1,5 +1,32 @@
+# Copyright 2018 Austin Ward
+from ParseData import *
 from numpy import log, exp
 from random import random
+
+
+def get_ex_and_dict(data):
+    examples = []
+    for ham in data['ham']:
+        examples.append((ham, 0))
+    for spam in data['spam']:
+        examples.append((spam, 1))
+    weight_dict = create_dicts(data)
+    dict_ = weight_dict['ham'][0]
+    for word, values in weight_dict['spam'][0].items():
+        if word not in dict_:
+            dict_[word] = values
+        else:
+            dict_[word] += values
+    return (examples, dict_)
+
+
+def execute_lr(l, train, test, remove_stopwords):
+    parsed_train = get_data(train, remove_stopwords)
+    parsed_test = get_data(test, remove_stopwords)
+    train_ex, train_dict_ = get_ex_and_dict(parsed_train)
+    test_ex, test_dict_ = get_ex_and_dict(parsed_test)
+    features, weights = logistic_regression(1, l, test_ex, test_dict_, bias=2)
+    return lr_accuracy(test_ex, features, weights, bias=2)
 
 
 def logistic_regression(learning_rate, lambda_, examples, dict_, bias=-5):

@@ -1,5 +1,5 @@
-NB w/ stopwords: 0.58
-NB w/out stopwords: 0.74
+NB w/ stopwords: 0.79
+NB w/out stopwords: 0.90
 LR w/ stopwords:        0.97    w/ lambda 0.01
 LR w/out stopwords:     0.96    w/ lambda 0.01
 LR w/ stopwords:        0.93    w/ lambda 0.05
