@@ -6,14 +6,43 @@ Due:		3/02/18
 Binghamton University
 
 HOW TO RUN:
-  chmod u+x main.py
-  ./main.py <train> <test>
+  pip3 install -r requirements.txt
+    chmod u+x main.py
+    ./main.py <train> <test>
   OR
-  python3 main.py <train> <test>
+    python3 main.py <train> <test>
 
 IF the stopwords pickle is not found:
   cd stopwords/
   python3 create_stopwords_pickle.py
+
+REMARKS:
+  Naive Bayes:
+    After implementing stopwork removal my accuracy 
+    increased to 90%. Since the removed words are 
+    causing the data to overfit, it makes sense
+    their removal would increase the accuracy.
+
+  Logistic Regression:
+    Removal of stopwords actually decreased the 
+    accuracy for each iteration of lambda. With 
+    that said, the difference in accuracy became
+    less apparent with smaller lambda values.
+
+  Extra Credit Feature Selection:
+    By implementing a chi-squared feature selection
+    the accuracy for NB with stopwords increased by
+    2%. No other accuracies were affected in the 
+    negative or positive directions. 
+    I choose this feature selection method since
+    it can compute the importance of a certain
+    feature, and if said feature is below a boundary
+    we can remove it from our vocabulary. Similar
+    to stopword removal, this will remove words of
+    lower importance. After testing different boundary
+    levels, I found that a higher boundary resulted
+    in the change described above. This change can
+    be found in the results.txt file.
 
 ACCURACY FILE:
   results.txt
