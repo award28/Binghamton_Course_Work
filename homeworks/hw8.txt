@@ -1,0 +1,106 @@
+Austin Ward
+CS471 Assignment 8
+
+1.
+  Unification is the ability to solve symbolic equations between expressions through algorithms.
+  Unification is used in ML to bring up type variables, which will go in place of types that the 
+  algorithm has yet to decipher.
+
+2.
+  Explicit means the program contains type variables and implicit means the program doesn't 
+  even need to contain types.
+  The explicit code will be a bit more for the programmer to write but will be more efficient
+  while the implicit code will be shorter and work the same way, but slower.
+
+3.
+  Java Generics are compile-time constructs. This means that anything used as a generic must 
+  be convertable to an object, and primitives can not. This is mainly for back compatability.
+  C# does not have this issue, so it will accept generic arguments.
+
+4.
+  typedef char* String1;
+  typedef char* String2:
+  
+  String1 a;
+  String2 b, c;
+  String2 d;
+
+  Structural equivalence - all
+  Strict name equivalence - only b & c
+  The actual C equivalence algorithm - b, c & d but not a
+
+5.
+  double* dp = new double(3);
+  void* vp;
+  int* ip;
+  
+  // Compiler complaints
+  vp = dp; // okay.
+  dp = vp; // error, incompatible.
+  ip = dp; // error, incompatible.
+  dp = ip; // error, incompatible.
+  ip = vp; // error, incompatible.
+  
+  ip = (int*) vp; // okay, erroneous data.
+  ip = static_cast<int*>(vp); // okay, erroneous data.
+  ip = static_cast<int*>(dp); // error, incompatible.
+  ip = reinterpret_cast<int*>(dp); // okay, erroneous data.
+
+6.
+  The issue is that our function is taking a reference to a base class. Lets say
+  inside of our funciton we say we set our vector elements to new foo(). This would
+  change our bar object vector elements to foo objects, and this is very bad. Imagine
+  we try to access a variable or method only in bar. This would hail all sorts of problems.
+
+7.
+  Both macros and templates are tools for code generation. But, there is a strong 
+  difference between the two.
+  Macros:
+    - parsed by a preprocessor
+    - expanded without type checking
+    - error messages refer to expanded macro instead of macro
+    - substitution mechanism
+  Templates:
+    - parsed by the compiler
+    - verify parameters of compatible types
+    - plugin mechanism
+
+8.
+  Struct tags in C allow the grouping of other types. This is useful if one is
+  trying to represent a larger concept, such as
+  struct person {
+    int age;
+    char * name;
+  }
+  Structs by themselves aren't typenames, but in conjunction with typedef can be
+  translated into a typename. 
+  typedef struct person Person;
+  Now Person is a type name.
+  In C++, they changed it so that all tags are typenames. Sure, you can write
+  class Person p, but you don't need the class part.
+
+9.
+  base + 
+  m * ((4 for int + 4 for char) * 10 for row width)
+  n * (4 for int + 4 for char)
+  for A[m][n]. thus,
+  1000 + (3 × 80) + (7 × 8) = 1296
+
+10.
+  double *a[n];     // an array of n pointers to doubles
+  double (*b)[n];   // a pointer to array of n doubles
+  double (*c[n])(); // an array of n pointers to functions returning doubles
+  double (*d())[n]; // a function returning pointer to array of n doubles
+
+11.
+  4 12 3 36 108 8.
+  Since ints are of size 4, it's doing 0 + 1 which is 0x4 and converting 
+  this to a double, which is 4. Then since this will happen again it's 0x12,
+  converted to 12. 
+  Any value that is not a 0x## is treated as multiplying by the 
+  size of the pointed type.
+  k     // 3 since it's the value of k
+  a + k // 36 since 0x12 + 3 which does 0x12 + 0x12 + 0x12
+  &(a[9]) // 108 since 0x12 + 9 similar to the top translates to 108
+  &(a[9]) - (a+1) //8 since the first part will evaluate to 108, second part
+                  //to 100, and then 108 - 100 is 8
