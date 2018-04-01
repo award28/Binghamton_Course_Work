@@ -6,11 +6,47 @@ Due:		3/28/18
 Binghamton University
 
 HOW TO RUN:
+  if needed, create stopwords pickle with:
+    python3 create_stopwords_pickle.py
   make
   ./main <train> <test>
 
-REMARKS:
+PART 3 ANSWER:
+           w1,1
+      (x1) --> (h1)
+      	\   /    \
+     w2,1\ /      \w3,1
+      	  X       (y)-------> Output
+     w1,2/ \      /w3,2
+      	/   \    /
+      (x2) --> (h2)
+           w2,2
+
+  where:
+    bias1 = -1.5
+    bias2 = -0.5
+    w1,1 = 1
+    w2,1 = -1
+    w1,2 = 1
+    w2,2 = -1
+    w3,1 = 1
+    w3,2 = 1
+  and
+    h1 = sigmoid(bias1 + (w1,1)*x1 + (w1,2)*x2)
+    h2 = sigmoid(bias1 + (w2,1)*x1 + (w2,2)*x2)
+    y  = sigmoid(bias2 + (w3,1)*h1 + (w3,2)*h2)
+    
+  This Nueral network is x if the output > 0 and ◇ otherwise
   
+
+PART 4 ANSWER:
+  It's relatively easy to change this from a sigmoid to a tanh.
+  Replace:
+    T4.3 with delta(k) <- (1 - o(k)^2)(t(k) - o(k))
+    T4.4 with delta(h) <- (1 - o(h)^2) * sum_outputs
+      where sum_outputs = sum for all outputs k (w(k,h)delta(k))
+REMARKS:
+    
 
 WEKA RESULTS:
   weka.classifiers.functions.MultilayerPerceptron -L 0.3 -M 0.2 -N 60 -V 0 -S 0 -E 20 -H 5
