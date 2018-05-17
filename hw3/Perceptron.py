@@ -25,24 +25,22 @@ def get_ex_and_dict(data, select_features):
     return (examples, dict_)
 
 
-def execute_p(train, test, remove_stopwords, select_features):
+def execute_p(train, test, remove_stopwords, select_features, eta, it):
     parsed_train = get_data(train, remove_stopwords)
     parsed_test = get_data(test, remove_stopwords)
     train_ex, train_dict_ = get_ex_and_dict(parsed_train, select_features)
     test_ex, test_dict_ = get_ex_and_dict(parsed_test, select_features)
-    features, weights = perceptron_ctor(1, test_ex, test_dict_, bias=2)
+    features, weights = perceptron_ctor(eta, test_ex, test_dict_, it, bias=2)
     return p_accuracy(test_ex, features, weights, bias=2)
 
 
-def perceptron_ctor(learning_rate, examples, dict_, bias=-5):
+def perceptron_ctor(learning_rate, examples, dict_, it, bias=-5):
     features = [word for word in dict_]
     classifications = [random() for i in range(len(examples))]
     weights = [random() for i in range(len(features))]
     converged = 10
     prev_accuracy = -1
-    z = 0
-    while z < 100 and not converged == 0:
-        z += 1
+    for z in range(it):
         for i in range(len(examples)):
             email, type_ = examples[i]
             classifications[i] = classify(bias, email, features, weights)
