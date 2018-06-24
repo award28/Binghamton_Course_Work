@@ -1,0 +1,26 @@
+D1
+H1 NP Training		100.00
+H1 NP Validation	96.50
+H1 NP Test		96.17
+H1 P  Training		99.67
+H1 P  Validation	96.50
+H1 P  Test		95.50
+H2 NP Training		100.00
+H2 NP Validation	96.67
+H2 NP Test		96.00
+H2 P  Training		99.83
+H2 P  Validation	96.67
+H2 P  Test		96.00
+D2
+H1 NP Training		99.83
+H1 NP Validation	76.33
+H1 NP Test		73.67
+H1 P  Training		85.17
+H1 P  Validation	82.33
+H1 P  Test		77.67
+H2 NP Training		99.83
+H2 NP Validation	75.83
+H2 NP Test		73.67
+H2 P  Training		84.50
+H2 P  Validation	81.83
+H2 P  Test		75.83
