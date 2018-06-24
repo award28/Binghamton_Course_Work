@@ -1,0 +1,10 @@
+// Symbol table
+// Scope level 0:
+//	Symbol Name       Page Address
+//	----------------  ------------
+//	DOUBLE            3006
+//	SAVER0            300F
+//	SAVER1            3010
+//	X                 3011
+//	STACKBASE         3012
+

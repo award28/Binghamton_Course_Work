@@ -1,0 +1,14 @@
+.ORIG x3000
+
+ADD R0, R0, #4
+ADD R4, R0, #-3
+BRP CONT
+AND R2, R2, #0
+ADD R2,R2, #6
+BR DONE
+CONT
+	AND R2, R2, #0
+	ADD R2, R2, #5
+DONE
+
+.END	

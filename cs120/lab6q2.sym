@@ -1,0 +1,7 @@
+// Symbol table
+// Scope level 0:
+//	Symbol Name       Page Address
+//	----------------  ------------
+//	ODD               3006
+//	DONE              3007
+

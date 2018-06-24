@@ -1,0 +1,52 @@
+package assignment02;
+
+import assignment01.Person;
+
+public class Student {
+
+private Person student;
+private MyClass[] myClasses = new MyClass[50];
+
+	public Student(Person student){
+		this.student = student;
+	}
+
+	public int nextOpenClassIndex() {
+	
+		int val = 0;
+
+		while(val < myClasses.length && myClasses[val] != null){
+			val++;
+		}
+
+		return val;
+	}	
+
+	public void addToMyClass(MyClass mc) {
+	    	int index = nextOpenClassIndex();
+	    	myClasses[index] = mc;
+	}
+
+	public double gpa(){
+
+		int totalGpaCredits = 0;
+		double totalQualityPoints = 0;
+		double gpa;
+	
+		for(int i = 0; i < myClasses.length; i++){
+			if(myClasses[i] != null) {
+				totalGpaCredits += myClasses[i].getGpaCredits();
+				totalQualityPoints += myClasses[i].getQualityPoints();
+			}
+		}
+		
+		if (totalGpaCredits == 0){
+			gpa = 0;
+		}
+		else{
+			gpa = totalQualityPoints / totalGpaCredits;
+		}
+
+	return gpa;
+	}
+}

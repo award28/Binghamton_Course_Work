@@ -1,0 +1,22 @@
+// Symbol table
+// Scope level 0:
+//	Symbol Name       Page Address
+//	----------------  ------------
+//	SUBTRACT          300D
+//	MULTIPLY          301A
+//	LOOP              3022
+//	DIVIDE            302A
+//	DIVLOOP           3038
+//	ZERO              3050
+//	SAVER0            3051
+//	SAVER1            3052
+//	SAVER2            3053
+//	SAVER3            3054
+//	SAVER4            3055
+//	SAVER5            3056
+//	SAVER7            3057
+//	SUBVAL            3058
+//	MULVAL            3059
+//	DIVVAL            305A
+//	STACKBASE         305B
+

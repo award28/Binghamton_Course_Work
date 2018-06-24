@@ -1,0 +1,12 @@
+.ORIG x3000
+
+LEA R0, #6
+LDR R1, R0, #-1
+AND R2, R0, R1
+ADD R0, R0, #-3
+AND R2, R1, R0
+ADD R2, R2, #10
+HALT
+.FILL x33
+
+.END

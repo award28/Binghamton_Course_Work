@@ -1,0 +1,8 @@
+// Symbol table
+// Scope level 0:
+//	Symbol Name       Page Address
+//	----------------  ------------
+//	DOUBLE            3002
+//	BYFOUR            3004
+//	SAVER7            3009
+
