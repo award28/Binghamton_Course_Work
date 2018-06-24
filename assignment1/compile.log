@@ -1,0 +1,16 @@
+In file included from assignment1-award28/src/Deque.hpp:7:0,
+                 from assignment1-award28/src/basic_fns_test_1.cpp:20:
+assignment1-award28/src/basic_fns_test_1.cpp: In function ‘int main()’:
+assignment1-award28/src/basic_fns_test_1.cpp:64:30: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+             assert(int(temp) == 98+i);
+                    ~~~~~~~~~~^~~~~~~
+assignment1-award28/src/compatibility_check_2.cpp:6:18: warning: extra ‘;’ [-Wpedantic]
+ Deque_DEFINE(int);
+                  ^
+assignment1-award28/src/compatibility_check.cpp:6:18: warning: extra ‘;’ [-Wpedantic]
+ Deque_DEFINE(int);
+                  ^
+assignment1-award28/src/compatibility_check.cpp: In function ‘int main()’:
+assignment1-award28/src/compatibility_check.cpp:29:28: warning: unused variable ‘it’ [-Wunused-variable]
+         Deque_int_Iterator it;
+                            ^~
