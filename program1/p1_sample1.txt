@@ -1,0 +1,27 @@
+state	0	start
+state	5	accept
+state	6	accept
+state	7	reject
+state	8	reject
+state	10	reject
+state	11	reject
+state	12	reject
+state	13	reject
+transition	0	0	1	x	R
+transition	1	0	0	x	R
+transition	1	2	2	x	R
+transition	1	3	3	x	R
+transition	2	2	4	x	R
+transition	4	2	2	x	R
+transition	3	3	9	x	R
+transition	9	3	3	x	R
+transition	4	3	5	z	R
+transition	4	3	6	z	R
+transition	4	3	7	z	R
+transition	4	3	8	z	R
+transition	9	2	10	z	R
+transition	9	2	11	z	R
+transition	9	2	12	z	R
+transition	9	2	13	z	R
+transition	1	1	14	x	L
+transition	14	x	14	y	L
