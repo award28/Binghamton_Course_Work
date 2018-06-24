@@ -1,2 +1,2 @@
 # cs320
-Binghamton University Spring 2016 Computer Systems III: Advanced Computer Architechture
+Binghamton University Spring 2017 Computer Systems III: Advanced Computer Architechture
