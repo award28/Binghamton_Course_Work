@@ -1,0 +1,33 @@
+Name:		Austin Ward
+B-Number:	B00518794
+Email:		award9@binghamton.edu
+
+//TODO: Edit lines after this comment
+This implementation neglects to implement the following:
+
+  + Checking of public, private access modifiers.
+
+  + Setting up of initial environment containing IO class.
+
+  + Does not signal error on presence of static fields.
+
+The AST has been annotated as follows:
+
+  + All nodes implement TypeI.  Most nodes return a NIL type, but expression
+    nodes return interesting information.
+
+  + CallAst, ClassAst, InitDeclaratorAst, NameAst,
+    MethodDeclarationAst have a getSymInfo() call which returns
+    semantic information for the relevant identifier.  Note that a
+    single shared SymInfo is always returned for the same entity.
+
+The classes implementing TypeI are ArrayType, BasicType and ClassSymInfo.
+
+Note that the TypedI interface is implemented by entities which have types;
+i.e., they implement the TypeI getType() method.
+
+Note that the XML pretty-printer has been augmented to print out the
+AST type's as well as selected SymInfo data.
+
+Note that LocalSymInfo and FormalSymInfo have an offset attribute which
+can be used for allocating the variable on the JVM.

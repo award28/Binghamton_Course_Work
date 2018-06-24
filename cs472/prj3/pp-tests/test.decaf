@@ -1,0 +1,14 @@
+class C {
+  int a;
+  static boolean[] a, b[];
+
+  static boolean f() { }
+
+  void f() {
+    boolean[] a, b[];
+    a = a.b.c;
+    b.c(a1).f(a2, 23) = x;
+  }
+  
+
+}

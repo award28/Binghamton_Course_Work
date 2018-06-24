@@ -1,0 +1,28 @@
+class C {
+  int a;
+  static boolean a, b;  //multiply defined field a.
+
+  C(int a) { 
+    this.a = a; 
+    super(); //must be at constr start
+  }
+
+  static boolean f() { }
+
+  void f() {            //multiply defined f()
+    a = a.b.c;          //invalid field access to int a.
+    b.c(a1).f(a2, 23) = x; //invalid field access, undefined x.
+  }
+
+  //entire function should be ok
+  C g(int x) {
+    C c = new C(11);  
+    if (c.b) {
+      return new C(22);
+    }
+    else {
+      return c.g(c.a);
+    }
+  }
+
+}

@@ -1,0 +1,12 @@
+class /* some comment */
+Statements {
+
+  int f(
+    int a,
+    int a[])
+    {
+    while (x) { x = x + 1; }
+    //another comment
+    if (x) {  a = b;  } else /* else comment */while (a) if (x)/**/ f();
+      }
+      }

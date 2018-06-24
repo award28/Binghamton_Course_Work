@@ -1,0 +1,18 @@
+//Tests cases from Mr. Jiaming Zhang (were failing)
+
+class a {
+  public a(String s){}
+}
+class b extends a {
+  public b(){ } //missing call to super
+}
+
+
+//This call should not have an error
+class a1 {
+  public a1(String s){}
+}
+class b1 extends a1 {
+  public b1(String s){ super(s);}
+  public static void main(String[] args) { }
+}

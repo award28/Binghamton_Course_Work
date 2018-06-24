@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<program position="&lt;unknown&gt;:1:0">
+  <class position="test.decaf:1:6" super="Object" name="C">
+    <field position="test.decaf:2:2" isStatic="false" access="public">
+      <type position="test.decaf:2:2" rank="0" type="int"/>
+      <init-declarator position="test.decaf:2:6" name="a" rank="0">
+        <nil-exp position="test.decaf:2:6"/>
+      </init-declarator>
+    </field>
+    <field position="test.decaf:3:9" isStatic="true" access="public">
+      <type position="test.decaf:3:9" rank="1" type="boolean"/>
+      <init-declarator position="test.decaf:3:19" name="a" rank="0">
+        <nil-exp position="test.decaf:3:19"/>
+      </init-declarator>
+      <init-declarator position="test.decaf:3:22" name="b" rank="1">
+        <nil-exp position="test.decaf:3:22"/>
+      </init-declarator>
+    </field>
+    <method position="test.decaf:5:17" isStatic="true" access="public" name="f">
+      <type position="test.decaf:5:9" rank="0" type="boolean"/>
+      <block position="test.decaf:5:21"/>
+    </method>
+    <method position="test.decaf:7:7" isStatic="false" access="public" name="f">
+      <type position="test.decaf:7:2" rank="0" type="void"/>
+      <block position="test.decaf:7:11">
+        <var-dec position="test.decaf:8:4">
+          <type position="test.decaf:8:4" rank="1" type="boolean"/>
+          <init-declarator position="test.decaf:8:14" name="a" rank="0">
+            <nil-exp position="test.decaf:8:14"/>
+          </init-declarator>
+          <init-declarator position="test.decaf:8:17" name="b" rank="1">
+            <nil-exp position="test.decaf:8:17"/>
+          </init-declarator>
+        </var-dec>
+        <exp position="test.decaf:9:6">
+          <assign position="test.decaf:9:6">
+            <name position="test.decaf:9:4" name="a"/>
+            <access position="test.decaf:9:11">
+              <access position="test.decaf:9:9">
+                <name position="test.decaf:9:8" name="a"/>
+                <name position="test.decaf:9:10" name="b"/>
+              </access>
+              <name position="test.decaf:9:12" name="c"/>
+            </access>
+          </assign>
+        </exp>
+        <exp position="test.decaf:10:22">
+          <assign position="test.decaf:10:22">
+            <access position="test.decaf:10:11">
+              <access position="test.decaf:10:5">
+                <name position="test.decaf:10:4" name="b"/>
+                <call position="test.decaf:10:6" name="c">
+                  <name position="test.decaf:10:8" name="a1"/>
+                </call>
+              </access>
+              <call position="test.decaf:10:12" name="f">
+                <name position="test.decaf:10:14" name="a2"/>
+                <literal position="test.decaf:10:18" type="int" value="23"/>
+              </call>
+            </access>
+            <name position="test.decaf:10:24" name="x"/>
+          </assign>
+        </exp>
+      </block>
+    </method>
+  </class>
+</program>

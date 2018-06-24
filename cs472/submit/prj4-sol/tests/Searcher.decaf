@@ -1,0 +1,91 @@
+//This should really be a abstract class
+class Matcher {
+  boolean match(int element) { return true; }
+}
+
+/** Match for equality with some key*/
+class EqMatcher extends Matcher {
+  private int _key;
+  EqMatcher(int key) {
+    _key = key;
+  }
+  boolean match(int element) { return element == _key; }
+}
+
+/** Match max element */
+class MaxMatcher extends Matcher {
+  private int _max;
+  MaxMatcher() {
+    _max= -99999999;
+  }
+  boolean match(int element) {
+    if (element > _max) {
+      _max = element;
+      return true;
+    }
+    return false;
+  }
+}
+
+/** Match min element */
+class MinMatcher extends Matcher {
+  private int _min;
+  MinMatcher() {
+    _min= 99999999;
+  }
+  boolean match(int element) {
+    if (element < _min) {
+      _min = element;
+      return true;
+    }
+    return false;
+  }
+
+}
+
+
+/** This class tests polymorphic dispatch of the match method on
+ *  different kinds of matchers.
+ */
+class Searcher {
+
+  /** Return last index in elements[] where matcher returns true */
+  int search(int[] elements, Matcher matcher) {
+    int i = 0;
+    int matchIndex = -1;
+    while (i < elements.length) {
+      if (matcher.match(elements[i])) {
+        matchIndex = i;
+      }
+      i = i + 1;
+    }
+    return matchIndex;
+  }
+
+  /** Given int arguments, it treats first as a key and rest as an
+   *  array of elements for searching.  Prints index of elements
+   *  equal to key, index of max element in elements and index of
+   *  min element in elements.
+   */
+  public static void main(String[] args) {
+    if (args.length == 0) return;
+    int key = Sys.parseInt(args[0]);
+    int[] elements = new int[args.length - 1];
+    int i = 1;
+    while (i < args.length) {
+      elements[i - 1] = Sys.parseInt(args[i]);
+      i = i + 1;
+    }
+    Searcher searcher = new Searcher();
+
+    Sys.putString("found "); Sys.putInt(key); Sys.putString(" at index ");
+    Sys.putIntNl(searcher.search(elements, new EqMatcher(key)));
+
+    Sys.putString("found max at index ");
+    Sys.putIntNl(searcher.search(elements, new MaxMatcher()));
+
+    Sys.putString("found min at index ");
+    Sys.putIntNl(searcher.search(elements, new MinMatcher()));
+  }
+
+}

@@ -1,0 +1,19 @@
+class Test {
+	public static Object bar(int i) {
+		return null;
+	}
+
+	public static int baz(int j) {
+		bar(1);
+		return 1;
+	}
+
+	public static void main(String[] args) {
+		boolean test = true;
+		boolean second = false;
+		String name = "hi";
+		name = "tes";
+		int count = 4 + 2;
+		boolean t = (4 >= 2);
+	}
+}

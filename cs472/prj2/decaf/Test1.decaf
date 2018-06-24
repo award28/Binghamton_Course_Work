@@ -1,0 +1,9 @@
+//Here is a comment
+/* additional comment */ class T { 
+public static void main(int test[], int val, char v, int a, boolean hear) { 
+if (true) { return 0; //Test
+} 
+else 
+ int h = 4;
+} 
+}

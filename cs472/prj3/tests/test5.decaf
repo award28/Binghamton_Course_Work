@@ -1,0 +1,43 @@
+class C {
+
+  int f() {
+    if (1 > 2) {
+      return true; //incompatible return
+    }
+    else {
+      break; //break outside while
+      return 5;
+    }
+    return; //missing return value
+  }
+
+  int g() {
+    while (true) { return 5; }
+  }
+
+  int h() {
+    if (1 > 2) {
+      return 1;
+    }
+    else if (2 > 3) {
+      if (1 > 2) return 3; else return 4;
+    }
+    else {
+      return 5;
+    }
+  }
+
+  int h1() {
+    if (1 > 2) {
+      return 1;
+    }
+    else if (2 > 3) {
+      if (1 > 2) return 3; //missing return
+    }
+    else {
+      return 5;
+    }
+  }
+
+
+}

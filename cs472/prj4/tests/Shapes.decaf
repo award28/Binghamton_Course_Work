@@ -1,0 +1,49 @@
+//Should be abstract
+class Shape {
+  private String _desc;
+  Shape(String desc) { _desc = desc; }
+  int area() { return 0; }
+  int perimeter() { return 0; }
+  String desc() { return _desc; }
+}
+
+class Rectangle extends Shape {
+  private int _w, _h;
+  Rectangle(String desc, int w, int h) {
+    super(desc);
+    _w = w; _h = h;
+  }
+  int area() { return _w * _h; }
+  int perimeter() { return 2*(_w + _h); }
+}
+
+class Square extends Rectangle {
+  Square(String desc, int len) { super(desc, len, len); }
+}
+
+class Circle extends Shape {
+  //Use PI = 355/113 approximation
+  private int _radius;
+  Circle(String desc, int radius) { super(desc); _radius = radius; }
+  int area() { return 355 *_radius *_radius / 113; }
+  int perimeter() { return 2 * 355* _radius / 113; }
+}
+
+class Shapes {
+
+  public static void main(String[] args) {
+    Shape shapes[] = new Shape[4];
+    shapes[0] = new Rectangle("rect(4, 5)", 4, 5);
+    shapes[1] = new Square("square(10)", 10);
+    shapes[2] = new Circle("circle(5)", 5);
+    shapes[3] = new Square("square(20)", 20);
+    int i = 0;
+    while (i < shapes.length) {
+      Sys.putString("area of shape "); Sys.putString(shapes[i].desc());
+      Sys.putString(" =  ");  Sys.putIntNl(shapes[i].area());
+      Sys.putString("perim of shape "); Sys.putString(shapes[i].desc());
+      Sys.putString(" =  "); Sys.putIntNl(shapes[i].perimeter());
+      i = i + 1;
+    }
+  }
+}

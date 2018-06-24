@@ -1,0 +1,13 @@
+test1.decaf:1:6: undefined class C2
+test1.decaf:20:6: multiply defined class C1; previous definition at test1.decaf:1:6
+test1.decaf:13:5: multiply defined method a; previous definition at test1.decaf:4:12
+test1.decaf:6:6: boolean may not be assigned to boolean[][]
+test1.decaf:7:10: incompatible types int and boolean[][] for binary operator LT
+test1.decaf:7:6: boolean may not be assigned to int
+test1.decaf:8:5: expected indexing an array, but found int
+test1.decaf:8:5: expected index expression to be int, but found boolean[][]
+test1.decaf:9:12: incompatible type boolean[] assigned to boolean var x
+test1.decaf:11:4: missing return statement at end of function
+test1.decaf:11:9: incompatible type int[] assigned to char[] var d
+test1.decaf:13:14: missing return statement at end of function
+test1.decaf:1:6: no main() method defined

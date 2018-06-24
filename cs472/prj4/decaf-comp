@@ -1,0 +1,20 @@
+#!/bin/sh
+
+COURSE=cs572
+COURSE_LIB=$HOME/$COURSE/lib
+JASMIN="java -jar $COURSE_LIB/jasmin.jar"
+
+if [ $# -lt 2 ]
+then
+  echo "usage: $0 [-h|--help] [--pp] [--xml] DECAF_SRC_FILE|- DEST_DIR"
+  exit 1
+fi
+
+for destDir in "$@"; do true; done
+
+java -classpath "$COURSE_LIB/*:build/libs/*" $COURSE.JComp $@
+
+if [ $? -eq 0 ]
+then
+   $JASMIN -d $destDir $destDir/*.j
+fi

@@ -1,0 +1,11 @@
+#!/bin/sh
+
+COURSE=cs572
+
+if [ $# -lt 1 ]
+then
+  echo "usage: $0 DECAF_SRC_FILE|-"
+  exit 1
+fi
+
+java -classpath "$HOME/cs572/lib/*:`dirname $0`/build/libs/*" $COURSE.JCheck $*

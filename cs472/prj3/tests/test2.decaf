@@ -1,0 +1,12 @@
+class C1 {
+  int[] a[], b;
+  C1 c[];
+  boolean[] a() { }
+  C1(int a) { int a = 1; c = new C1[2]; }
+}
+
+class C2 extends C1 {
+  char c1, c2;
+  boolean f() { }
+}
+

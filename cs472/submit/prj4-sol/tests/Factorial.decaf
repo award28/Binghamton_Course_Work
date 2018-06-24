@@ -1,0 +1,36 @@
+class Factorial {
+
+  static int recFact(int n) {
+    int f;
+    if (n <= 1) {
+      f = 1;
+    }
+    else {
+      f = n * recFact(n - 1);
+    }
+    return f;
+  }
+
+  static int iterFact(int n) {
+    int f = 1;
+    int i = 2;
+    while (i <= n) {
+      f = f * i;
+      i = i + 1;
+    }
+    return f;
+  }
+
+  static void main(String[] args) {
+    int i = 0;
+    while (i < args.length) {
+      int n = Sys.parseInt(args[i]);
+      Sys.putString("recFact("); Sys.putInt(n); Sys.putString(") = ");
+      Sys.putIntNl(recFact(n));
+      Sys.putString("iterFact("); Sys.putInt(n); Sys.putString(") = ");
+      Sys.putIntNl(iterFact(n));
+      i = i + 1;
+    }
+  }
+
+}

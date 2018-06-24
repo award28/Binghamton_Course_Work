@@ -1,0 +1,5 @@
+test2.decaf:4:16: missing return statement at end of function
+test2.decaf:5:29: invalid base-type C1; decaf requires a primitive base-type for new array creation
+test2.decaf:10:14: missing return statement at end of function
+test2.decaf:8:6: must define constructor with explicit call to super
+test2.decaf:1:6: no main() method defined
