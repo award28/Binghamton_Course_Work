@@ -1,0 +1,81 @@
+Austin Ward
+CS471 Assignment 7
+
+1.
+  No they do not contradict each other. A compiler may evaluate them in any order,
+  but this will not effect the way the subexpressions are evaluated. 
+
+2.
+  &(&i) is invalid in C. Since the & operator expects an lvalue and 
+  & returns an rvalue.
+  
+3.
+  This rationale is appropriate since one of the main parts of programming is to
+  get things done quick and efficiently.
+
+4.
+  a.
+    int b = (a++ || ++a) >= (a++ && ++a);	a=0, b=?
+    int b = (a++ || ++a) >= (0 && ++a);	a=0, b=?
+    shortcircuit
+    int b = (a++ || ++a) >= (0);	a=1, b=?
+    int b = (1 || ++a) >= (0);	a=1, b=?
+    int b = (1 || 2) >= (0);	a=2, b=?
+    int b = 1;	a=3, b=1
+    printf( "%d %d", a, b ); a=3, b = 1
+  b.
+    int b = (a++ || ++a) >= (a++ && ++a);	a=0, b=?
+    int b = (a++ || ++a) >= (a++ && 1);	a=0, b=?
+    int b = (a++ || ++a) >= (1 && 1);	a=1, b=?
+    int b = (a++ || 2) >= (1 && 1);	a=2, b=?
+    int b = (2 || 2) >= (1 && 1);	a=2, b=?
+    int b = (1) >= (1);	a=2, b=?
+    int b = 1;	a=2, b=1
+    printf( "%d %d", a, b ); a=4, b = 1
+
+5.
+  No they're not equivalent. In the while loop the 'i' is incremented immediately
+  after the boolean expression. In the for loop the 'i' is incremented after the
+  body statement is executed.
+
+6.
+  Find below and in fact.rb
+  ======= BEGIN CODE ==============
+  lst = [ 1 ]
+  1.upto(5){|n| lst[n]=n*lst[n-1]}
+  print lst
+  print "\n" puts lst 
+  ======= END CODE ==============
+  
+7.
+  Find in TreeModule.py
+
+8.
+  Find in UsingTrees.py
+
+9.
+  #define CUBED(x) ((x)*(x)*(x))
+  inline int CUBED(x) {return x*x*x}
+    Since a macro will 'fill in' code with the macro, the macro will be much slower than
+    the inline function when we pass in a function. CUBED(g(x)) would become g(x)*g(x)*g(x)
+    where as the inline function would only evaluate g(x) once and fill that value into the
+    spots for x.
+  #define C 28 
+  inline int C() {return 28;} 
+    In the case above the macro would be faster, since the constant replaces rather than 
+    execute a function body.
+
+10.
+  What does it mean for a language to be strongly typed? Statically typed? What prevents, say, C from being strongly typed?
+    Strongly typed - A language where each data type is predefined.
+    Statically typed - A language where the type of variable is known at compile time.
+    C is not strongly typed since I can get the value of one type given another, i.e. char c = 0;
+  What is polymorphism? What distinguishes its parametric and subtype varieties? What are generics?
+    Polymorphism - When an object can be treated as a generic version, or can take on multiple forms.
+    Parametric allows a variety of types to be taken and treated similarly, while sub types carry the
+    same traits as the super type, with distinctions between the subtypes.
+    Generics allow the creation of 'generic' methods that is customized for any type that invokes it.
+  What is the difference between discrete and scalar types?
+    Discrete types are a subtype of scalar types.
+    Scalar types - Enumeration types, integer types, physical types and floating point types.
+    Discrete types - Enumeration types and integer types.

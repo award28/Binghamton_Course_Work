@@ -1,0 +1,96 @@
+Austin Ward
+CS471 Assignment 9
+
+1.
+  i.
+    Inline is used when memory usage is important.
+    Inline function increases code size.
+    Inline functions are semantically neutral, macros are not.
+  ii.
+    When the code is used a lot and is small with less memory usage.
+
+2.
+  The same as a reference variable but when passed as a parameter it
+  is used soley for temporary objects. It can also manage dynamic 
+  objects.
+  The idea here is that we do an rvalue reference if the value is
+  not referenced again after the expression.
+
+3.
+  Threads are the smallest sequence of programmed instructions and
+  are managed seperate from one another.
+  Coroutines are simultaneously existing functions and save control
+  state between calls.
+
+4.
+  Anonymous delegates are super useful when it comes to event handling.
+  Anonymous inner classes in Java are useful for the same reason.
+
+5.
+  Since the value for i is stored on the stack, the repeated calls
+  to foo will have the value of i stored in the same address.
+  Generally langauges will init declarations to 0, but this is not
+  true for all lanaguages. Thus, we can have non deterministic results.
+
+6.
+  foo is a function that takes args:
+    pointer to a function
+    double
+  The pointer to a functions takes returns a double and takes args:
+    double
+    array of doubles
+  foo then returns a pointer to a function, which takes args:
+    double
+    varying argument list
+
+7.
+  a. 25.
+  b. 25.
+  c. 
+    If we pass:
+      squaref(1 + 2);
+      SQUARE(1 + 2);
+    The results will differ, due to precedence and macro expansion.
+    To fix this, change the macro to:
+      #define SQUARE(x) ((x)*(x))
+
+8.
+  A. Passing by value has no effect on the actual stored values.
+    "1, 2, 1, 0"
+    "1, 2, 1, 0"
+
+  B. Passing by reference will pass the reference and change them.
+    "1, 2, 1, 0"
+    "1, 2, 0, 0"
+
+  C. Since all values are mutable, they all change.
+    "1, 2, 1, 0"
+    "1, 2, 0, 0"
+
+  D. Macro expansion allows the value of a[i] to change during eval.
+    "0, 2, 1, 2"
+    "2, 1, 1, 0"
+
+  E. Pass by name is similar to macro expansion.
+    "0, 2, 1, 2"
+    "2, 1, 1, 0"
+ 
+9.
+  Same:
+    both resolved at compile time
+    non-virtual acts as final
+    no indirection required
+  Diff:
+    final in java cannot be overridden
+    C++ you don't need to specify
+
+10.
+  This is not an error, but the scoping operator is required to get
+  the foo field b variable.
+
+11.
+  Since we cannot create an object of an abstract class, we cannot
+  declare foo without it being a pointer. The pointer allows us to
+  point to foo's derived class. 
+  In Java this isn't an issue because you cannot do anything with
+  pointer arithmetic.

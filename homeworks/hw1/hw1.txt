@@ -1,0 +1,212 @@
+Austin Ward
+CS471 Assignment 1
+
+1.
+View quiz from 1/18/18
+
+
+2.
+================================
+------------ gcd.s -------------
+================================
+~~~~~~~~~~START CODE~~~~~~~~~~~~
+	.section	__TEXT,__text,regular,pure_instructions
+	.macosx_version_min 10, 13
+	.globl	_gcdI
+	.p2align	4, 0x90
+_gcdI:                                  ## @gcdI
+	.cfi_startproc
+## BB#0:
+	pushq	%rbp
+Lcfi0:
+	.cfi_def_cfa_offset 16
+Lcfi1:					## 	1. The creation of the stack frame.
+	.cfi_offset %rbp, -16
+	movq	%rsp, %rbp
+Lcfi2:
+	.cfi_def_cfa_register %rbp	##	2. Argument storage and updates.
+	movl	%edi, -4(%rbp)
+	movl	%esi, -8(%rbp)
+LBB0_1:                                 ## =>This Inner Loop Header: Depth=1
+	movl	-4(%rbp), %eax
+	cmpl	-8(%rbp), %eax
+	je	LBB0_6			## 4. Translation of the loop.
+## BB#2:                                ##   in Loop: Header=BB0_1 Depth=1
+	movl	-4(%rbp), %eax		
+	cmpl	-8(%rbp), %eax
+	jle	LBB0_4
+## BB#3:                                ##   in Loop: Header=BB0_1 Depth=1
+	movl	-4(%rbp), %eax
+	subl	-8(%rbp), %eax
+	movl	%eax, -4(%rbp)		##	3. Local variable storage and updates.
+	jmp	LBB0_5
+LBB0_4:                                 ##   in Loop: Header=BB0_1 Depth=1
+	movl	-8(%rbp), %eax
+	subl	-4(%rbp), %eax
+	movl	%eax, -8(%rbp)		##	3. Local variable storage and updates.
+LBB0_5:                                 ##   in Loop: Header=BB0_1 Depth=1
+	jmp	LBB0_1
+LBB0_6:					## 5. Some form of return result, and an exit from the function.
+	movl	-4(%rbp), %eax
+	popq	%rbp
+	retq				
+
+	.cfi_endproc
+
+
+.subsections_via_symbols
+~~~~~~~~~~~~END CODE~~~~~~~~~~~~
+
+
+3.
+See file gdc_full.c, function gcd_myM(2).
+This program does not compute the same results as the iterative solution. 
+Actually, it will only work when the compared numbers are the same, 
+since this will allow it to skip the while loop. The reason why it doesn't
+work is a floating point error, as in at some point it will divide by zero.
+
+To fix this we need to return the j if i % j is zero and vice versa. Besides
+that, we keep the program as is. 
+
+I would expect the subtraction approach to be faster on smaller numbers 
+since division takes more cycles to complete. Otherwise, mod algo is faster. 
+
+
+4.
+    1. See gcd_full.c, function gcdF(2).
+    2. Assume N == max(i, j)
+      ~ The iterative solution is O(N) in the worst case (i.e. # > 1 & 1)
+      ~ The functional solution is O(lg(N)) since we're essentially cutting
+	one of the arguments in half at each step.
+    3. It depends on what factors matter. If the stack needs to remain small
+       an iterative solution may be appropriate. If runtime is a concern
+       the clear choise is the recursive (functional) solution.
+
+
+5.
+================================
+-------- gcd_full.py -----------
+================================
+~~~~~~~~~~START CODE~~~~~~~~~~~~
+#! /usr/bin/env python
+import sys
+
+
+def gcdI(i, j):
+    while i != j:
+        if i > j:
+            i = i - j
+        else:
+            j = j - i
+    return i
+
+
+def gcdF(i, j):
+    if not i % j: return j 
+    return gcdF(j, i % j)
+
+
+if len(sys.argv) != 3:
+    print(sys.argv[0] + " usage: [I] [J]")
+    exit()
+
+gcd = gcdI(int(sys.argv[1]), int(sys.argv[2]))
+print(gcd)
+~~~~~~~~~~~~END CODE~~~~~~~~~~~~
+
+================================
+-------- gcd_full.rb -----------
+================================
+~~~~~~~~~~START CODE~~~~~~~~~~~~
+def gcdI(i, j)
+	while i != j do
+		if i > j
+			i = i - j
+		else
+			j = j - i
+		end
+	end
+	return i
+end
+
+
+def gcdF(i, j)
+	  return j if !(i % j)
+		return gcdF(j, i % j)
+end
+
+
+if ARGV.length != 2 
+	  puts "gcd_full.rb usage: [I] [J]" 
+		  exit
+end
+
+puts gcdI(ARGV[0].to_i, ARGV[1].to_i)
+~~~~~~~~~~~~END CODE~~~~~~~~~~~~
+
+6.
+Using C on a Macbook Pro:
+Limit (Min):  -2147483648
+Underflow --> -2147483648 - 2:  2147483646
+Limit (Max):   2147483647
+Overflow -->   2147483647 + 2: -2147483647
+
+In the event of arithmetic overflow a negative large number will become a 
+positive large number and a positive large number will become a negative 
+large number.
+
+Lets say we have program A which has an integer of size 64 in the code, 
+statically. Now we try to port program A from machine 1 to machine 2, 
+which has an integer size limit of 32. Program A will no longer work 
+as desired, thus our program is not very portable.
+
+Java 
+  ~ Uses a fixed size limit and will overflow/underflow.
+  ~ Since java uses a fixed limit portability is not an issue.
+Python 
+  ~ Doesn't have overflow, instead multword format is implicily 
+    created in the event of overflow/underflow.
+  ~ Since overflow isn't possible this won't effect portability.
+Ada 
+  ~ Will raise an error in the case of overflow/underflow.
+  ~ On one machine an error may be raised while on another machine
+    this may not be an issue.
+
+
+7.
+----------------+---------------------------------------------------+
+   Error Type	| Example					    | 
+----------------+---------------------------------------------------+
+   Lexical	| int abc#c; --> # is not allowed in variable names |
+----------------+---------------------------------------------------+
+   Syntax	| x = (4 - 5)) --> The paranthesis is misplaced	    |
+----------------+---------------------------------------------------+
+Static Semantic | int i; 					    |
+		| i++;  --> i is not initialized		    |
+----------------+---------------------------------------------------+
+   		| i = 10; 					    |
+Dynamic Semantic| char a[10];					    |
+		| a[i] = 'c'; --> i is out of bounds		    |
+----------------+---------------------------------------------------+
+ Compiler can	| A segmentation fault				    |
+  not test  	|						    | 
+----------------+---------------------------------------------------+
+
+
+8.
+In theory:
+    If we define programming language 'Power' as the expressiveness of a 
+    language, then we can say that some languages are more powerful than
+    others. Hence, the statement is true.
+In practice:
+    Certain programming languages are better at tasks than others and
+    vice versa. For example you wouldn't use assembly to build a web
+    server. Thus, the statement is false.
+
+
+9.
+  a. 2
+  b. 4
+  c. In c the highest ackerman number is 131069 with ack(3, 14).
+  d. In python the highest ackerman number is 509 with ack(3, 6).
+  e. In ruby the highest ackerman number is 8189 with ack(3, 10).
