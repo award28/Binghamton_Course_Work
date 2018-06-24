@@ -1,0 +1,27 @@
+S-220 Fall 2015 Lab 01 Report Due Friday Feb. 05
+
+1. Name two advantages of a command line interface:
+
+	Quick to switch files after learning the commands.
+	It's universal.
+
+2. What does the "helloWorld" program you wrote do?
+
+	Prints "Hello World-welcome to C!" to the terminal.
+
+3. What changed between the time you ran "make test" the first time, and "make test" the second time?  Why?
+
+	When I ran make the first time(after "make clean"), the make file redid the command with 
+	the correct flags and name to create the helloWorld file. The second time I ran it, the 
+	make file had made the helloWorld file, so it didn't need to run that command again.
+
+4. What was the value of "argc" in gdb after the gdb command "run arg1 arg2"?  Why was argc this value?
+
+	The value of argc is equal to 3 after the command "run arg1 arg2".
+	argc was this value because there are now more arguments available.
+
+5. What was the value of "argv[3]" in gdb after "run arg1 arg2"? Why was "argv[3]" this value?
+
+	argv[3] is equal to 0x0 after the command "run arg1 arg2".
+	argv[3] was set to this value because it is out of bounds of the arguments we created,
+	thus it is not stored in any memory location.

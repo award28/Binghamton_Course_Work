@@ -1,0 +1,85 @@
+CS220 Week 6 Homework Due Mar 18, 2016
+
+Name: Austin Ward
+
+1. What is the difference between a return value and a return address?
+    Returning a value will allow you to manipulate the current value, but it will not change the initial value. If you pass the address, you can manipulate the value at the original address.     
+
+2. Assuming full data alignment is enforced, given the following code...
+   
+	   struct shape {
+	   	enum color {red, green, blue} shapeColor;
+		int width;
+		int height;
+		int depth;
+	   } shapeA[5];
+	   printf("Shape matrix starts at %p\n",shapeA);
+	   printf("The shapeA[1] starts at %p\n",shapeA+1);
+	   
+    If the first message prints out: "Shape matrix starts at 0x5fcad0"
+    What will the second message print?
+        0x5fcae0
+
+3. Given the following C code...
+
+	enum strikers { Giroux, Bony, Rooney, Hazard, Aguero, Costa, Kane } player;
+	enum teams { Arsenal, ManCity, ManU, Chelsea, Tottenham } team;
+	
+   Would the following C code compile without error?
+        As long as player is given a value of one of it's enums, yes it will.
+
+	if (player==Giroux) team=Arsenal;
+	else if (player==Bony) team=ManCity;
+	else if (player==Rooney) team=ManU;
+        
+  
+4. Given the following C code...
+
+	int isDenormal(float x) {
+		union {
+			float xf;
+			int xi;
+		} in;
+		if (x==0 || x==INFINITY || x==-INFINITY) return 0;
+		in.xf=x; // Copy float parameter to union as float
+		if (0== (in.xi & 0b01111111100000000000000000000000)) return 1;
+		return 0;
+	}
+	
+   a. Would the isDenormal function work correctly without the "union" statement?  Why or why not?
+        Since they're the same address, it can't work without union.
+
+   b. What will be returned for isDenormal(1.3e-30)?  What will be returned for isDenormal(1.3e-44)?
+	    1.3e-30 would return true(1), while 1.3e-44 would return false(0).
+        
+5. Given the following x86 Assembler code:
+
+			cmpl	8(%ebp),$100
+			jle	L21
+			addl	$1,8(%ebp) IF CONDITION TRUE
+			jmp	L22
+		L21	subl	$1,8(%ebp)  // ELSE STATEMENT
+		L22	movl	8(%ebp),%eax   //ASSIGN
+			…	
+			
+    Which of the following lines of C code caused the above assembler code to be generated?
+        Option c is what cause the assembler to be written.
+
+
+	a.	while(arg1<100) { arg1++; }
+		arg1--;
+		x = arg1;
+
+	b.	for(arg1=100; arg<=100; arg1++) { arg1--; }
+		x = arg1;
+
+	c.  if (arg1>100) arg1++;
+		else arg1--;
+		x = arg1;
+
+	d.	do { arg1--} while(arg1>100);
+		arg1++;
+		x = arg1;
+
+	e.	if (arg1<=100) arg1++;
+		else arg1--;

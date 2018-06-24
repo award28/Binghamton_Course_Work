@@ -1,0 +1,22 @@
+CS-220 Spring 2016 Lab 11 report		Due: April 25, 2016
+
+Name: Austin Ward
+
+1. What is the deepest level of stack frame nesting that occured in the factorial program?
+	The deepest level was 5.	
+
+2. What information can you derive from a dump of the fact function's stack frame?
+	The stack frame returns the factorial of the number entered, also the return address and the callers base pointer.
+
+3. Is it more clear to print out the entire stack, or just the current stack frame?  When would you 
+   want to see the entire stack, and when would you just be interested in the current stack frame?
+	It's more clear to print out the current stack if your using recursion. If you're not, it's easier to print out the entire stack.
+
+4. Can you think of any good ways to improve the printout of the stack frame information?  If so, how?
+   (Bonus points will be awarded for the best implementation of improvements... include an example of
+   your results.)
+	Yes, I believe printing out the local variable information could be useful as well.
+
+5. Can you think of any other reason for using the capability for C to access or use information or
+   instructions at the X86 level? If so, describe what you would do in a sentence or two.
+	To help people who are already familiar with C become familiar with x86.

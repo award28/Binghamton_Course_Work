@@ -1,0 +1,18 @@
+CS-220 Spring 2013 Lab 13 report		Due: May 6, 2015
+
+Name: Austin Ward
+
+1. Which command took more user time; parallel or sequential?  Which did you expect to take more user time, and why?
+    parallel. sequential, as parallel works more at once.
+
+2. Which command took more elapsed time; parallel or sequential?  Why?
+    sequential, as parallel works more process' at once.
+
+3. Which command utilized a higher percentage of the CPU cores?  Why?
+    parallel, as it uses more cores at once.
+
+4. If there were no overhead and the machine you are running on has two CPU cores, what would you expect the parallel CPU core percentage value to be?
+    double the value of a single process.
+
+5. Is there a difference between the answer to 4 above, and the percentage of core that the timer reported for you parallel run? If so, do you have any idea why?
+    Yes, because my PC is using more process' than just the once I'm running, which reports a un-approximated number.

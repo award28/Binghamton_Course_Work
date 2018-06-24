@@ -1,0 +1,28 @@
+CS-220 Spring 2016 Lab 06 report		Due: Mar 11, 2016
+
+Name: Austin Ward
+
+1. Cut and paste your code for the insertVal function:
+
+	if (t->value >= value && t->left != NULL) insertVal(t->left, value);    
+	else if(t->value >= value && t->left == NULL) t->left = makeNode(value);
+	else if (t->value < value && t->right != NULL) insertVal(t->right, value);
+	else if(t->value < value && t->right == NULL) t->right = makeNode(value);
+
+2. What order did the values get printed when you invoked prLNR? What about prRNL?
+
+In LNR order: 10 22 22 34 52 21 18 18 17 14 16 12
+In RNL order: 12 16 14 17 18 18 21 52 34 22 22 10
+
+3. The "depth" of a binary tree is the largest number of nodes between the root of the tree
+   and any leaf of the tree.  If you insert "n" values into a binary tree, what is the largest 
+   depth you could have? What must be true about the order of the input values to acheive this depth?
+	The deepest depth with "n" nodes could be "n." You'd have to enter them from smallest to largest or vice versa.
+   
+4. If "n" values are inserted in the tree, what is the smallest possible value for the depth 
+   of the tree?   
+	the smallest possible value is log(base 2)n.
+   
+5. If a binary tree has "n" values and a depth of "d", then what is the maximum number of comparisons 
+   required to insert the "n+1"th number into the tree?
+	The maximum number of comparisons is "d."
