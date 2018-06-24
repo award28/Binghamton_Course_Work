@@ -1,0 +1,14 @@
+[A,D,C,Q,S,S,T]
+[A,D,C,Q] [S,S,T]
+[A,D] [C,Q] [S,S,T]
+[A] [D] [C,Q] [S,S,T]
+[A] [D] [C] [Q] [S,S] [T]
+[A] [D] [C] [Q] [S] [S] [T]
+[A] [D] [C] [Q] [S,S] [T]
+[A] [D] [C] [Q] [T, S,S]
+[A] [D] [Q, C] [T, S,S]
+[D, A]] [Q, C] [T, S,S]
+[Q, D, C, A] [T, S,S]
+[T, S,S, Q, D, C, A] 
+
+The array would need to be templatized

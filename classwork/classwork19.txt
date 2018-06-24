@@ -1,0 +1,25 @@
+CW 19: Implementing Graphs
+
+Draw a representation of the memory matrix and the linked list for the following graph
+Assume that
+    a vertex index requires two bytes
+    a pointer requires four bytes
+    an edge weight requires two bytes
+What's the memory cost of each implementation
+    When would you prefer one over the other?
+
+-----------
+  A|B|C|D|E|
+-----------|
+A|0|3|4|2|7|
+-|-|-|-|-|-|
+B|3|0| | | |
+-|-|-|-|-|-|
+C|4| |0| | |
+-|-|-|-|-|-|
+D|2| | |0| |
+-|-|-|-|-|-|
+E|7| | | |0|
+-----------
+
+Undirected, sparse graph
