@@ -1,0 +1,8 @@
+LIST
+CREATE emptyFile1.txt
+CREATE emptyFile2.txt
+CREATE emptyFile3.txt
+LIST
+DELETE emptyFile1.txt
+DELETE emptyFile2.txt
+LIST
